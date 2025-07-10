@@ -1,5 +1,7 @@
 package myAdapter;
 
+import java.util.Enumeration;
+
 // classe hashtable con metodi compliant con J2ME CLDC 1.1
 import myCompatibilityLayer.Hashtable;
 
@@ -32,9 +34,9 @@ public class MapAdapter implements HMap {
 	 */
 	public MapAdapter(HMap m) {
 		// lacio l'eccezione se la mappa passata è null, altrimenti avrei un'invocazione di metodi su oggetti null
-		if (m == null) {
+		if (m == null)
 			throw new NullPointerException();
-		}
+		
 		// creo ed inizializzo la sottostruttura hashtable di CLDC 1.1
 		hashtable = new Hashtable();
 
@@ -125,8 +127,14 @@ public class MapAdapter implements HMap {
 	 * @param value nuovo valore da inserire nella lista, associato alla chiave specificata.
 	 * @return valore precedentemente associato alla chiave specificata (se la chiave è già presente), altrimenti {@code null}.
 	 * @throws NullPointerException se la chiave o il valore passati sono {@code null}.
+	 * @throws IllegalArgumentException se la chiave corrisponde alla mappa.
 	 */
 	public Object put(Object key, Object value) {
+		// per come è stata definita l'interfaccia, non si può avere la mappa stessa come chiave di qualche entry
+		// se la chiave passata corrisponde alla mappa, lancio una IllegalArgumentException
+		if(key == this)
+			throw new IllegalArgumentException();
+			
 		// NullPointerException già lanciato dal metodo put() della hashtable
 		// richiamo il corrispettivo metodo della hashtable e ne restituisco il risultato
 		return hashtable.put(key, value);
@@ -194,7 +202,7 @@ public class MapAdapter implements HMap {
 	 * @return oggetto {@code Hset} con le chiavi delle mappature {@code key-value} contenute nella mappa
 	 */
 	public HSet keySet() {
-		return null;
+		return new KeySetAdapter();
 	}
 
 	/**
@@ -207,7 +215,7 @@ public class MapAdapter implements HMap {
 	 * @return oggetto {@code HCollection} con i valori (eventualmente duplicati) delle mappature {@code key-value} contenute nella mappa
 	 */
 	public HCollection values() {
-		return null;
+		return new ValuesCollectionAdapter();
 	}
 
 	/**
@@ -220,7 +228,7 @@ public class MapAdapter implements HMap {
 	 * @return oggetto {@code Hset} con le mappature {@code key-value} contenute nella mappa.
 	 */
 	public HSet entrySet() {
-		return null;
+		return new EntrySetAdapter();
 	}
 
 	/**
@@ -261,7 +269,7 @@ public class MapAdapter implements HMap {
 
 		// per ogni entry aggiungo il codice hash all'accumulatore
 		while (i.hasNext())
-			hash += i.hashCode();
+			hash += i.next().hashCode();
 		
 		// resitutisco il codice hash
 		return hash;
@@ -273,13 +281,13 @@ public class MapAdapter implements HMap {
 	/**
 	 * Classe annidata per la gestione delle mappature {@code key-value} (chiamate anche entry) all'interno della mappa.
 	 */
-	public static class EntryAdapter implements HEntry {
+	public class EntryAdapter implements HMap.HEntry {
 		// variabili che memorizzano rispettivamente la chiave e il valore di una mappatura key-value
 		private Object key, value;
 
 		/**
 		 * Costruttore di default, accessibile solo alle classi all'interno del package myAdapter. Costruisce un oggetto {@code EntryAdapter} inizializzando chiave
-		 * e valore a {@code null}. Sebbene la mappa non supporti chiavi o valori {@code null}, è stato scelto di supportare entry con chiave e valore {@code null}
+		 * e valore a {@code null}. Siccome la mappa non supporta chiavi o valori {@code null}, è stato scelto di supportare entry con chiave e valore {@code null}
 		 * per mantenere la portabilità, la compatibilità e l'uniformità con altre implementazioni della mappa che supportano chiavi o valori {@code null}.
 		 */
 		protected EntryAdapter() {
@@ -292,8 +300,10 @@ public class MapAdapter implements HMap {
 		 * 
 		 * @param key chiave.
 		 * @param value valore.
+		 * @throws NullPointerException 
 		 */
 		protected EntryAdapter(Object key, Object value) {
+
 			this.key = key;
 			this.value = value;
 		}
@@ -306,7 +316,7 @@ public class MapAdapter implements HMap {
 		public Object getKey() {
 			return key;
 		}
-		
+
 		/**
 		 * Metodo che restituisce il valore contenuto nella entry.
 		 * 
@@ -315,17 +325,26 @@ public class MapAdapter implements HMap {
 		public Object getValue() {
 			return value;
 		}
-		
+
 		/**
 		 * Metodo che sostituisce il valore contenuto nella entry con il nuovo valore passato come parametro. Il valore precedentemente memorizzato viene restituito.
 		 * 
 		 * @param value nuovo valore da memorizzare nella entry al posto di quello vecchio.
 		 * @return valore precedentemente memorizzato nella entry.
+		 * @throws NullPointerException ...
 		 */
 		public Object setValue(Object value) {
-			Object oldValue = this.value;
-			this.value = value;
-			return oldValue;
+			// se la entry è ancora all'interno della mappa (anche se è nell'array)
+			if (hashtable.get(key).equals(value)) {
+				return hashtable.put(key, value);
+			}
+
+			// se la entry è stata rimossa dalla mappa e si trova nell'array
+			else {
+				Object oldValue = this.value;
+				this.value = value;
+				return oldValue;
+			}
 		}
 
 		/**
@@ -347,14 +366,14 @@ public class MapAdapter implements HMap {
 			// verifico che l'oggetto passato non sia null
 			if (o == null)
 				return false;
-			
+
 			// verifico che l'oggetto passato sia una entry
 			if (!(o instanceof HEntry))
 				return false;
-			
+
 			// confronto la mappatura tra le due entry secondo la formula indicata nel commento javadoc del metodo
 			// si effettua un casting lecito (Object -> HEntry) perché il controllo è stato effettuato appena sopra
-			return (this.getKey() == null ? ((HEntry)o).getKey() == null : this.getKey().equals(((HEntry)o).getKey())) && (this.getValue() == null ? ((HEntry)o).getValue() == null : this.getValue().equals(((HEntry)o).getValue()));
+			return this.getKey().equals(((HEntry) o).getKey()) && this.getValue().equals(((HEntry) o).getValue());
 		}
 
 		/**
@@ -372,268 +391,295 @@ public class MapAdapter implements HMap {
 		 * @return il codice hash della entry.
 		 */
 		public int hashCode() {
-			return (getKey() == null ? 0 : getKey().hashCode()) ^ (getValue() == null ? 0 : getValue().hashCode());
+			return getKey().hashCode() ^ getValue().hashCode();
 		}
 	}
 	
 	// ******************************************************************************************************************************************************************
-	// ------------------------------------------------------------------ CLASSE ANNIDATA KeySetAdapter ------------------------------------------------------------------
+	// ---------------------------------------------------------- CLASSE ANNIDATA ASTRATTA AbstractViewAdapter ----------------------------------------------------------
+	
+	/**
+	 * Classe astratta annidata per la vista attraverso collection per i metodi keySet, values, entrySet
+	 */
+	public abstract class AbstractViewAdapter implements HCollection {
+		/**
+		 * Metodo che restituisce il numero di elementi contenuti nella collection. Se il numero da restituire è maggiore di {@code Integer.MAX_VALUE}, il metodo
+		 * restituisce {@code Integer.MAX_VALUE}.
+		 * 
+		 * @return numero di elementi contenuti nella collection.
+		 */
+		public int size() {
+			return hashtable.size();
+		}
+
+		/**
+		 * Metodo che restituisce {@code true} se la collection non contiene nessun elemento, {@code false} altrimenti.
+		 * 
+		 * @return {@code true} se la collection non contiene nessun elemento, {@code false} altrimenti.
+		 */
+		public boolean isEmpty() {
+			return hashtable.isEmpty();
+		}
+
+		/**
+		 * Metodo che rimuove tutti gli elementi della collection.
+		 */
+		public void clear() {
+			hashtable.clear();
+		}
+		
+		public boolean add(Object o) {
+			throw new UnsupportedOperationException();
+		}
+
+		public boolean addAll(HCollection c) {
+			throw new UnsupportedOperationException();
+		}
+
+		public boolean containsAll(HCollection c) {
+			if (c == null)
+				throw new NullPointerException();
+
+			HIterator i = c.iterator();
+			while (i.hasNext())
+				if (!contains(i.hasNext()))
+					return false;
+			return true;
+		}
+
+		public boolean removeAll(HCollection c) {
+			if (c == null)
+				throw new NullPointerException();
+
+			boolean change = false;
+			HIterator i = c.iterator();
+			while (i.hasNext())
+				if (remove(i.hasNext()))
+					change = true;
+			return change;
+		}
+
+		public boolean retainAll(HCollection c) {
+			if (c == null)
+				throw new NullPointerException();
+
+			boolean change = false;
+			HIterator i = iterator();
+			while (i.hasNext()) {
+				if (!c.contains(i.next())) {
+					i.remove();
+					change = true;
+				}
+			}
+			return change;
+		}
+
+		public boolean equals(Object o) {
+			if (o == null)
+				return false;
+
+			if (!(o instanceof HCollection))
+				return false;
+
+			if (o == this)
+				return true;
+
+			return this.size() == ((HCollection) o).size() && this.containsAll(((HCollection) o));
+		}
+
+		public int hashCode() {
+			int hash = 0;
+			HIterator i = iterator();
+			while (i.hasNext())
+				hash += i.next().hashCode();
+			return hash;
+		}
+
+		public Object[] toArray() {
+			Object[] array = new Object[size()];
+			HIterator i = iterator();
+			int index = 0;
+			while (i.hasNext())
+				array[index++] = i.next();
+			return array;
+		}
+
+		public Object[] toArray(Object[] a) {
+			if (a == null)
+				throw new NullPointerException();
+
+			// CLDC 1.1 Limitation: Cannot dynamically create an array of the exact
+			// runtime component type of 'a' if 'a' is too small and not Object[].
+			// We must fall back to creating a new Object[] in this scenario.
+			// The caller is responsible for casting elements if a specific type is needed.
+			if (a.length < size())
+				// Cannot use reflection (e.g., Array.newInstance) in CLDC 1.1
+				// So, we create a new Object array.
+				a = new Object[size()];
+
+			int i = 0;
+			HIterator it = iterator();
+			while (it.hasNext())
+				a[i++] = it.next();
+
+			if (a.length > size())
+				a[size()] = null;
+
+			return a;
+		}
+	}
+	
+	// ******************************************************************************************************************************************************************
+	// ------------------------------------------------------------------ CLASSE ANNIDATA KeySetAdapter -----------------------------------------------------------------
 
 	/**
 	 * Classe annidata per la vista attraverso set per il metodo keySet
 	 */
-	public static class KeySetAdapter implements HSet {
-		@Override
-		public boolean add(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'add'");
-		}
-
-		@Override
-		public boolean addAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'addAll'");
-		}
-
-		@Override
-		public void clear() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'clear'");
-		}
-
-		@Override
+	public class KeySetAdapter extends AbstractViewAdapter implements HSet {
+		// Returns true if this set contains the specified element.
 		public boolean contains(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'contains'");
+			if (o == null)
+				throw new NullPointerException();
+			return hashtable.containsKey(o);
 		}
 
-		@Override
-		public boolean containsAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'containsAll'");
-		}
-
-		@Override
-		public boolean isEmpty() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
-		}
-
-		@Override
+		// Returns an iterator over the elements in this set.
 		public HIterator iterator() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'iterator'");
+			return new KeySetIterator();
 		}
 
-		@Override
+		// Removes the specified element from this set if it is present (optional operation).
 		public boolean remove(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'remove'");
+			if (o == null)
+				throw new NullPointerException();
+			return hashtable.remove(o) != null;
 		}
-
-		@Override
-		public boolean removeAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'removeAll'");
-		}
-
-		@Override
-		public boolean retainAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'retainAll'");
-		}
-
-		@Override
-		public int size() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'size'");
-		}
-
-		@Override
-		public Object[] toArray() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'toArray'");
-		}
-
-		@Override
-		public Object[] toArray(Object[] a) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'toArray'");
-		}
-
 	}
 	
 	// ******************************************************************************************************************************************************************
-	// ------------------------------------------------------------------ CLASSE ANNIDATA ValuesCollectionAdapter ------------------------------------------------------------------
+	// ------------------------------------------------------------- CLASSE ANNIDATA ValuesCollectionAdapter ------------------------------------------------------------
 
 	/**
 	 * Classe annidata per la vista attraverso collection per il metodo values
 	 */
-	public static class ValuesCollectionAdapter implements HCollection {
-		@Override
-		public boolean add(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'add'");
-		}
-
-		@Override
-		public boolean addAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'addAll'");
-		}
-
-		@Override
-		public void clear() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'clear'");
-		}
-
-		@Override
+	public class ValuesCollectionAdapter extends AbstractViewAdapter /* implements HCollection */ {
+		// Returns true if this set contains the specified element.
 		public boolean contains(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'contains'");
+			if (o == null)
+				throw new NullPointerException();
+			return hashtable.contains(o);
 		}
 
-		@Override
-		public boolean containsAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'containsAll'");
-		}
-
-		@Override
-		public boolean isEmpty() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
-		}
-
-		@Override
+		// Returns an iterator over the elements in this set.
 		public HIterator iterator() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'iterator'");
+			return new ValuesCollectionIterator();
 		}
 
-		@Override
+		// Removes the specified element from this set if it is present (optional operation).
 		public boolean remove(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'remove'");
-		}
+			if (o == null)
+				throw new NullPointerException();
 
-		@Override
-		public boolean removeAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'removeAll'");
-		}
+			HIterator it = iterator();
+			while (it.hasNext()) {
+				if (it.next().equals(o)) {
+					it.remove();
+					return true;
+				}
+			}
 
-		@Override
-		public boolean retainAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'retainAll'");
+			return false;
 		}
-
-		@Override
-		public int size() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'size'");
-		}
-
-		@Override
-		public Object[] toArray() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'toArray'");
-		}
-
-		@Override
-		public Object[] toArray(Object[] a) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'toArray'");
-		}
-		
 	}
 
 	// ******************************************************************************************************************************************************************
-	// ------------------------------------------------------------------ CLASSE ANNIDATA EntrySetAdapter ------------------------------------------------------------------
+	// ----------------------------------------------------------------- CLASSE ANNIDATA EntrySetAdapter ----------------------------------------------------------------
 
 	/**
 	 * Classe annidata per la vista attraverso set per il metodo entrySet
 	 */
-	public static class EntrySetAdapter implements HSet {
-		@Override
-		public boolean add(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'add'");
-		}
-
-		@Override
-		public boolean addAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'addAll'");
-		}
-
-		@Override
-		public void clear() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'clear'");
-		}
-
-		@Override
+	public class EntrySetAdapter extends AbstractViewAdapter implements HSet {
+		// Returns true if this set contains the specified element.
 		public boolean contains(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'contains'");
+			if (o == null)
+				throw new NullPointerException();
+
+			if (!(o instanceof HEntry))
+				throw new ClassCastException();
+
+			return hashtable.containsKey(((HEntry) o).getKey())
+					&& hashtable.get(((HEntry) o).getKey()).equals(((HEntry) o).getValue());
 		}
 
-		@Override
-		public boolean containsAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'containsAll'");
-		}
-
-		@Override
-		public boolean isEmpty() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
-		}
-
-		@Override
+		// Returns an iterator over the elements in this set.
 		public HIterator iterator() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'iterator'");
+			return new EntrySetIterator();
 		}
 
-		@Override
+		// Removes the specified element from this set if it is present (optional operation).
 		public boolean remove(Object o) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'remove'");
+			if (contains(o))
+				return hashtable.remove(((HEntry) o).getKey()) != null; // se la entry è contenuta, la condizione sarà sempre vera
+			else
+				return false;
+		}
+	}
+
+	// ******************************************************************************************************************************************************************
+	// ---------------------------------------------------------------- CLASSE ANNIDATA AbstractIterator ----------------------------------------------------------------
+
+	public abstract class AbstractIterator implements HIterator {
+		protected Enumeration elements;
+		protected Object lastExtracted;
+
+		protected AbstractIterator() {
+			elements = hashtable.keys();
+			lastExtracted = null;
 		}
 
-		@Override
-		public boolean removeAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'removeAll'");
+		public boolean hasNext() {
+			return elements.hasMoreElements();
 		}
 
-		@Override
-		public boolean retainAll(HCollection c) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'retainAll'");
+		public void remove() {
+			if (lastExtracted == null)
+				throw new IllegalStateException();
+			hashtable.remove(lastExtracted);
+			lastExtracted = null;
 		}
+	}
 
-		@Override
-		public int size() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'size'");
+	// ******************************************************************************************************************************************************************
+	// ----------------------------------------------------------------- CLASSE ANNIDATA KeySetIterator -----------------------------------------------------------------
+
+
+	public class KeySetIterator extends AbstractIterator {
+		public Object next() {
+			// lancia già NoSuchElementException
+			lastExtracted = elements.nextElement();
+			return lastExtracted;
 		}
+	}
 
-		@Override
-		public Object[] toArray() {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'toArray'");
+	// ******************************************************************************************************************************************************************
+	// ------------------------------------------------------------ CLASSE ANNIDATA ValuesCollectionIterator ------------------------------------------------------------
+	
+	public class ValuesCollectionIterator extends AbstractIterator {
+		public Object next() {
+			// lancia già NoSuchElementException
+			lastExtracted = elements.nextElement();
+			return hashtable.get(lastExtracted);
 		}
+	}
+	
+	// ******************************************************************************************************************************************************************
+	// ---------------------------------------------------------------- CLASSE ANNIDATA EntrySetIterator ----------------------------------------------------------------
 
-		@Override
-		public Object[] toArray(Object[] a) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'toArray'");
+	public class EntrySetIterator extends AbstractIterator {
+			public Object next() {
+			// lancia già NoSuchElementException
+			lastExtracted = elements.nextElement();
+			return new EntryAdapter(lastExtracted, hashtable.get(lastExtracted));
 		}
-
 	}
 }
