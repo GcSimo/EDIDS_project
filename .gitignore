@@ -1,5 +1,12 @@
-# Java compiled classes
+# Java compiled classes and build directory
+build
 *.class
 
 # Apple database files
 .DS_Store
+
+# VSCode settings
+.vscode
+
+# directory for tests investigating real Java functioning
+prove
