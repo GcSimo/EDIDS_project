@@ -1,3 +1,5 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myAdapter;
 
 /* ----------------------------------------------------------------------------------------------------------------- *\
@@ -5,31 +7,28 @@ package myAdapter;
 \* ----------------------------------------------------------------------------------------------------------------- */
 
 /**
- * Eccezione unchecked lanciata per indicare che l'operazione richiesta non è supportata dall'implementazione
- * corrente di un metodo o di una classe. Questa è un'implementazione personalizzata per ambienti CLDC 1.1,
- * dato che l'equivalente {@code java.lang.IllegalStateException} non è disponibile. Estende
+ * Segnala che un metodo è stato invocato in un momento illegale o inappropriato. In altre parole, l'ambiente Java o
+ * l'applicazione Java non si trova in uno stato appropriato per l'operazione richiesta. Estende
  * {@code java.lang.RuntimeException} rendendola un'eccezione unchecked.
+ * 
+ * <p>
+ * Questa estensione è stata aggiunta manualmente in quanto è utilizzata nell'implementazione degli iteratori delle
+ * viste della classe {@code MapAdapter}, ma non è presente nativamente in J2ME CLDC 1.1.
  *
- * Segnala che un metodo è stato invocato in un momento illegale o inappropriato. In altre parole, l'ambiente
- * Java o l'applicazione Java non si trova in uno stato appropriato per l'operazione richiesta.
- *
- * @since JDK1.1
- * @see java.lang.RuntimeException
- * @see java.lang.Throwable
- * @see java.lang.Exception
+ * @see Exception
+ * @see RuntimeException
+ * @see HIterator
  */
 public class IllegalStateException extends RuntimeException {
 	/**
-	 * Costruisce un {@code IllegalStateException} senza messaggio di dettaglio. Un messaggio di dettaglio
-	 * è una stringa che descrive questa particolare eccezione.
+	 * Costruisce un {@code IllegalStateException} senza messaggio di dettaglio.
 	 */
 	public IllegalStateException() {
 		super();
 	}
 
 	/**
-	 * Costruisce un {@code IllegalStateException} con il messaggio di dettaglio specificato. Un messaggio
-	 * di dettaglio è una stringa che descrive questa particolare eccezione.
+	 * Costruisce un {@code IllegalStateException} con il messaggio di dettaglio specificato.
 	 *
 	 * @param s la stringa che contiene un messaggio dettagliato
 	 */

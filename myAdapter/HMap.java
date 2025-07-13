@@ -1,8 +1,10 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myAdapter;
 
-/* ----------------------------------------------------------------------------------------------------------------- *\
-|* ----------------------------------------- HMap Interface - Java SE 1.4.2 ---------------------------------------- *|
-\* ----------------------------------------------------------------------------------------------------------------- */
+/* ================================================================================================================= *\
+|* ========================================= HMap Interface - Java SE 1.4.2 ======================================== *|
+\* ================================================================================================================= */
 
 /**
  * Un oggetto che mappa chiavi a valori. Una mappa non può contenere chiavi duplicate; ogni chiave può mappare al
@@ -58,14 +60,9 @@ package myAdapter;
  * <a href="https://docs.oracle.com/javase/1.4.2/docs/guide/collections/index.html">
  * Java Collections Framework</a>.
  *
- * @since 1.2
- * @see HMap // Self-reference, or if you have a specific HHashMap, HTreeMap etc.
- * @see HSet
+ * @see HMap.HEntry
  * @see HCollection
- * @see java.util.Hashtable
- * @see java.util.HashMap
- * @see java.util.TreeMap
- * @see java.util.SortedMap
+ * @see HSet
  */
 public interface HMap {
 	/**
@@ -180,7 +177,7 @@ public interface HMap {
 	 * ogni mappatura dalla chiave {@code k} al valore {@code v} nella mappa specificata. Il comportamento di questa
 	 * operazione non è specificato se la mappa specificata viene modificata mentre l'operazione è in corso.
 	 *
-	 * @param t Mappature da memorizzare in questa mappa.
+	 * @param m Mappature da memorizzare in questa mappa.
 	 * @throws UnsupportedOperationException se il metodo {@code putAll} non è supportato da questa mappa.
 	 * @throws ClassCastException se la classe di una chiave o di un valore nella mappa specificata impedisce che venga
 	 * memorizzato in questa mappa.
@@ -203,7 +200,7 @@ public interface HMap {
 	 * cambiamenti alla mappa si riflettono nel set, e viceversa. Se la mappa viene modificata mentre un'iterazione sul
 	 * set è in corso, i risultati dell'iterazione non sono definiti. Il set supporta la rimozione di elementi, che
 	 * rimuove la mappatura corrispondente dalla mappa, tramite le operazioni {@code HIterator.remove},
-	 * {@code HSet.remove}, {@code removeAll}, {@code retainAll} e {@code clear}.Non supporta le operazioni add o
+	 * {@code HSet.remove}, {@code removeAll}, {@code retainAll} e {@code clear}.Non supporta le operazioni {@code add} o
 	 * {@code addAll}.
 	 *
 	 * @return una vista set delle chiavi contenute in questa mappa.
@@ -215,8 +212,8 @@ public interface HMap {
 	 * quindi i cambiamenti alla mappa si riflettono nella collezione, e viceversa. Se la mappa viene modificata mentre
 	 * un'iterazione sulla collezione è in corso, i risultati dell'iterazione non sono definiti. La collezione supporta
 	 * la rimozione di elementi, che rimuove la mappatura corrispondente dalla mappa, tramite le operazioni
-	 * {@code HIterator.remove}, {@code HCollection.remove}, {@code removeAll}, {@code retainAll} e {@code clear}.Non
-	 * supporta le operazioni add o {@code addAll}.
+	 * {@code HIterator.remove}, {@code HCollection.remove}, {@code removeAll}, {@code retainAll} e {@code clear}. Non
+	 * supporta le operazioni {@code add} o {@code addAll}.
 	 *
 	 * @return una vista collezione dei valori contenuti in questa mappa.
 	 */
@@ -243,7 +240,6 @@ public interface HMap {
 	 * @param o oggetto da confrontare per l'uguaglianza con questa mappa.
 	 * @return {@code true} se l'oggetto specificato è uguale a questa mappa.
 	 * @see Object#hashCode()
-	 * @see java.util.Hashtable
 	 */
 	public boolean equals(Object o);
 
@@ -262,9 +258,9 @@ public interface HMap {
 	public int hashCode();
 
 
-	/* ------------------------------------------------------------------------------------------------------------- *\
-	|* ----------------------------------- HMap.HEntry Interface - Java SE 1.4.2 ----------------------------------- *|
-	\* ------------------------------------------------------------------------------------------------------------- */
+	/* ============================================================================================================= *\
+	|* =================================== HMap.HEntry Interface - Java SE 1.4.2 =================================== *|
+	\* ============================================================================================================= */
 
 	/**
 	 * Una entry di mappa (coppia chiave-valore). Il metodo {@code HMap.entrySet} restituisce una vista-collezione della
@@ -272,6 +268,9 @@ public interface HMap {
 	 * dall'iteratore di questa vista-collezione. Questi oggetti {@code HMap.Entry} sono validi solo per la durata
 	 * dell'iterazione; il comportamento di una entry di mappa non è definito se la mappa sottostante è stata modificata
 	 * durante l'iterazione in qualsiasi modo diverso dall'operazione {@code setValue} sulla entry di mappa.
+	 * 
+	 * @see HMap
+	 * @see HMap#entrySet()
 	 */
 	public static interface HEntry {
 		/**
@@ -282,23 +281,26 @@ public interface HMap {
 		public Object getKey();
 
 		/**
-		 * Restituisce il valore corrispondente a questa entry.
+		 * Restituisce il valore corrispondente a questa entry. Se la mappatura è stata rimossa dalla mappa di sostegno
+		 * (attraverso il metodo {@code remove} dell'iteratore), il risultato della chiamata a questo metodo non è definito.
 		 *
 		 * @return il valore corrispondente a questa entry.
 		 */
 		public Object getValue();
 
 		/**
-		 * Sostituisce il valore corrispondente a questa entry con il valore specificato.
+		 * Sostituisce il valore corrispondente a questa entry con il valore specificato (optional operation). (Scrive
+		 * direttamente sulla mappa.) Il comportamento della chiamata a questo metodo non è definito se la mappatura
+		 * è già stata rimossa dalla mappa (attraverso metodo {@code remove} dell'iteratore).
 		 *
 		 * @param value nuovo valore da memorizzare in questa entry.
 		 * @return il vecchio valore corrispondente alla entry.
 		 * @throws UnsupportedOperationException se l'operazione {@code put} non è supportata dalla mappa sottostante.
 		 * @throws ClassCastException se la classe del valore specificato impedisce che venga memorizzato in questa
 		 * mappa.
-		 * @throws NullPointerException se il valore specificato è null e questa mappa non consente valori null.
 		 * @throws IllegalArgumentException se qualche proprietà di questo valore impedisce che venga memorizzato in
 		 * questa mappa.
+		 * @throws NullPointerException se il valore specificato è null e questa mappa non consente valori null.
 		 */
 		public Object setValue(Object value);
 
@@ -334,6 +336,8 @@ public interface HMap {
 		 * due entry {@code e1} ed {@code e2}.
 		 *
 		 * @return il valore hash code per questa entry di mappa.
+		 * @see Object#hashCode()
+		 * @see Object#equals(Object)
 		 * @see HMap.HEntry#equals(Object)
 		 */
 		public int hashCode();

@@ -1,3 +1,5 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myAdapter;
 
 /* ----------------------------------------------------------------------------------------------------------------- *\
@@ -5,63 +7,45 @@ package myAdapter;
 \* ----------------------------------------------------------------------------------------------------------------- */
 
 /**
- * Una collezione che non contiene elementi duplicati. Più formalmente, i set
- * non contengono alcuna coppia di elementi {@code e1} ed {@code e2} tale che
- * {@code e1.equals(e2)}, e al massimo un elemento null. Come implicato dal
- * suo nome, questa interfaccia modella l'astrazione matematica di <i>set</i>.
+ * Una collezione che non contiene elementi duplicati. Più formalmente, i set non contengono alcuna coppia di elementi
+ * {@code e1} ed {@code e2} tale che {@code e1.equals(e2)}, e al massimo un elemento null. Come implicato dal suo nome,
+ * questa interfaccia modella l'astrazione matematica di <i>set</i>.
  * <p>
  *
- * L'interfaccia {@code HSet} impone stipulazioni aggiuntive, oltre a quelle
- * ereditate dall'interfaccia {@code HCollection}, sui contratti di tutti
- * i costruttori e sui contratti dei metodi {@code add}, {@code equals} e
- * {@code hashCode}. Le dichiarazioni per altri metodi ereditati sono
- * incluse qui per comodità. (Le specifiche che accompagnano queste
- * dichiarazioni sono state adattate all'interfaccia {@code HSet}, ma non
- * contengono alcuna stipulazione aggiuntiva.)
+ * L'interfaccia {@code HSet} impone stipulazioni aggiuntive, oltre a quelle ereditate dall'interfaccia
+ * {@code HCollection}, sui contratti di tutti i costruttori e sui contratti dei metodi {@code add}, {@code equals}
+ * e {@code hashCode}. Le dichiarazioni per altri metodi ereditati sono incluse qui per comodità. (Le specifiche che
+ * accompagnano queste dichiarazioni sono state adattate all'interfaccia {@code HSet}, ma non contengono alcuna
+ * stipulazione aggiuntiva.)
  * <p>
  *
- * La stipulazione aggiuntiva sui costruttori è, non sorprendentemente,
- * che tutti i costruttori devono creare un set che non contenga elementi duplicati
- * (come definito sopra).
+ * La stipulazione aggiuntiva sui costruttori è, non sorprendentemente, che tutti i costruttori devono creare un set
+ * che non contenga elementi duplicati (come definito sopra).
  * <p>
  *
- * Nota: È necessario prestare molta attenzione se gli oggetti mutabili vengono utilizzati come elementi del set.
- * Il comportamento di un set non è specificato se il valore di un oggetto
- * viene modificato in un modo che influisce sui confronti di uguaglianza mentre l'oggetto è
- * un elemento nel set. Un caso speciale di questo divieto è che non è
+ * Nota: È necessario prestare molta attenzione se gli oggetti mutabili vengono utilizzati come elementi del set. Il
+ * comportamento di un set non è specificato se il valore di un oggetto viene modificato in un modo che influisce sui
+ * confronti di uguaglianza mentre l'oggetto è un elemento nel set. Un caso speciale di questo divieto è che non è
  * consentito che un set contenga se stesso come elemento.
  *
  * <p>
- * Alcune implementazioni di set hanno restrizioni sugli elementi che
- * possono contenere. Ad esempio, alcune implementazioni proibiscono elementi null,
- * e alcune hanno restrizioni sui tipi dei loro elementi. Tentare di
- * aggiungere un elemento non idoneo lancia un'eccezione non controllata, tipicamente
- * {@code NullPointerException} o {@code ClassCastException}. Tentare
- * di interrogare la presenza di un elemento non idoneo può lanciare un'eccezione,
- * o può semplicemente restituire false; alcune implementazioni mostreranno il primo
- * comportamento e alcune mostreranno il secondo. Più in generale, tentare un'operazione
- * su un elemento non idoneo il cui completamento non risulterebbe
- * nell'inserimento di un elemento non idoneo nel set può lanciare un'eccezione
- * o può avere successo, a discrezione dell'implementazione.
- * Tali eccezioni sono contrassegnate come "opzionali" nella specifica per questa
- * interfaccia.
+ * Alcune implementazioni di set hanno restrizioni sugli elementi che possono contenere. Ad esempio, alcune
+ * implementazioni proibiscono elementi null, e alcune hanno restrizioni sui tipi dei loro elementi. Tentare di
+ * aggiungere un elemento non idoneo lancia un'eccezione non controllata, tipicamente {@code NullPointerException} o
+ * {@code ClassCastException}. Tentare di interrogare la presenza di un elemento non idoneo può lanciare un'eccezione,
+ * o può semplicemente restituire false; alcune implementazioni mostreranno il primo comportamento e alcune mostreranno
+ * il secondo. Più in generale, tentare un'operazione su un elemento non idoneo il cui completamento non risulterebbe
+ * nell'inserimento di un elemento non idoneo nel set può lanciare un'eccezione o può avere successo, a discrezione
+ * dell'implementazione. Tali eccezioni sono contrassegnate come "opzionali" nella specifica per questa interfaccia.
  *
  * <p>
  * Questa interfaccia è un membro del
  * <a href="https://docs.oracle.com/javase/1.4.2/docs/guide/collections/index.html">
  * Java Collections Framework</a>.
  *
- * @since 1.2
  * @see HCollection
- * @see HList // Assuming you have an HList
  * @see HMap
  * @see HIterator
- * @see Object#equals(Object)
- * @see Object#hashCode()
- * @see java.lang.UnsupportedOperationException
- * @see java.lang.ClassCastException
- * @see java.lang.NullPointerException
- * @see java.lang.IllegalArgumentException
  */
 
 public interface HSet extends HCollection {
@@ -246,7 +230,6 @@ public interface HSet extends HCollection {
 	 * @param o Oggetto da confrontare per l'uguaglianza con questo set.
 	 * @return {@code true} se l'Oggetto specificato è uguale a questo set.
 	 * @see Object#hashCode()
-	 * @see HMap // Assuming HMap exists and is relevant
 	 */
 	public boolean equals(Object o);
 

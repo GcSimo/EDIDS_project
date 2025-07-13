@@ -1,16 +1,18 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myAdapter;
 
-/* ----------------------------------------------------------------------------------------------------------------- *\
-|* -------------------------------------- HIterator Interface - Java SE 1.4.2 -------------------------------------- *|
-\* ----------------------------------------------------------------------------------------------------------------- */
+/* ================================================================================================================= *\
+|* ====================================== HIterator Interface - Java SE 1.4.2 ====================================== *|
+\* ================================================================================================================= */
 
 /**
  * Un iteratore su una collezione. {@code HIterator} prende il posto di {@code Enumeration} nel framework delle
  * collezioni Java. Gli iteratori differiscono dalle enumerazioni in due modi:
  * <ul>
- * <li>Gli iteratori consentono al chiamante di rimuovere elementi dalla collezione sottostante durante l'iterazione
- * con semantica ben definita.
- * <li>I nomi dei metodi sono stati migliorati.
+ *   <li>Gli iteratori consentono al chiamante di rimuovere elementi dalla collezione sottostante durante
+ *       l'iterazione con semantica ben definita.
+ *   <li>I nomi dei metodi sono stati migliorati.
  * </ul>
  * <p>
  *
@@ -18,13 +20,8 @@ package myAdapter;
  * <a href="https://docs.oracle.com/javase/1.4.2/docs/guide/collections/index.html">
  * Java Collections Framework</a>.
  *
- * @since 1.2
  * @see HCollection
- * @see HMap
- * @see java.util.Enumeration
- * @see java.util.NoSuchElementException
- * @see java.lang.IllegalStateException
- * @see java.lang.UnsupportedOperationException
+ * @see HSet
  */
 public interface HIterator {
 	/**
@@ -49,8 +46,8 @@ public interface HIterator {
 	 * è specificato se la collezione sottostante viene modificata durante l'iterazione in qualsiasi modo diverso dalla
 	 * chiamata di questo metodo.
 	 *
-	 * @throws UnsupportedOperationException se l'operazione {@code remove} non è supportata da questo HIterator.
-	 * @throws IllegalStateException se il metodo {@code next} non è ancora stato chiamato, o il metodo {@code remove}
+	 * @throws myAdapter.UnsupportedOperationException se l'operazione {@code remove} non è supportata da questo HIterator.
+	 * @throws myAdapter.IllegalStateException se il metodo {@code next} non è ancora stato chiamato, o il metodo {@code remove}
 	 * è già stato chiamato dopo l'ultima chiamata al metodo {@code next}.
 	 */
 	public void remove();

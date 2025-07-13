@@ -1,3 +1,5 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myAdapter;
 
 /* ----------------------------------------------------------------------------------------------------------------- *\
@@ -8,8 +10,8 @@ package myAdapter;
  * L'interfaccia radice nella <i>gerarchia delle collezioni</i>. Una collezione rappresenta un gruppo di oggetti, noti
  * come suoi <i>elementi</i>. Alcune collezioni consentono elementi duplicati e altre no. Alcune sono ordinate e altre
  * non ordinate. L'SDK non fornisce alcuna implementazione <i>diretta</i> di questa interfaccia: fornisce
- * implementazioni di sottointerfacce più specifiche come {@code HSet} e {@code HList} (se ne definisci una). Questa
- * interfaccia è tipicamente usata per passare collezioni e manipolarle dove è desiderata la massima generalità.
+ * implementazioni di sottointerfacce più specifiche come {@code HSet} e {@code List}. Questa interfaccia è tipicamente
+ * usata per passare collezioni e manipolarle dove è desiderata la massima generalità.
  *
  * <p>
  * I <i>Bags</i> o <i>multisets</i> (collezioni non ordinate che possono contenere elementi duplicati) dovrebbero
@@ -24,6 +26,7 @@ package myAdapter;
  * equivalente del tipo di implementazione desiderato. Non c'è modo di imporre questa convenzione (poiché le interfacce
  * non possono contenere costruttori) ma tutte le implementazioni {@code HCollection} di uso generale nelle librerie
  * della piattaforma Java si conformano.
+ * 
  *
  * <p>
  * I metodi "distruttivi" contenuti in questa interfaccia, cioè i metodi che modificano la collezione su cui operano,
@@ -49,16 +52,9 @@ package myAdapter;
  * <a href="https://docs.oracle.com/javase/1.4.2/docs/guide/collections/index.html">
  * Java Collections Framework</a>.
  *
- * @since 1.2
  * @see HSet
  * @see HMap
  * @see HIterator
- * @see Object#equals(Object)
- * @see Object#hashCode()
- * @see java.lang.UnsupportedOperationException
- * @see java.lang.ClassCastException
- * @see java.lang.NullPointerException
- * @see java.lang.IllegalArgumentException
  */
 public interface HCollection {
 	/**
@@ -67,14 +63,22 @@ public interface HCollection {
 	 *
 	 * @return il numero di elementi in questa collezione
 	 */
-	public boolean add(Object o);
+	public int size();
 
 	/**
 	 * Restituisce {@code true} se questa collezione non contiene elementi.
 	 *
 	 * @return {@code true} se questa collezione non contiene elementi
 	 */
-	public boolean addAll(HCollection c);
+	public boolean isEmpty();
+
+	/**
+	 * Rimuove tutti gli elementi da questa collezione (operazione opzionale). Questa collezione sarà vuota dopo che
+	 * questo metodo ritorna a meno che non lanci un'eccezione.
+	 *
+	 * @throws UnsupportedOperationException se il metodo {@code clear} non è supportato da questa collezione.
+	 */
+	public void clear();
 
 	/**
 	 * Restituisce {@code true} se questa collezione contiene l'elemento specificato. Più formalmente, restituisce
@@ -88,16 +92,16 @@ public interface HCollection {
 	 * @throws NullPointerException
 	 * se l'elemento specificato è null e questa collezione non supporta elementi null (opzionale).
 	 */
-	public void clear();
+	public boolean contains(Object o);
 
 	/**
 	 * Restituisce un iteratore sugli elementi di questa collezione. Non ci sono garanzie riguardo all'ordine in cui
 	 * gli elementi vengono restituiti (a meno che questa collezione non sia un'istanza di qualche classe che fornisce
 	 * una garanzia).
 	 *
-	 * @return un {@code HIterator} sugli elementi di questa collezione
+	 * @return un {@code Iterator} sugli elementi di questa collezione
 	 */
-	public boolean contains(Object o);
+	public HIterator iterator();
 
 	/**
 	 * Restituisce un array contenente tutti gli elementi di questa collezione. Se la collezione fornisce garanzie
@@ -114,7 +118,7 @@ public interface HCollection {
 	 *
 	 * @return un array contenente tutti gli elementi di questa collezione
 	 */
-	public boolean containsAll(HCollection c);
+	public Object[] toArray();
 
 	/**
 	 * Restituisce un array contenente tutti gli elementi di questa collezione; il tipo runtime dell'array restituito è
@@ -137,8 +141,8 @@ public interface HCollection {
 	 * in determinate circostanze, essere utilizzato per risparmiare sui costi di allocazione.
 	 * <p>
 	 *
-	 * Supponiamo che {@code l} sia una {@code HList} (se ne definisci una) nota per contenere solo stringhe. Il
-	 * seguente codice può essere utilizzato per riversare la lista in un array di {@code String} appena allocato:
+	 * Supponiamo che {@code l} sia una {@code List} nota per contenere solo stringhe. Il seguente codice può essere
+	 * utilizzato per riversare la lista in un array di {@code String} appena allocato:
 	 *
 	 * <pre>
 	 * String[] x = (String[]) v.toArray(new String[0]);
@@ -154,7 +158,7 @@ public interface HCollection {
 	 * elemento in questa collezione.
 	 * @throws NullPointerException se l'array specificato è {@code null}.
 	 */
-	public boolean equals(Object o);
+	public Object[] toArray(Object[] a);
 
 	/**
 	 * Assicura che questa collezione contenga l'elemento specificato (operazione opzionale). Restituisce {@code true}
@@ -181,7 +185,7 @@ public interface HCollection {
 	 * @throws IllegalArgumentException qualche aspetto di questo elemento impedisce che venga aggiunto a questa
 	 * collezione.
 	 */
-	public int hashCode();
+	public boolean add(Object o);
 
 	/**
 	 * Rimuove una singola istanza dell'elemento specificato da questa collezione, se presente (operazione opzionale).
@@ -197,7 +201,7 @@ public interface HCollection {
 	 * (opzionale).
 	 * @throws UnsupportedOperationException remove non è supportato da questa collezione.
 	 */
-	public boolean isEmpty();
+	public boolean remove(Object o);
 
 	/**
 	 * Restituisce {@code true} se questa collezione contiene tutti gli elementi della collezione specificata.
@@ -211,7 +215,7 @@ public interface HCollection {
 	 * @throws NullPointerException se la collezione specificata è {@code null}.
 	 * @see #contains(Object)
 	 */
-	public HIterator iterator();
+	public boolean containsAll(HCollection c);
 
 	/**
 	 * Aggiunge tutti gli elementi della collezione specificata a questa collezione (operazione opzionale). Il
@@ -230,7 +234,7 @@ public interface HCollection {
 	 * aggiunto a questa collezione.
 	 * @see #add(Object)
 	 */
-	public boolean remove(Object o);
+	public boolean addAll(HCollection c);
 
 	/**
 	 * Rimuove tutti gli elementi di questa collezione che sono anche contenuti nella collezione specificata (operazione
@@ -269,41 +273,34 @@ public interface HCollection {
 	public boolean retainAll(HCollection c);
 
 	/**
-	 * Rimuove tutti gli elementi da questa collezione (operazione opzionale). Questa collezione sarà vuota dopo che
-	 * questo metodo ritorna a meno che non lanci un'eccezione.
-	 *
-	 * @throws UnsupportedOperationException se il metodo {@code clear} non è supportato da questa collezione.
-	 */
-	public int size();
-
-	/**
 	 * Confronta l'oggetto specificato con questa collezione per l'uguaglianza.
 	 * <p>
 	 *
 	 * Sebbene l'interfaccia {@code HCollection} non aggiunga stipulazioni al contratto generale per
 	 * {@code Object.equals}, i programmatori che implementano l'interfaccia {@code HCollection} "direttamente" (in
-	 * altre parole, creano una classe che è una {@code HCollection} ma non è un {@code HSet} o una {@code HList})
+	 * altre parole, creano una classe che è una {@code HCollection} ma non è un {@code HSet} o una {@code List})
 	 * devono prestare attenzione se scelgono di sovrascrivere il {@code Object.equals}. Non è necessario farlo, e il
 	 * corso d'azione più semplice è affidarsi all'implementazione di {@code Object}, ma l'implementatore potrebbe
 	 * desiderare di implementare un "confronto di valori" al posto del "confronto di riferimenti" predefinito. (Le
-	 * interfacce {@code HList} e {@code HSet} impongono tali confronti di valori.)
+	 * interfacce {@code List} e {@code HSet} impongono tali confronti di valori.)
 	 * <p>
 	 *
 	 * Il contratto generale per il metodo {@code Object.equals} afferma che equals deve essere simmetrico (in altre
-	 * parole, {@code a.equals(b)} se e solo se {@code b.equals(a)}). I contratti per {@code HList.equals} e
+	 * parole, {@code a.equals(b)} se e solo se {@code b.equals(a)}). I contratti per {@code List.equals} e
 	 * {@code HSet.equals} affermano che le liste sono uguali solo ad altre liste, e i set ad altri set. Pertanto, un
 	 * metodo {@code equals} personalizzato per una classe di collezione che non implementa né l'interfaccia
-	 * {@code HList} né {@code HSet} deve restituire {@code false} quando questa collezione viene confrontata con
+	 * {@code List} né {@code HSet} deve restituire {@code false} quando questa collezione viene confrontata con
 	 * qualsiasi lista o set. (Con la stessa logica, non è possibile scrivere una classe che implementi correttamente
-	 * entrambe le interfacce {@code HSet} e {@code HList}.)
+	 * entrambe le interfacce {@code HSet} e {@code List}.)
 	 *
 	 * @param o Oggetto da confrontare per l'uguaglianza con questa collezione.
 	 * @return {@code true} se l'oggetto specificato è uguale a questa collezione
 	 * @see Object#equals(Object)
 	 * @see HSet#equals(Object)
-	 * @see HMap#equals(Object) // Assumendo che HMap abbia un metodo equals
+	 * @see HMap#equals(Object)
 	 */
-	public Object[] toArray();
+	@Override
+	public boolean equals(Object o);
 
 	/**
 	 * Restituisce il valore hash code per questa collezione. Sebbene l'interfaccia {@code HCollection} non aggiunga
@@ -316,5 +313,6 @@ public interface HCollection {
 	 * @see Object#hashCode()
 	 * @see Object#equals(Object)
 	 */
-	public Object[] toArray(Object[] a);
+	@Override
+	public int hashCode();
 }
