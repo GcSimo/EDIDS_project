@@ -178,6 +178,23 @@ public interface HSet extends HCollection {
 	public boolean addAll(HCollection c);
 
 	/**
+	 * Rimuove da questo set tutti i suoi elementi che sono contenuti nella collezione specificata (operazione
+	 * opzionale). Se la collezione specificata è anch'essa un set, questa operazione modifica efficacemente questo set
+	 * in modo che il suo valore sia la <i>differenza asimmetrica</i> dei due set.
+	 *
+	 * @param c collezione che definisce quali elementi verranno rimossi da questo set.
+	 * @return {@code true} se questo set è cambiato a seguito della chiamata.
+	 * @throws UnsupportedOperationException se il metodo {@code removeAll} non è supportato da questa Collezione.
+	 * @throws ClassCastException se i tipi di uno o più elementi in questo set sono incompatibili con la collezione
+	 * specificata (opzionale).
+	 * @throws NullPointerException se questo set contiene un elemento null e la collezione specificata non supporta
+	 * elementi null (opzionale).
+	 * @throws NullPointerException se la collezione specificata è {@code null}.
+	 * @see #remove(Object)
+	 */
+	public boolean removeAll(HCollection c);
+
+	/**
 	 * Mantiene solo gli elementi in questo set che sono contenuti nella collezione specificata (operazione opzionale).
 	 * In altre parole, rimuove da questo set tutti i suoi elementi che non sono contenuti nella collezione specificata.
 	 * Se la collezione specificata è anch'essa un set, questa operazione modifica efficacemente questo set in modo che
@@ -194,23 +211,6 @@ public interface HSet extends HCollection {
 	 * @see #remove(Object)
 	 */
 	public boolean retainAll(HCollection c);
-
-	/**
-	 * Rimuove da questo set tutti i suoi elementi che sono contenuti nella collezione specificata (operazione
-	 * opzionale). Se la collezione specificata è anch'essa un set, questa operazione modifica efficacemente questo set
-	 * in modo che il suo valore sia la <i>differenza asimmetrica</i> dei due set.
-	 *
-	 * @param c collezione che definisce quali elementi verranno rimossi da questo set.
-	 * @return {@code true} se questo set è cambiato a seguito della chiamata.
-	 * @throws UnsupportedOperationException se il metodo {@code removeAll} non è supportato da questa Collezione.
-	 * @throws ClassCastException se i tipi di uno o più elementi in questo set sono incompatibili con la collezione
-	 * specificata (opzionale).
-	 * @throws NullPointerException se questo set contiene un elemento null e la collezione specificata non supporta
-	 * elementi null (opzionale).
-	 * @throws NullPointerException se la collezione specificata è {@code null}.
-	 * @see #remove(Object)
-	 */
-	public boolean removeAll(HCollection c);
 
 	/**
 	 * Rimuove tutti gli elementi da questo set (operazione opzionale). Questo set sarà vuoto dopo che questa chiamata

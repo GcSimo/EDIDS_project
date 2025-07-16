@@ -4,7 +4,7 @@ package myAdapter;
 
 // importazioni
 import java.util.Enumeration; // classe enumeration disponibile con CLDC 1.1
-import myCompatibilityLayer.Hashtable; // classe hashtable con metodi compliant con J2ME CLDC 1.1
+import myCompatibilityLayer.MockHashtable; // classe hashtable con metodi compliant con J2ME CLDC 1.1
 
 /* ================================================================================================================= *\
  * =============================================== Classe MapAdapter =============================================== *
@@ -67,7 +67,7 @@ public class MapAdapter implements HMap {
 	// ---------------------------------- Variabili d'istanza della classe MapAdapter ---------------------------------
 
 	// sottostruttura hashtable di CLDC 1.1
-	private Hashtable hashtable;
+	private MockHashtable hashtable;
 
 	// ****************************************************************************************************************
 	// -------------------------------------- Costruttori della classe MapAdapter -------------------------------------
@@ -77,7 +77,7 @@ public class MapAdapter implements HMap {
 	 */
 	public MapAdapter() {
 		// creo ed inizializzo la sottostruttura hashtable di CLDC 1.1
-		hashtable = new Hashtable();
+		hashtable = new MockHashtable();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class MapAdapter implements HMap {
 			throw new NullPointerException();
 
 		// creo ed inizializzo la sottostruttura hashtable di CLDC 1.1
-		hashtable = new Hashtable();
+		hashtable = new MockHashtable();
 
 		// copio tutti i valori dalla mappa passata come parametro alla mappa appena creata, la gestione delle
 		// eccezioni NullPointerException (per chiave nulla) o IllegalArgumentException (per chiave uguale alla
@@ -373,8 +373,9 @@ public class MapAdapter implements HMap {
 	 * @return una stringa che rappresenta la mappa.
 	 */
 	public String toString() {
-		return this.entrySet().toString();
+		return hashtable.toString();
 	}
+
 
 /* ================================================================================================================= *\
 |* ========================================== CLASSE ANNIDATA EntryAdapter ========================================= *|
@@ -404,7 +405,7 @@ public class MapAdapter implements HMap {
 	 * @see MapAdapter#entrySet()
 	 * @see EntryAdapter#setValue(Object)
 	 */
-	private final class EntryAdapter implements HMap.HEntry {
+	protected final class EntryAdapter implements HMap.HEntry {
 		// ************************************************************************************************************
 		// ------------------------------- Variabili d'istanza della classe EntryAdapter ------------------------------
 
@@ -448,7 +449,9 @@ public class MapAdapter implements HMap {
 		}
 
 		/**
-		 * Restituisce il valore contenuto in questa entry.
+		 * Restituisce il valore contenuto in questa entry. Se la mappatura è stata rimossa dalla mappa di sostegno
+		 * (esempio: attraverso il metodo {@code remove} dell'iteratore), il risultato della chiamata a questo metodo
+		 * non è definito.
 		 *
 		 * @return il valore contenuto in questa entry.
 		 */
@@ -464,9 +467,9 @@ public class MapAdapter implements HMap {
 		 * <p>
 		 * Secondo le specifiche dell'interfaccia {@code HMap.HEntry}, il metodo {@code setValue} dovrebbe avere
 		 * comportamento indefinito se avvengono modifiche alla mappa durante l'iterazione (ad esempio se la entry viene
-		 * rimossa dalla mappa ma l'utente ne mantiene il riferimento). Tuttavia, per evitare confusione e per limitare
-		 * gli effetti di eventuali errori di uso scorretto da parte dei programmatori, è stato scelto di implementare
-		 * il metodo come segue:
+		 * rimossa o modificata dalla mappa, ma l'utente ne mantiene il riferimento). Tuttavia, per evitare confusione
+		 * e per limitare gli effetti di eventuali errori di uso scorretto da parte dei programmatori, è stato scelto
+		 * di implementare il metodo come segue:
 		 * <ul>
 		 *   <li>se la entry è ancora presente nella mappa, il metodo modifica il valore sia nell'istanza della entry che
 		 *   nella mappa, e restituisce il valore precedentemente memorizzato nella entry;</li>
@@ -620,113 +623,6 @@ public class MapAdapter implements HMap {
 		}
 
 		/**
-		 * Rimuove tutti gli elementi della vista e di conseguenza tutte le mappature chiave-valore dalla mappa.
-		 */
-		public void clear() {
-			// richiamo il corrispettivo metodo della hashtable
-			hashtable.clear();
-		}
-
-		/**
-		 * Il metodo dovrebbe aggiungere un elemento alla vista. Siccome il metodo non è supportato da nessuna delle tre
-		 * viste della mappa, alla fine non farà nulla e lancerà sempre l'eccezione {@code UnsupportedOperationException}.
-		 *
-		 * @param o elemento da aggiungere alla vista (e che non verrà mai aggiunto).
-		 * @throws UnsupportedOperationException {@code add} non è supportato da nessuna delle tre viste della mappa.
-		 */
-		public boolean add(Object o) {
-			// il metodo add non è supportato da nessuna delle tre viste della mappa
-			throw new UnsupportedOperationException();
-		}
-
-		/**
-		 * Restituisce {@code true} se la vista contiene tutti gli elementi della collezione specificata.
-		 *
-		 * @param c collezione con gli elementi di cui verificare la presenza nella vista (e di conseguenza nella mappa).
-		 * @return {@code true} se la vista contiene tutti gli elementi della collezione specificata.
-		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
-		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
-		 */
-		public boolean containsAll(HCollection c) {
-			// verifico che la collezione passata come parametro non sia null
-			if (c == null)
-				throw new NullPointerException();
-
-			// verifico che tutti gli elementi della collezione siano contenuti nella vista, se è presente un elemento
-			// null, sarà il metodo contains() della vista a lanciare NullPointerException
-			HIterator i = c.iterator();
-			while (i.hasNext())
-				if (!this.contains(i.next()))
-					return false;
-			return true;
-		}
-
-		/**
-		 * Il metodo dovrebbe aggiungere tutti gli elementi contenuti nella collezione passata come parametro alla vista.
-		 * Siccome il metodo non è supportato da nessuna delle tre viste della mappa, alla fine non farà nulla e lancerà
-		 * sempre l'eccezione {@code UnsupportedOperationException}.
-		 *
-		 * @param c collezione con gli elementi da aggiungere alla vista (e che non verranno mai aggiunti).
-		 * @throws UnsupportedOperationException {@code addAll} non è supportato da nessuna delle tre viste della mappa.
-		 */
-		public boolean addAll(HCollection c) {
-			// il metodo addAll non è supportato da nessuna delle tre viste della mappa
-			throw new UnsupportedOperationException();
-		}
-
-		/**
-		 * Rimuove tutti gli elementi contenuti nella vista (e di conseguenza anche dalla mappa) che sono anche contenuti
-		 * nella collezione passata come parametro.
-		 *
-		 * @param c collezione degli elementi da rimuovere dalla vista (e di conseguenza dalla mappa).
-		 * @return {@code true} se la vista (e di conseguenza la mappa) è cambiata a seguito della chiamata.
-		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
-		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
-		 */
-		public boolean removeAll(HCollection c) {
-			// verifico che la collezione passata come parametro non sia null
-			if (c == null)
-				throw new NullPointerException();
-
-			// rimuovo tutti gli elementi della collezione dalla vista (e di conseguenza dalla mappa), se è presente
-			// un elemento null, sarà il metodo remove() della vista a lanciare NullPointerException
-			boolean change = false;
-			HIterator i = c.iterator();
-			while (i.hasNext())
-				if (this.remove(i.next()))
-					change = true;
-			return change;
-		}
-
-		/**
-		 * Mantiene solo gli elementi della vista che sono anche contenuti nella collezione passata come parametro. In
-		 * altre parole, rimuove dalla vista (e di conseguenza dalla mappa) tutti i suoi elementi che non sono contenuti
-		 * nella collezione specificata.
-		 *
-		 * @param c collezione con gli elementi da mantenere nella vista (e di conseguenza nella mappa).
-		 * @return {@code true} se la vista (e di conseguenza la mappa) è cambiata a seguito della chiamata.
-		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
-		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
-		 */
-		public boolean retainAll(HCollection c) {
-			// verifico che la collezione passata come parametro non sia null
-			if (c == null)
-				throw new NullPointerException();
-
-			// rimuovo tutti gli elementi della vista che non sono contenuti nella collezione, se è presente un
-			// elemento null, sarà il metodo contains() della vista a lanciare NullPointer
-			boolean change = false;
-			HIterator i = this.iterator();
-			while (i.hasNext()) {
-				if (!c.contains(i.next())) {
-					i.remove();
-					change = true;
-				}
-			}
-			return change;
-		}
-
-		/**
 		 * Restituisce un array contenente tutti gli elementi della vista. L'ordine degli elementi nell'array corrisponde
 		 * all'ordine in cui gli elementi vengono restituiti dall'iteratore della vista.
 		 * 
@@ -796,43 +692,114 @@ public class MapAdapter implements HMap {
 		}
 
 		/**
-		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
-		 * {@code o} è una vista (implementa {@code AbstractViewAdapter}) ed entrambe le viste contengono gli stessi
-		 * elementi, allora il metodo restituisce {@code true}, altrimenti {@code false}. 
-		 * 
-		 * <p>
-		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
-		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
-		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
-		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
-		 * 
-		 * <p>
-		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
-		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
+		 * Il metodo dovrebbe aggiungere un elemento alla vista. Siccome il metodo non è supportato da nessuna delle tre
+		 * viste della mappa, alla fine non farà nulla e lancerà sempre l'eccezione {@code UnsupportedOperationException}.
 		 *
-		 * @param o oggetto da confrontare con la vista su cui è invocato il metodo.
-		 * @return {@code true} se {@code o} è una vista e contiene gli stessi elementi della vista su cui è invocato il
-		 * metodo, {@code false} altrimenti.
+		 * @param o elemento da aggiungere alla vista (e che non verrà mai aggiunto).
+		 * @throws UnsupportedOperationException {@code add} non è supportato da nessuna delle tre viste della mappa.
 		 */
-		public boolean equals(Object o) {
-			// verifico che l'oggetto passato non sia null
-			if (o == null)
-				return false;
+		public boolean add(Object o) {
+			// il metodo add non è supportato da nessuna delle tre viste della mappa
+			throw new UnsupportedOperationException();
+		}
 
-			// verifico che l'oggetto passato sia una vista
-			if (!(o instanceof AbstractViewAdapter))
-				return false;
+		/**
+		 * Restituisce {@code true} se la vista contiene tutti gli elementi della collezione specificata.
+		 *
+		 * @param c collezione con gli elementi di cui verificare la presenza nella vista (e di conseguenza nella mappa).
+		 * @return {@code true} se la vista contiene tutti gli elementi della collezione specificata.
+		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
+		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
+		 * @throws ClassCastException se uno o più elementi della collezione non sono compatibili con la vista
+		 * (ad esempio, se la vista è una entrySet e la collezione contiene un elemento che non è una entry).
+		 */
+		public boolean containsAll(HCollection c) {
+			// verifico che la collezione passata come parametro non sia null
+			if (c == null)
+				throw new NullPointerException();
 
-			// se l'oggetto passato è lo stesso della vista da cui è invocato il metodo, allora sono uguali, in questo
-			// caso non è necessario effettuare ulteriori controlli
-			if (o == this)
-				return true;
-			
-			// si effettua un casting lecito (Object -> AbstractViewAdapter) perché il controllo è stato effettuato sopra
-			AbstractViewAdapter v = (AbstractViewAdapter) o;
+			// verifico che tutti gli elementi della collezione siano contenuti nella vista, se è presente un elemento
+			// null, sarà il metodo contains() della vista a lanciare NullPointerException
+			HIterator i = c.iterator();
+			while (i.hasNext())
+				if (!this.contains(i.next()))
+					return false;
+			return true;
+		}
 
-			// confronto il numero di elementi e la presenza di tutti gli elementi della vista
-			return this.size() == v.size() && this.containsAll(v);
+		/**
+		 * Il metodo dovrebbe aggiungere tutti gli elementi contenuti nella collezione passata come parametro alla vista.
+		 * Siccome il metodo non è supportato da nessuna delle tre viste della mappa, alla fine non farà nulla e lancerà
+		 * sempre l'eccezione {@code UnsupportedOperationException}.
+		 *
+		 * @param c collezione con gli elementi da aggiungere alla vista (e che non verranno mai aggiunti).
+		 * @throws UnsupportedOperationException {@code addAll} non è supportato da nessuna delle tre viste della mappa.
+		 */
+		public boolean addAll(HCollection c) {
+			// il metodo addAll non è supportato da nessuna delle tre viste della mappa
+			throw new UnsupportedOperationException();
+		}
+
+		/**
+		 * Rimuove tutti gli elementi contenuti nella vista (e di conseguenza anche dalla mappa) che sono anche contenuti
+		 * nella collezione passata come parametro.
+		 *
+		 * @param c collezione degli elementi da rimuovere dalla vista (e di conseguenza dalla mappa).
+		 * @return {@code true} se la vista (e di conseguenza la mappa) è cambiata a seguito della chiamata.
+		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
+		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
+		 * @throws ClassCastException se uno o più elementi della collezione non sono compatibili con la vista (ad esempio,
+		 * se la vista è una entrySet e la collezione contiene un elemento che non è una entry).
+		 */
+		public boolean removeAll(HCollection c) {
+			// verifico che la collezione passata come parametro non sia null
+			if (c == null)
+				throw new NullPointerException();
+
+			// rimuovo tutti gli elementi della collezione dalla vista (e di conseguenza dalla mappa), se è presente
+			// un elemento null, sarà il metodo remove() della vista a lanciare NullPointerException
+			boolean change = false;
+			HIterator i = c.iterator();
+			while (i.hasNext())
+				if (this.remove(i.next()))
+					change = true;
+			return change;
+		}
+
+		/**
+		 * Mantiene solo gli elementi della vista che sono anche contenuti nella collezione passata come parametro. In
+		 * altre parole, rimuove dalla vista (e di conseguenza dalla mappa) tutti i suoi elementi che non sono contenuti
+		 * nella collezione specificata.
+		 *
+		 * @param c collezione con gli elementi da mantenere nella vista (e di conseguenza nella mappa).
+		 * @return {@code true} se la vista (e di conseguenza la mappa) è cambiata a seguito della chiamata.
+		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
+		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
+		 */
+		public boolean retainAll(HCollection c) {
+			// verifico che la collezione passata come parametro non sia null
+			if (c == null)
+				throw new NullPointerException();
+
+			// rimuovo tutti gli elementi della vista che non sono contenuti nella collezione, se è presente un
+			// elemento null, sarà il metodo contains() della vista a lanciare NullPointer
+			boolean change = false;
+			HIterator i = this.iterator();
+			while (i.hasNext()) {
+				if (!c.contains(i.next())) {
+					i.remove();
+					change = true;
+				}
+			}
+			return change;
+		}
+
+		/**
+		 * Rimuove tutti gli elementi della vista e di conseguenza tutte le mappature chiave-valore dalla mappa.
+		 */
+		public void clear() {
+			// richiamo il corrispettivo metodo della hashtable
+			hashtable.clear();
 		}
 
 		 /**
@@ -868,7 +835,7 @@ public class MapAdapter implements HMap {
 		 */
 		public String toString() {
 			// creo un StringBuffer per costruire la stringa
-			StringBuffer sb = new StringBuffer("{");
+			StringBuffer sb = new StringBuffer("[");
 
 			// inserisco gli elementi della vista nello StringBuffer
 			HIterator i = this.iterator();
@@ -877,7 +844,7 @@ public class MapAdapter implements HMap {
 				if (i.hasNext())
 					sb.append(", ");
 			}
-			sb.append("}");
+			sb.append("]");
 
 			// restituisco la stringa
 			return sb.toString();
@@ -967,6 +934,54 @@ public class MapAdapter implements HMap {
 			// richiamo il corrispettivo metodo della hashtable e restituisco l'esito della rimozione
 			return hashtable.remove(o) != null;
 		}
+
+		/**
+		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
+		 * {@code o} è una keySet (implementa {@code KeySetAdapter}) ed entrambe le viste contengono gli stessi elementi,
+		 * allora il metodo restituisce {@code true}, altrimenti {@code false}. 
+		 * 
+		 * <p>
+		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
+		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
+		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
+		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
+		 * 
+		 * <p>
+		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
+		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
+		 *
+		 * @param o oggetto da confrontare con la vista su cui è invocato il metodo.
+		 * @return {@code true} se {@code o} è una vista e contiene gli stessi elementi della vista su cui è invocato il
+		 * metodo, {@code false} altrimenti.
+		 */
+		public boolean equals(Object o) {
+			// se l'oggetto passato è lo stesso della vista da cui è invocato il metodo, allora sono uguali, in questo
+			// caso non è necessario effettuare ulteriori controlli
+			if (o == this)
+				return true;
+
+			// verifico che l'oggetto passato non sia null
+			if (o == null)
+				return false;
+
+			// verifico che l'oggetto passato sia una vista
+			if (!(o instanceof KeySetAdapter))
+				return false;
+
+			// si effettua un casting lecito (Object -> KeySetAdapter) perché il controllo è stato effettuato sopra
+			KeySetAdapter v = (KeySetAdapter) o;
+
+			// confronto il numero di elementi e la presenza di tutti gli elementi della vista, se la vista contiene
+			// un elemento null, il metodo containsAll lancia NullPointerException o ClassCastException che è necessario
+			// catturare e gestire per restituire false
+			boolean areEqual = true;
+			try {
+				areEqual = this.size() == v.size() && this.containsAll(v);
+			} catch (NullPointerException | ClassCastException e) {
+				return false; 
+			}
+			return areEqual;
+		}
 	}
 
 /* ================================================================================================================= *\
@@ -997,7 +1012,7 @@ public class MapAdapter implements HMap {
 	 * @see MapAdapter#values()
 	 * @see AbstractViewAdapter
 	 */
-	protected final class ValuesCollectionAdapter extends AbstractViewAdapter /* implements HCollection */ {
+	protected final class ValuesCollectionAdapter extends AbstractViewAdapter implements HCollection {
 		/**
 		 * Costruttore di default della classe {@code ValuesCollectionAdapter} per la vista del metodo {@code values}.
 		 * È definito {@code protected} in quanto non può essere instanziato al di fuori della classe {@code MapAdapter}.
@@ -1061,6 +1076,54 @@ public class MapAdapter implements HMap {
 
 			// se l'elemento non è stato trovato, restituisco false
 			return false;
+		}
+
+		/**
+		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
+		 * {@code o} è una values (implementa {@code ValuesCollectionAdapter}) ed entrambe le viste contengono gli stessi elementi,
+		 * allora il metodo restituisce {@code true}, altrimenti {@code false}. 
+		 * 
+		 * <p>
+		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
+		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
+		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
+		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
+		 * 
+		 * <p>
+		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
+		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
+		 *
+		 * @param o oggetto da confrontare con la vista su cui è invocato il metodo.
+		 * @return {@code true} se {@code o} è una vista e contiene gli stessi elementi della vista su cui è invocato il
+		 * metodo, {@code false} altrimenti.
+		 */
+		public boolean equals(Object o) {
+			// se l'oggetto passato è lo stesso della vista da cui è invocato il metodo, allora sono uguali, in questo
+			// caso non è necessario effettuare ulteriori controlli
+			if (o == this)
+				return true;
+
+			// verifico che l'oggetto passato non sia null
+			if (o == null)
+				return false;
+
+			// verifico che l'oggetto passato sia una vista
+			if (!(o instanceof ValuesCollectionAdapter))
+				return false;
+
+			// si effettua un casting lecito (Object -> ValuesCollectionAdapter))) perché il controllo è stato effettuato sopra
+			ValuesCollectionAdapter v = (ValuesCollectionAdapter) o;
+
+			// confronto il numero di elementi e la presenza di tutti gli elementi della vista, se la vista contiene
+			// un elemento null, il metodo containsAll lancia NullPointerException o ClassCastException che è necessario
+			// catturare e gestire per restituire false
+			boolean areEqual = true;
+			try {
+				areEqual = this.size() == v.size() && this.containsAll(v);
+			} catch (NullPointerException | ClassCastException e) {
+				return false; 
+			}
+			return areEqual;
 		}
 	}
 
@@ -1166,6 +1229,54 @@ public class MapAdapter implements HMap {
 			// se la entry non è contenuta nella vista, restituisco false
 			else
 				return false;
+		}
+
+		/**
+		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
+		 * {@code o} è una entrySet (implementa {@code EntrySetAdapter}) ed entrambe le viste contengono gli stessi elementi,
+		 * allora il metodo restituisce {@code true}, altrimenti {@code false}. 
+		 * 
+		 * <p>
+		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
+		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
+		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
+		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
+		 * 
+		 * <p>
+		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
+		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
+		 *
+		 * @param o oggetto da confrontare con la vista su cui è invocato il metodo.
+		 * @return {@code true} se {@code o} è una vista e contiene gli stessi elementi della vista su cui è invocato il
+		 * metodo, {@code false} altrimenti.
+		 */
+		public boolean equals(Object o) {
+			// se l'oggetto passato è lo stesso della vista da cui è invocato il metodo, allora sono uguali, in questo
+			// caso non è necessario effettuare ulteriori controlli
+			if (o == this)
+				return true;
+
+			// verifico che l'oggetto passato non sia null
+			if (o == null)
+				return false;
+
+			// verifico che l'oggetto passato sia una vista
+			if (!(o instanceof EntrySetAdapter))
+				return false;
+
+			// si effettua un casting lecito (Object -> EntrySetAdapter) perché il controllo è stato effettuato sopra
+			EntrySetAdapter v = (EntrySetAdapter) o;
+
+			// confronto il numero di elementi e la presenza di tutti gli elementi della vista, se la vista contiene
+			// un elemento null, il metodo containsAll lancia NullPointerException o ClassCastException che è necessario
+			// catturare e gestire per restituire false
+			boolean areEqual = true;
+			try {
+				areEqual = this.size() == v.size() && this.containsAll(v);
+			} catch (NullPointerException | ClassCastException e) {
+				return false; 
+			}
+			return areEqual;
 		}
 	}
 

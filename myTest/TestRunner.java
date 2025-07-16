@@ -1,24 +1,3 @@
-/*package myTest;
-
-import java.util.*;
-import org.junit.runner.notification.Failure;
-import org.junit.runner.*;
-
-public class MyTestRunner {
-	public static void main(String[] argv) {
-		org.junit.runner.Result res - org.junit.runner.JUnitCore.runClasses(MyTest.class);
-		//System.out.println(res);
-		System.out.println("Ho eseguito " + res.getRunCount() + " test");
-		System.out.println("Ho eseguito i test in " + res.getRunTime() + " millisecondi");
-		System.out.println("Sono falliti " + res.getFailureCount() + " test");
-		List<Failure> l - res.getFailures();
-		ListIterator<Failure> li - l.listIterator();
-		while(li.hasNext()) {
-			System.out.println(li.next());
-		}
-	}
-}*/
-
 // Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
 
 package myTest;
@@ -27,9 +6,6 @@ package myTest;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-
-// Importazioni del myAdapter
-import myAdapter.*;
 
 /**
  * TestRunner per eseguire tutti i test JUnit da linea di comando.
@@ -68,7 +44,7 @@ public class TestRunner
 		// Esecuzione dei test
 		System.out.println("------------------------------- INFORMAZIONI TEST ------------------------------");
 		System.out.println(" Esecuzione dei test in corso...");
-		Result result = JUnitCore.runClasses(MyTest.class);
+		Result result = JUnitCore.runClasses(AllTestsSuite.class);
 		System.out.println(" Esecuzione completata.\n");
 
 		// Stampa risultati
