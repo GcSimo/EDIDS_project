@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
  * Questa classe serve a raggruppare i test relativi alle viste di una mappa vuota, in modo da poterli eseguire insieme.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ TestEmptyMapAdapter.class, TestKeySetOnEmptyMapAdapter.class })
+@Suite.SuiteClasses({ TestEmptyMapAdapter.class, TestKeySetOnEmptyMapAdapter.class, TestValuesCollectionOnEmptyMapAdapter.class, TestEntrySetOnEmptyMapAdapter.class })
 public class AllTestsSuite {
 
 	/**

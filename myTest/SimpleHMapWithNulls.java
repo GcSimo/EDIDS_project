@@ -14,16 +14,24 @@ import java.util.Iterator;
 /**
  * Implementazione di una nuova classe che rappresenta una mappa, implementa l'interfaccia {@link HMap} e supporta
  * valori null. È richiesta per testare il metodo {@code putAll()} della la classe {@link myAdapter.MapAdapter} per
- * verificare il corretto lancio delle eccezioni nella gestione dei valori null.
+ * verificare il corretto lancio delle eccezioni nella gestione dei valori null. Contiene inoltre l'implementazione
+ * della entry della mappa che permette di istanziare entry agevolmente per testare i metodi della vista
+ * {@code entrySet()} e del relativo iteratore.
  * 
  * <p>
  * Questa classe utilizza internamente una {@link HashMap} di JavaSE21 per gestire le operazioni di mappatura.
  * Siccome questa classe ha un impiego molto limitato, non è necessario implementare metodi complessi o ottimizzazioni
- * avanzate. I metodi richiesti sono:
+ * avanzate. I metodi richiesti e implementati sono:
  * <ul>
  *   <li> il costruttore senza parametri che inizializza la mappa</li>
  *   <li> il metodo {@code put(Object key, Object value)} per inserire una coppia chiave-valore nella mappa</li>
  *   <li> il metodo {@code entrySet()} e il relativo iteratore che restituisce un set di entry della mappa</li>
+ *   <li> il costruttore della classe {@code SimpleHEntry} che rappresenta un'entry della mappa</li>
+ *   <li> il metodo {@code getKey()} per ottenere la chiave dell'entry</li>
+ *   <li> il metodo {@code getValue()} per ottenere il valore dell'entry</li>
+ *   <li> il metodo {@code iterator()} per ottenere un iteratore sulle entry della mappa</li>
+ *   <li> il metodo {@code hasNext()} per verificare se ci sono altre entry nell'iteratore</li>
+ *   <li> il metodo {@code next()} per ottenere la prossima entry dall'iteratore</li>
  * </ul>
  */
 public class SimpleHMapWithNulls implements HMap {
@@ -33,6 +41,7 @@ public class SimpleHMapWithNulls implements HMap {
 	// metodi richiesti per l'implementazione dell'interfaccia HMap
 	public SimpleHMapWithNulls() { map = new HashMap<Object, Object>(); }
 	public Object put(Object key, Object value) { return map.put(key, value); }
+	public HSet entrySet() { return new SimpleHEntrySet(); }
 	
 	// metodi non implementati che lanciano UnsupportedOperationException
 	public int size() { throw new UnsupportedOperationException("size not supported for SimpleHMapWithNulls"); }
@@ -45,16 +54,15 @@ public class SimpleHMapWithNulls implements HMap {
 	public void putAll(HMap m) { throw new UnsupportedOperationException("putAll not supported for SimpleHMapWithNulls"); }
 	public HSet keySet() { throw new UnsupportedOperationException("keySet not supported for SimpleHMapWithNulls"); }
 	public HCollection values() { throw new UnsupportedOperationException("values not supported for SimpleHMapWithNulls"); }
-	public HSet entrySet() { return new SimpleHEntrySet(); }
 	
 	// --- Simple HEntry implementation for this test helper ---
-	private static class SimpleHEntry implements HMap.HEntry {
+	public static class SimpleHEntry implements HMap.HEntry {
 		// variabili di istanza per la chiave e il valore dell'entry
 		private Object key;
 		private Object value;
 
 		// metodi richiesti per l'implementazione della classe SimpleHEntry
-		SimpleHEntry(Object key, Object value) { this.key = key; this.value = value; }
+		public SimpleHEntry(Object key, Object value) { this.key = key; this.value = value; }
 		public Object getKey() { return key; }
 		public Object getValue() { return value; }
 		
@@ -70,7 +78,7 @@ public class SimpleHMapWithNulls implements HMap {
 		// non servono variabili di istanza per l'entrySet, si utilizza direttamente l'iteratore della mappa
 
 		// metodi richiesti per l'implementazione della classe SimpleHEntrySet
-		SimpleHEntrySet() { /* intentionally left blank */ }
+		private SimpleHEntrySet() { /* intentionally left blank */ }
 		public HIterator iterator() { return new SimpleEntrySetHIterator(); }
 		
 		// metodi non implementati che lanciano UnsupportedOperationException
@@ -96,7 +104,7 @@ public class SimpleHMapWithNulls implements HMap {
 		private Iterator i;
 
 		// metodi richiesti per l'implementazione della classe SimpleEntrySetHIterator
-		SimpleEntrySetHIterator() { i = map.entrySet().iterator(); }
+		private SimpleEntrySetHIterator() { i = map.entrySet().iterator(); }
 		public boolean hasNext() { return i.hasNext(); }
 		public Object next() {
 			Map.Entry entry = (Map.Entry) i.next();

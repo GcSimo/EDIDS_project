@@ -746,10 +746,9 @@ public class MapAdapter implements HMap {
 		 *
 		 * @param c collezione degli elementi da rimuovere dalla vista (e di conseguenza dalla mappa).
 		 * @return {@code true} se la vista (e di conseguenza la mappa) è cambiata a seguito della chiamata.
-		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
-		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
-		 * @throws ClassCastException se uno o più elementi della collezione non sono compatibili con la vista (ad esempio,
-		 * se la vista è una entrySet e la collezione contiene un elemento che non è una entry).
+		 * @throws NullPointerException se la collezione specificata è {@code null}.
+		 * @throws ClassCastException se uno o più elementi della vista non sono compatibili con la collezione passata
+		 * (ad esempio, se la vista è una keySet o una values e la collezione è una entrySet).
 		 */
 		public boolean removeAll(HCollection c) {
 			// verifico che la collezione passata come parametro non sia null
@@ -759,10 +758,22 @@ public class MapAdapter implements HMap {
 			// rimuovo tutti gli elementi della collezione dalla vista (e di conseguenza dalla mappa), se è presente
 			// un elemento null, sarà il metodo remove() della vista a lanciare NullPointerException
 			boolean change = false;
-			HIterator i = c.iterator();
-			while (i.hasNext())
-				if (this.remove(i.next()))
+
+			// versione 1 -> lancia NPE se la collezione passata contiene elmenti non compatibili con la vista, non compliant con le specifiche di HCollection
+			//HIterator i = c.iterator();
+			//while (i.hasNext())
+			//	if (this.remove(i.next()))
+			//		change = true;
+			//return change;
+
+			// versione 2 -> lancia NPE se la vista this contiene elmenti non compatibili con la collezione passata
+			HIterator i = this.iterator();
+			while (i.hasNext()) {
+				if (c.contains(i.next())) {
+					i.remove();
 					change = true;
+				}
+			}
 			return change;
 		}
 
@@ -773,8 +784,9 @@ public class MapAdapter implements HMap {
 		 *
 		 * @param c collezione con gli elementi da mantenere nella vista (e di conseguenza nella mappa).
 		 * @return {@code true} se la vista (e di conseguenza la mappa) è cambiata a seguito della chiamata.
-		 * @throws NullPointerException se la collezione specificata è {@code null} o se contiene uno o più elementi
-		 * {@code null} (la mappa non supporta chiavi, valori e tantomeno entry {@code null}).
+		 * @throws NullPointerException se la collezione specificata è {@code null}.
+		 * @throws ClassCastException se uno o più elementi della vista non sono compatibili con la collezione passata
+		 * (ad esempio, se la vista è una keySet o una values e la collezione è una entrySet).
 		 */
 		public boolean retainAll(HCollection c) {
 			// verifico che la collezione passata come parametro non sia null
@@ -1172,7 +1184,7 @@ public class MapAdapter implements HMap {
 		 *
 		 * @param o elemento la cui presenza nella view deve essere testata.
 		 * @return {@code true} se la vista contiene l'elemento specificato, {@code false} altrimenti.
-		 * @throws NullPointerException se l'elemento specificato è {@code null}
+		 * @throws NullPointerException se l'elemento specificato è {@code null} o se la entry ha chiave o valore {@code null}
 		 * @throws ClassCastException se l'elemento specificato non è una entry
 		 */
 		public boolean contains(Object o) {
@@ -1183,9 +1195,13 @@ public class MapAdapter implements HMap {
 			// verifico che l'oggetto passato sia una entry
 			if (!(o instanceof HEntry))
 				throw new ClassCastException();
-
+			
 			// si effettua un casting lecito (Object -> HEntry) perché il controllo è stato effettuato appena sopra
 			HEntry e = (HEntry) o;
+			
+			// verifico che la entry passata non abbia chiave o valore null, in conformità con le specifiche della mappa
+			if (e.getKey() == null || e.getValue() == null)
+				throw new NullPointerException();
 
 			// controllo se la chiave della entry passata è presente nella hashtable e se il valore associato corrisponde
 			// a quello della entry passata
@@ -1210,17 +1226,12 @@ public class MapAdapter implements HMap {
 		 *
 		 * @param o oggetto da rimuovere dalla vista (e di conseguenza dalla mappa), se presente.
 		 * @return {@code true} se l'elemento specificato è stato rimosso, {@code false} altrimenti.
-		 * @throws NullPointerException se l'elemento specificato è {@code null}
+		 * @throws NullPointerException se l'elemento specificato è {@code null} o se la entry ha chiave o valore {@code null}
 		 * @throws ClassCastException se l'elemento specificato non è una entry
 		 */
 		public boolean remove(Object o) {
-			// verifico che l'oggetto passato non sia null
-			if (o == null)
-				throw new NullPointerException();
-
-			// verifico che l'oggetto passato sia una entry
-			if (!(o instanceof HEntry))
-				throw new ClassCastException();
+			// la verifica che l'oggetto passato sia una entry con chiave e valore non null viene effettuata
+			// nel metodo contains(), quindi non è necessario ripeterla qui
 
 			// se la entry è contenuta nella vista, la rimuovo dalla hashtable e restituisco true
 			if (this.contains(o))
