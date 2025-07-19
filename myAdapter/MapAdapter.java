@@ -4,7 +4,7 @@ package myAdapter;
 
 // importazioni
 import java.util.Enumeration; // classe enumeration disponibile con CLDC 1.1
-import myCompatibilityLayer.MockHashtable; // classe hashtable con metodi compliant con J2ME CLDC 1.1
+import java.util.Hashtable; // classe hashtable con metodi compliant con J2ME CLDC 1.1
 
 /* ================================================================================================================= *\
  * =============================================== Classe MapAdapter =============================================== *
@@ -67,7 +67,7 @@ public class MapAdapter implements HMap {
 	// ---------------------------------- Variabili d'istanza della classe MapAdapter ---------------------------------
 
 	// sottostruttura hashtable di CLDC 1.1
-	private MockHashtable hashtable;
+	private Hashtable hashtable;
 
 	// ****************************************************************************************************************
 	// -------------------------------------- Costruttori della classe MapAdapter -------------------------------------
@@ -77,7 +77,7 @@ public class MapAdapter implements HMap {
 	 */
 	public MapAdapter() {
 		// creo ed inizializzo la sottostruttura hashtable di CLDC 1.1
-		hashtable = new MockHashtable();
+		hashtable = new Hashtable();
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class MapAdapter implements HMap {
 			throw new NullPointerException();
 
 		// creo ed inizializzo la sottostruttura hashtable di CLDC 1.1
-		hashtable = new MockHashtable();
+		hashtable = new Hashtable();
 
 		// copio tutti i valori dalla mappa passata come parametro alla mappa appena creata, la gestione delle
 		// eccezioni NullPointerException (per chiave nulla) o IllegalArgumentException (per chiave uguale alla

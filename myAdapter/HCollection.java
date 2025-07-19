@@ -299,7 +299,6 @@ public interface HCollection {
 	 * @see HSet#equals(Object)
 	 * @see HMap#equals(Object)
 	 */
-	@Override
 	public boolean equals(Object o);
 
 	/**
@@ -313,6 +312,5 @@ public interface HCollection {
 	 * @see Object#hashCode()
 	 * @see Object#equals(Object)
 	 */
-	@Override
 	public int hashCode();
 }
