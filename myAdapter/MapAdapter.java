@@ -556,7 +556,7 @@ public class MapAdapter implements HMap {
 
 		public String toString() {
 			// restituisco una stringa formattata con la chiave e il valore della entry
-			return this.getKey().toString() + "=" + this.getValue().toString();
+			return this.getKey().toString().concat("=").concat(this.getValue().toString());
 		}
 	}
 
