@@ -1,3 +1,5 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myTest;
 
 // importazione componenti del pacchetto myAdapter da testare
@@ -14,9 +16,9 @@ import java.util.Arrays;
 
 // importazioni necessarie per JUnit
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.Ignore;
 import static org.junit.Assert.*;
 
 /**
@@ -57,7 +59,7 @@ import static org.junit.Assert.*;
  *   <li>File Hamcrest.jar: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
  * </ul>
  */
-public class TestEntrySetOnEmptyMapAdapter {
+public class TestEmptyEntrySet {
 	// variabili di istanza per la mappa, la vista e l'iteratoreda testare
 	private MapAdapter map;
 	private HSet entrySet;
@@ -68,10 +70,10 @@ public class TestEntrySetOnEmptyMapAdapter {
 \* ================================================================================================================= */
 
 	/**
-	 * Costruttore predefinito per la classe {@code TestEntrySetOnEmptyMapAdapter}.
+	 * Costruttore predefinito per la classe {@code TestEmptyEntrySet}.
 	 * Questa classe è un'utility e non richiede un'inizializzazione di stato complessa.
 	 */
-	public TestEntrySetOnEmptyMapAdapter() {
+	public TestEmptyEntrySet() {
 		// intentionally left empty
 	}
 
@@ -1177,7 +1179,6 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
 	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
 	 */
-	//@Ignore ("Invalid test: does not throw ClassCastException")
 	@Test
 	public void testRemoveAllWithClassCastExceptionOnEmptyKeySet() {
 		MapAdapter newPopulatedMap = new MapAdapter();
@@ -1223,7 +1224,7 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
 	 */
-	@Ignore ("Invalid test: does not throw NullPointerException")
+	@Ignore("Invalid test: does not throw NullPointerException")
 	@Test(expected = NullPointerException.class)
 	public void testRemoveAllPopulatedCollectionWithNullKeyOnEmptyEntrySet() {
 		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
@@ -1263,7 +1264,7 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
 	 */
-	@Ignore ("Invalid test: does not throw NullPointerException")
+	@Ignore("Invalid test: does not throw NullPointerException")
 	@Test(expected = NullPointerException.class)
 	public void testRemoveAllPopulatedCollectionWithNullValueOnEmptyEntrySet() {
 		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
@@ -1303,7 +1304,7 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
 	 */
-	@Ignore ("Invalid test: does not throw ClassCastException")
+	@Ignore("Invalid test: does not throw ClassCastException")
 	@Test(expected = ClassCastException.class)
 	public void testRemoveAllPopulatedCollectionWithNotEmptyOnEmptyEntrySet() {
 		MapAdapter newEmptyMap = new MapAdapter();
@@ -1468,7 +1469,6 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
 	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
 	 */
-	//@Ignore ("Invalid test: does not throw ClassCastException")
 	@Test
 	public void testRetainAllWithClassCastExceptionOnEmptyKeySet() {
 		MapAdapter newPopulatedMap = new MapAdapter();
@@ -1514,7 +1514,7 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
 	 */
-	@Ignore ("Invalid test: does not throw NullPointerException")
+	@Ignore("Invalid test: does not throw NullPointerException")
 	@Test(expected = NullPointerException.class)
 	public void testRetainAllPopulatedCollectionWithNullKeyOnEmptyEntrySet() {
 		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
@@ -1554,7 +1554,7 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
 	 */
-	@Ignore ("Invalid test: does not throw NullPointerException")
+	@Ignore("Invalid test: does not throw NullPointerException")
 	@Test(expected = NullPointerException.class)
 	public void testRetainAllPopulatedCollectionWithNullValueOnEmptyEntrySet() {
 		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
@@ -1594,7 +1594,7 @@ public class TestEntrySetOnEmptyMapAdapter {
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
 	 */
-	@Ignore ("Invalid test: does not throw ClassCastException")
+	@Ignore("Invalid test: does not throw ClassCastException")
 	@Test(expected = ClassCastException.class)
 	public void testRetainAllPopulatedCollectionWithNotEntryOnEmptyEntrySet() {
 		MapAdapter newEmptyMap = new MapAdapter();

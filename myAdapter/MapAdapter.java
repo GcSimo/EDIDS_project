@@ -1105,6 +1105,13 @@ public class MapAdapter implements HMap {
 		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
 		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
 		 *
+		 * <p>
+		 * A differenza dei metodi {@code equals} delle altre viste, per gestire correttamente la presenza di elementi
+		 * ripetuti, non è sufficiente verificare che due {@code HCollection} contengano lo stesso numero di elementi
+		 * e che ogni elemento della prima sia contenuto nella seconda. Per questo motivo, si utilizza un algoritmo
+		 * di semplificazione in parte ispirato all'ordinamento topologico di un DAG (Directed Acyclic Graph), in parte
+		 * ispirato alla semplificazione delle frazioni per avere numeratore e denominatore coprimi.
+		 *
 		 * @param o oggetto da confrontare con la vista su cui è invocato il metodo.
 		 * @return {@code true} se {@code o} è una vista e contiene gli stessi elementi della vista su cui è invocato il
 		 * metodo, {@code false} altrimenti.
@@ -1126,16 +1133,26 @@ public class MapAdapter implements HMap {
 			// si effettua un casting lecito (Object -> ValuesCollectionAdapter))) perché il controllo è stato effettuato sopra
 			ValuesCollectionAdapter v = (ValuesCollectionAdapter) o;
 
-			// confronto il numero di elementi e la presenza di tutti gli elementi della vista, se la vista contiene
-			// un elemento null, il metodo containsAll lancia NullPointerException o ClassCastException che è necessario
-			// catturare e gestire per restituire false
-			boolean areEqual = true;
-			try {
-				areEqual = this.size() == v.size() && this.containsAll(v);
-			} catch (NullPointerException | ClassCastException e) {
-				return false; 
+			// se le due viste non hanno lo stesso numero di elementi, non possono essere uguali
+			if (this.size() != v.size())
+				return false;
+
+			// applico l'algoritmo di semplificazione per verificare se le due viste contengono gli stessi elementi
+
+			HCollection thisCopy = new MapAdapter(MapAdapter.this).values(); // creo una copia della vista values per non modificare la vista originale
+			HIterator it = v.iterator(); // ottengo l'iteratore della vista v
+			while (it.hasNext()) { // scorro gli elementi della vista v
+				Object elem = it.next(); // ottengo l'elemento corrente della vista v
+				if (elem == null) // se l'elemento corrente della vista v è null, non ci sarà mai un elemento null nella copia della vista thisCopy, quindi le due viste non sono uguali
+					return false;
+				else if (!thisCopy.contains(elem)) // se l'elemento corrente della vista v non è presente nella copia della vista, allora le due viste non sono uguali
+					return false;
+				else // se l'elemento corrente della vista v è presente nella copia della vista thisCopy, lo semplifico
+					thisCopy.remove(elem);
 			}
-			return areEqual;
+			// se si arriva qui, significa che tutti gli elementi della vista v sono stati trovati nella copia della vista thisCopy e rimossi da essa
+			// la copia della vista thisCopy è vuota (siccome v e thisCopy contengono lo stesso numero di elementi), quindi le due viste sono uguali
+			return true;
 		}
 	}
 

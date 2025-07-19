@@ -8,13 +8,22 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
 /**
- * TestRunner per eseguire tutti i test JUnit da linea di comando.
- * Fornisce informazioni su: numero test eseguiti, falliti e tempo di esecuzione.
- * Versione JUnit: **JUnit 4.13.2**
- * Versione Hamcrest: **Hamcrest 1.3**
+ * <b>Summary:</b>
+ * Classe di utilità per eseguire i test JUnit definiti nella suite {@code AllTestsSuite}.
+ * 
+ * <p>
+ * <b>Test Case Design:</b>
+ * Questa classe è progettata per essere eseguita da linea di comando e stampa sempre su CLI un riepilogo dei risultati
+ * dei test, inclusi i test passati, falliti e ignorati, insieme al tempo impiegato per l'esecuzione.
+ * 
+ * <p>
+ * <b>Dependencies:</b>
+ * <ul>
+ *   <li>File JUnit.jar: {@code ./JUnit/junit-4.13.jar} - versione {@code 4.13}
+ *   <li>File Hamcrest.jar: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
+ * </ul>
  */
-public class TestRunner 
-{
+public class TestRunner {
 	/**
 	 * Costruttore predefinito per la classe {@code TestRunner}.
 	 * Questa classe è un'utility e non richiede un'inizializzazione di stato complessa.
@@ -24,16 +33,11 @@ public class TestRunner
 	}
 	
 	/**
-	 * Punto di ingresso principale per l'esecuzione dei test JUnit.
-	 * Questo metodo può eseguire tutti i test inclusi nella {@link AllTestsSuite}
-	 * o una classe di test specifica, se il suo nome completo (incluso il package)
-	 * viene fornito come argomento della linea di comando.
-	 *
-	 * @param args Array di stringhe contenente gli argomenti della linea di comando.
-	 * Se vuoto, esegue tutti i test definiti in {@link AllTestsSuite}.
-	 * Se contiene un nome di classe (es. "myTest.TestListAdapterEmpty"),
-	 * tenta di eseguire solo quella classe di test.
-	 * ...
+	 * Metodo principale per eseguire i test.
+	 * Stampa informazioni di esecuzione, esegue i test definiti nella suite {@code AllTestsSuite}
+	 * e stampa i risultati dei test, inclusi eventuali fallimenti.
+	 * 
+	 * @param args Argomenti della riga di comando (non utilizzati in questo contesto).
 	 */
 	public static void main(String[] args) {
 		// Stampa informazioni di esecuzione

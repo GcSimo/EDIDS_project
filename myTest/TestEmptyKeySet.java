@@ -1,3 +1,5 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 package myTest;
 
 // importazione componenti del pacchetto myAdapter da testare
@@ -19,34 +21,34 @@ import static org.junit.Assert.*;
 
 /**
  * <b>Summary:</b>
- * Classe contenente una suite di test per verificare il comportamento di {@link myAdapter.MapAdapter.ValuesCollectionAdapter},
+ * Classe contenente una suite di test per verificare il comportamento di {@link myAdapter.MapAdapter.KeySetAdapter},
  * quando proviene da una mappa vuota e non contiene elementi. Sono testati tutti i metodi implementati dalla vista,
  * assicurando che non lancino eccezioni inattese e restituiscano risultati corretti. Sono inoltre testati i metodi
  * dell'iteratore associato alla vista, per garantire che funzionino correttamente anche su una vista vuota.
  * 
  * <p>
  * <b>Test Case Design:</b>
- * La motivazione di questa suite è garantire che la classe {@link myAdapter.MapAdapter.ValuesCollectionAdapter} e il
- * relativo iteratore {@link myAdapter.MapAdapter.ValuesCollectionIterator} gestiscano correttamente i casi limite e
- * le operazioni collegate ad una mappa vuota, prima di procedere con test su mappe non vuote.
+ * La motivazione di questa suite è garantire che la classe {@link myAdapter.MapAdapter.KeySetAdapter} e il relativo
+ * iteratore {@link myAdapter.MapAdapter.KeySetIterator} gestiscano correttamente i casi limite e le operazioni collegate
+ * ad una mappa vuota, prima di procedere con test su mappe non vuote.
  * 
  * <p>
  * Non esiste un ordinamento specifico dei test. Nella loro implementazione all'interno del file sorgente si trovano
- * prima i test eseguiti sui metodi della vista e successivamente quelli eseguiti sui metodi dell'iteratore. I test
- * sono comunque ordinati secondo l'ordinamento dei corrispettivi metodi testati nella documentazione delle classi
- * {@link myAdapter.MapAdapter.AbstractViewAdapter}, {@link myAdapter.MapAdapter.ValuesCollectionAdapter},
- * {@link myAdapter.MapAdapter.AbstractIterator} e {@link myAdapter.MapAdapter.ValuesCollectionIterator}.
+ * prima i test eseguiti sui metodi della vista e successivamente quelli eseguiti sui metodi dell'iteratore.
+ * I test sono comunque ordinati secondo l'ordinamento dei corrispettivi metodi testati nella documentazione
+ * delle classi {@link myAdapter.MapAdapter.AbstractViewAdapter}, {@link myAdapter.MapAdapter.KeySetAdapter},
+ * {@link myAdapter.MapAdapter.AbstractIterator} e {@link myAdapter.MapAdapter.KeySetIterator}.
  * 
  * <p>
  * Siccome le classi da testare non sono istanziabili direttamente, i test della vista sono eseguiti su un oggetto
- * {@code HCollection} ottenuto da una mappa vuota, tramite il metodo {@code values()} della mappa, mentre quelli
- * dell'iteratore sono eseguiti su un oggetto {@code HIterator} ottenuto dalla stessa mappa vuota, tramite il metodo
- * {@code values().iterator()} della vista.
+ * {@code HSet} ottenuto da una mappa vuota, tramite il metodo {@code keySet()} della mappa, mentre quelli dell'iteratore
+ * sono eseguiti su un oggetto {@code HIterator} ottenuto dalla stessa mappa vuota, tramite il metodo
+ * {@code keySet().iterator()} della vista.
  * 
  * <p>
  * I costruttori delle viste e degli iteratori sono già stati testati negli opportuni test che ne restituiscono
- * le corrispettive istanze, come ad esempio {@link myAdapter.MapAdapter#values()} per la vista e
- * {@link myAdapter.MapAdapter.ValuesCollectionAdapter#iterator()} per l'iteratore.
+ * le corrispettive istanze, come ad esempio {@link myAdapter.MapAdapter#keySet()} per la vista e
+ * {@link myAdapter.MapAdapter.KeySetAdapter#iterator()} per l'iteratore. 
  * 
  * <p>
  * <b>Dependencies:</b>
@@ -55,35 +57,34 @@ import static org.junit.Assert.*;
  *   <li>File Hamcrest.jar: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
  * </ul>
  */
-public class TestValuesCollectionOnEmptyMapAdapter {
+public class TestEmptyKeySet {
 	// variabili di istanza per la mappa, la vista e l'iteratoreda testare
 	private MapAdapter map;
-	private HCollection values;
-	private HIterator valuesIterator;
+	private HSet keySet;
+	private HIterator keySetIterator;
 
 /* ================================================================================================================= *\
-|* ======================================= Test dei metodi della vista values ====================================== *|
+|* ======================================= Test dei metodi della vista keySet ====================================== *|
 \* ================================================================================================================= */
 
 	/**
-	 * Costruttore predefinito per la classe {@code TestValuesCollectionOnEmptyMapAdapter}.
+	 * Costruttore predefinito per la classe {@code TestEmptyKeySet}.
 	 * Questa classe è un'utility e non richiede un'inizializzazione di stato complessa.
 	 */
-	public TestValuesCollectionOnEmptyMapAdapter() {
+	public TestEmptyKeySet() {
 		// intentionally left empty
 	}
 
 	/**
 	 * Metodo di setup che viene eseguito prima di ogni test.
-	 * Inizializza un'istanza di {@code MapAdapter} che rappresenta una mappa vuota da cui ottiene un'istanza di
-	 * {@code ValuesCollectionAdapter} che rappresenta la vista per valori (anch'essa vuota) e un'istanza di
-	 * {@code ValuesCollectionIterator} per l'iteratore della vista.
+	 * Inizializza un'istanza di {@code MapAdapter} che rappresenta una mappa vuota da cui ottiene un'istanza di {@code KeySetAdapter}
+	 * che rappresenta la vista per chiavi (anch'essa vuota) e un'istanza di {@code KeySetIterator} per l'iteratore della vista.
 	 */
 	@Before
 	public void setUp() {
 		map = new MapAdapter();
-		values = map.values();
-		valuesIterator = values.iterator();
+		keySet = map.keySet();
+		keySetIterator = keySet.iterator();
 	}
 
 	/**
@@ -93,13 +94,13 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	@After
 	public void tearDown() {
 		map = null;
-		values = null;
-		valuesIterator = null;
+		keySet = null;
+		keySetIterator = null;
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#size()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#size()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -112,7 +113,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -124,13 +125,13 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code size()} dovrebbe restituire 0.
 	 */
 	@Test
-	public void testSizeOnEmptyValuesCollection() {
-		assertEquals("La vista dovrebbe avere 0 elementi", 0, values.size());
+	public void testSizeOnEmptyKeySet() {
+		assertEquals("La vista dovrebbe avere 0 elementi", 0, keySet.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#isEmpty()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#isEmpty()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -142,7 +143,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -154,28 +155,28 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code isEmpty()} dovrebbe restituire {@code true}.
 	 */
 	@Test
-	public void testIsEmptyOnEmptyValuesCollection() {
-		assertTrue("La vista dovrebbe essere vuota", values.isEmpty());
+	public void testIsEmptyOnEmptyKeySet() {
+		assertTrue("La vista dovrebbe essere vuota", keySet.isEmpty());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#contains(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#contains(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
-	 * come valore di una entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti.
+	 * come chiave di una entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti.
 	 * Lancia {@code NullPointerException} se l'oggetto passato è {@code null}.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code contains(Object o)} restituisca {@code false} quando gli viene passato un generico
-	 * oggetto che non è un valore della mappa (in questo caso, una stringa).
+	 * oggetto che non è una chiave della mappa (in questo caso, una stringa).
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -187,18 +188,18 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code contains(Object o)} dovrebbe restituire {@code false} per una vista vuota.
 	 */
 	@Test
-	public void testContainsOnEmptyValuesCollection() {
-		assertFalse("contains dovrebbe restituire false se invocato su una vista vuota", values.contains("a_random_value"));
+	public void testContainsOnEmptyKeySet() {
+		assertFalse("contains dovrebbe restituire false se invocato su una vista vuota", keySet.contains("a_random_key"));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#contains(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#contains(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
-	 * come valore di una entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti.
+	 * come chiave di una entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti.
 	 * Lancia {@code NullPointerException} se l'oggetto passato è {@code null}.
 	 * 
 	 * <p>
@@ -208,7 +209,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -221,19 +222,19 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code contains(Object o)} dovrebbe lanciare una {@code NullPointerException}.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void testContainsNullValueOnEmptyValuesCollection() {
-		values.contains(null);
+	public void testContainsNullKeyOnEmptyKeySet() {
+		keySet.contains(null);
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#iterator()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#iterator()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code iterator()} dovrebbe restituire un iteratore di tipo {@code ValuesCollectionIterator} su una
-	 * vista vuota. I metodi degli iteratori sono testati in modo specifico in altri test, quindi qui ci si limita a
-	 * verificare che l'iteratore restituito sia valido.
+	 * Il metodo {@code iterator()} dovrebbe restituire un iteratore di tipo {@code KeySetIterator} su una vista vuota.
+	 * I metodi degli iteratori sono testati in modo specifico in altri test, quindi qui ci si limita a verificare
+	 * che l'iteratore restituito sia valido.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -241,7 +242,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -253,15 +254,15 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * L'iteratore dovrebbe essere un'istanza di {@code HIterator} e dovrebbe essere diverso da null.
 	 */
 	@Test
-	public void testIteratorOnEmptyValuesCollection() {
-		HIterator iterator = values.iterator();
+	public void testIteratorOnEmptyKeySet() {
+		HIterator iterator = keySet.iterator();
 		assertNotNull("L'iteratore non dovrebbe essere null", iterator);
 		assertTrue("L'iteratore dovrebbe essere un'istanza di HIterator", iterator instanceof myAdapter.HIterator);
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#toArray()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -275,7 +276,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -287,14 +288,14 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code toArray()} dovrebbe restituire un array di Object di lunghezza 0.
 	 */
 	@Test
-	public void testToArray1OnEmptyValuesCollection() {
-		assertTrue("La vista dovrebbe restituire un array di Object", values.toArray() instanceof Object[]);
-		assertEquals("La vista dovrebbe restituire un array di lunghezza 0", 0, values.toArray().length);
+	public void testToArray1OnEmptyKeySet() {
+		assertTrue("La vista dovrebbe restituire un array di Object", keySet.toArray() instanceof Object[]);
+		assertEquals("La vista dovrebbe restituire un array di lunghezza 0", 0, keySet.toArray().length);
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#toArray(Object[] a)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -312,7 +313,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo array passato come parametro e riempito con interi 1, per testare se
 	 * effettivamente il primo elemento è impostato a {@code null}.
 	 * 
@@ -327,16 +328,16 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * come parametro, con il primo elemento impostato a {@code null}.
 	 */
 	@Test
-	public void testToArray2OnEmptyValuesCollection() {
+	public void testToArray2OnEmptyKeySet() {
 		Object[] array = new Object[10];
 		Arrays.fill(array, 1); // inizializza l'array con valori diversi da null
-		assertTrue("L'array restituito dovrebbe essere lo stesso array passato come parametro", array == values.toArray(array));
+		assertTrue("L'array restituito dovrebbe essere lo stesso array passato come parametro", array == keySet.toArray(array));
 		assertNull("Il primo elemento dell'array restituito dovrebbe essere null", array[0]);
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#toArray(Object[] a)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -353,9 +354,8 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota. Viene creato un nuovo array con riferimento {@code null} da passare come parametro
-	 * al metodo.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota. Viene creato un nuovo array con riferimento {@code null} da passare come parametro al metodo.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
@@ -367,14 +367,14 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe lanciare una {@code NullPointerException}.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void testToArray2NullArrayOnEmptyValuesCollection() {
+	public void testToArray2NullArrayOnEmptyKeySet() {
 		Object[] array = null;
-		values.toArray(array); // lancia NullPointerException
+		keySet.toArray(array); // lancia NullPointerException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#toArray(Object[] a)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -391,7 +391,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo array di dimensione nulla da passare come parametro al metodo.
 	 * 
 	 * <p>
@@ -405,15 +405,15 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * modificarne il contenuto.
 	 */
 	@Test
-	public void testToArray2EmptyArrayOnEmptyValuesCollection() {
+	public void testToArray2EmptyArrayOnEmptyKeySet() {
 		Object[] array = new Object[0];
-		assertTrue("L'array restituito dovrebbe essere lo stesso array passato come parametro", array == values.toArray(array));
-		assertTrue("L'array restituito dovrebbe rimanere vuoto", values.toArray(array).length == 0);
+		assertTrue("L'array restituito dovrebbe essere lo stesso array passato come parametro", array == keySet.toArray(array));
+		assertTrue("L'array restituito dovrebbe rimanere vuoto", keySet.toArray(array).length == 0);
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#add(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#add(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -426,7 +426,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -439,18 +439,18 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code add(Object o)} dovrebbe lanciare una {@code UnsupportedOperationException}.
 	 */
 	@Test(expected = UnsupportedOperationException.class)
-	public void testAddOnEmptyValuesCollection() {
-		values.add(null); // lancia UnsupportedOperationException
+	public void testAddOnEmptyKeySet() {
+		keySet.add(null); // lancia UnsupportedOperationException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#remove(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#remove(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
-	 * come valore di una entry della mappa). Se l'oggetto è presente, viene rimosso e il metodo restituisce {@code true}.
+	 * come chiave di una entry della mappa). Se l'oggetto è presente, viene rimosso e il metodo restituisce {@code true}.
 	 * Se l'oggetto non è presente, il metodo restituisce {@code false}. Se l'oggetto passato è {@code null}, viene
 	 * lanciata una {@code NullPointerException}.
 	 * 
@@ -461,7 +461,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -474,22 +474,22 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * dovrebbe rimanere vuota e con 0 elementi.
 	 */
 	@Test
-	public void testRemoveOnEmptyValuesCollection() {
-		assertFalse("remove dovrebbe restituire false se invocato su una vista vuota", values.remove("a_random_value"));
-		assertTrue("La vista dovrebbe rimanere vuota", values.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, values.size());
+	public void testRemoveOnEmptyKeySet() {
+		assertFalse("remove dovrebbe restituire false se invocato su una vista vuota", keySet.remove("a_random_key"));
+		assertTrue("La vista dovrebbe rimanere vuota", keySet.isEmpty());
+		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, keySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
 		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#remove(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#remove(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
-	 * come valore di una entry della mappa). Se l'oggetto è presente, viene rimosso e il metodo restituisce {@code true}.
+	 * come chiave di una entry della mappa). Se l'oggetto è presente, viene rimosso e il metodo restituisce {@code true}.
 	 * Se l'oggetto non è presente, il metodo restituisce {@code false}. Se l'oggetto passato è {@code null}, viene
 	 * lanciata una {@code NullPointerException}.
 	 * 
@@ -500,7 +500,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -513,13 +513,13 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code remove(Object o)} dovrebbe lanciare una {@code NullPointerException}.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void testRemoveNullValueOnEmptyValuesCollection() {
-		values.remove(null); // lancia NullPointerException
+	public void testRemoveNullKeyOnEmptyKeySet() {
+		keySet.remove(null); // lancia NullPointerException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#containsAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -529,18 +529,19 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code containsAll(HCollection c)} restituisca {@code true} se gli viene passata una
-	 * collezione vuota e se è invocato su una vista senza elementi.
+	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
+	 * senza elementi e gli viene passata una collezione vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
+	 * restituire {@code false} in quanto non ci sono elementi nella vista.
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione di valori vuota
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione di chiavi vuota
 	 * da passare come parametro al metodo {@code containsAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di valori vuota e ha
+	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di chiavi vuota e ha
 	 * restituito {@code true}, siccome la collezione è vuota e la vista non contiene elementi.
 	 * 
 	 * <p>
@@ -548,15 +549,15 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code true}.
 	 */
 	@Test
-	public void testContainsAllEmptyCollectionOnEmptyValuesCollection() {
+	public void testContainsAllEmptyCollectionOnEmptyKeySet() {
 		MapAdapter newEmptyMap = new MapAdapter();
 		HCollection emptyCollection = newEmptyMap.values();
-		assertTrue("La vista dovrebbe contenere tutti gli elementi della collezione vuota", values.containsAll(emptyCollection));
+		assertTrue("La vista dovrebbe contenere tutti gli elementi della collezione vuota", keySet.containsAll(emptyCollection));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#containsAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -571,7 +572,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} e impostato a
 	 * {@code null} per rappresentare una collezione {@code null} da passare come parametro al metodo
 	 * {@code containsAll(HCollection c)}.
@@ -586,14 +587,14 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void testContainsAllNullCollectionOnEmptyValuesCollection() {
+	public void testContainsAllNullCollectionOnEmptyKeySet() {
 		HCollection nullCollection = null;
-		values.containsAll(nullCollection); // lancia NullPointerException
+		keySet.containsAll(nullCollection); // lancia NullPointerException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#containsAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -608,13 +609,13 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa con una entry generica per generare una collezione
-	 * di valori non vuota da passare come parametro al metodo {@code containsAll(HCollection c)}.
+	 * di chiavi non vuota da passare come parametro al metodo {@code containsAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di valori non vuota e ha
+	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di chiavi non vuota e ha
 	 * restituito {@code false}.
 	 * 
 	 * <p>
@@ -622,16 +623,16 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testContainsAllPopulatedCollectionOnEmptyValuesCollection() {
+	public void testContainsAllPopulatedCollectionOnEmptyKeySet() {
 		MapAdapter newEmptyMap = new MapAdapter();
 		newEmptyMap.put("key1", "value1"); // aggiunge una entry generica
 		HCollection populatedCollection = newEmptyMap.values();
-		assertFalse("La vista non dovrebbe contenere tutti gli elementi della collezione non vuota", values.containsAll(populatedCollection));
+		assertFalse("La vista non dovrebbe contenere tutti gli elementi della collezione non vuota", keySet.containsAll(populatedCollection));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#addAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#addAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -644,7 +645,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -657,19 +658,21 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code addAll(HCollection c)} dovrebbe lanciare una {@code UnsupportedOperationException}.
 	 */
 	@Test(expected = UnsupportedOperationException.class)
-	public void testAddAllOnEmptyValuesCollection() {
-		values.addAll(null); // lancia UnsupportedOperationException
+	public void testAddAllOnEmptyKeySet() {
+		keySet.addAll(null); // lancia UnsupportedOperationException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#removeAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
+	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
+	 * passata come parametro.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -679,7 +682,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione vuota
 	 * da passare come parametro al metodo {@code removeAll(HCollection c)}.
 	 * 
@@ -694,24 +697,26 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
 	 */
 	@Test
-	public void testRemoveAllEmptyCollectionOnEmptyValuesCollection() {
+	public void testRemoveAllEmptyCollectionOnEmptyKeySet() {
 		HCollection emptyCollection = new MapAdapter().values();
-		assertFalse("removeAll dovrebbe restituire false se la collezione è vuota", values.removeAll(emptyCollection));
-		assertTrue("La vista dovrebbe rimanere vuota", values.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, values.size());
+		assertFalse("removeAll dovrebbe restituire false se la collezione è vuota", keySet.removeAll(emptyCollection));
+		assertTrue("La vista dovrebbe rimanere vuota", keySet.isEmpty());
+		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, keySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
 		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#removeAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
+	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
+	 * passata come parametro.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -720,7 +725,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una
 	 * collezione {@code null} da passare come parametro al metodo {@code removeAll(HCollection c)}.
 	 * 
@@ -734,20 +739,22 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare una {@code NullPointerException}.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void testRemoveAllNullCollectionOnEmptyValuesCollection() {
+	public void testRemoveAllNullCollectionOnEmptyKeySet() {
 		HCollection nullCollection = null;
-		values.removeAll(nullCollection); // lancia NullPointerException
+		keySet.removeAll(nullCollection); // lancia NullPointerException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#removeAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
+	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
+	 * passata come parametro.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -757,7 +764,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa a cui viene inserita una generica entry per
 	 * ottenere una collezione non vuota da passare come parametro al metodo {@code removeAll(HCollection c)}.
 	 * 
@@ -772,20 +779,20 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
 	 */
 	@Test
-	public void testRemoveAllPopulatedCollectionOnEmptyValuesCollection() {
+	public void testRemoveAllPopulatedCollectionOnEmptyKeySet() {
 		MapAdapter newPopulatedMap = new MapAdapter();
 		newPopulatedMap.put("key1", "value1"); // aggiunge una entry generica
 		HCollection populatedCollection = newPopulatedMap.values();
-		assertFalse("removeAll dovrebbe restituire false se la collezione è non vuota", values.removeAll(populatedCollection));
-		assertTrue("La vista dovrebbe rimanere vuota", values.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, values.size());
+		assertFalse("removeAll dovrebbe restituire false se la collezione è non vuota", keySet.removeAll(populatedCollection));
+		assertTrue("La vista dovrebbe rimanere vuota", keySet.isEmpty());
+		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, keySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
 		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#removeAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -804,7 +811,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} attraverso il
 	 * metodo {@code entrySet()} per generare una collezione che non supporta i tipi degli elementi della vista.
 	 * 
@@ -818,22 +825,24 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testRemoveAllWithClassCastExceptionOnEmptyValuesCollection() {
+	public void testRemoveAllWithClassCastExceptionOnEmptyKeySet() {
 		MapAdapter newPopulatedMap = new MapAdapter();
 		newPopulatedMap.put("key1", "value1"); // aggiunge una entry generica
 		HCollection entrySet = newPopulatedMap.entrySet(); // ottiene l'entrySet della mappa
-		assertFalse("removeAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la collezione passata", values.removeAll(entrySet));
+		assertFalse("removeAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la collezione passata", keySet.removeAll(entrySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#retainAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
+	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
+	 * passata come parametro.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -843,7 +852,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione vuota
 	 * da passare come parametro al metodo {@code retainAll(HCollection c)}.
 	 * 
@@ -858,24 +867,26 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
 	 */
 	@Test
-	public void testRetainAllEmptyCollectionOnEmptyValuesCollection() {
+	public void testRetainAllEmptyCollectionOnEmptyKeySet() {
 		HCollection emptyCollection = new MapAdapter().values();
-		assertFalse("retainAll dovrebbe restituire false se la collezione è vuota", values.retainAll(emptyCollection));
-		assertTrue("La vista dovrebbe rimanere vuota", values.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, values.size());
+		assertFalse("retainAll dovrebbe restituire false se la collezione è vuota", keySet.retainAll(emptyCollection));
+		assertTrue("La vista dovrebbe rimanere vuota", keySet.isEmpty());
+		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, keySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
 		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#retainAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
+	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
+	 * passata come parametro.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -884,7 +895,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una
 	 * collezione {@code null} da passare come parametro al metodo {@code retainAll(HCollection c)}.
 	 * 
@@ -898,14 +909,14 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare una {@code NullPointerException}.
 	 */
 	@Test(expected = NullPointerException.class)
-	public void testRetainAllNullCollectionOnEmptyValuesCollection() {
+	public void testRetainAllNullCollectionOnEmptyKeySet() {
 		HCollection nullCollection = null;
-		values.retainAll(nullCollection); // lancia NullPointerException
+		keySet.retainAll(nullCollection); // lancia NullPointerException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#retainAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -923,7 +934,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa a cui viene inserita una generica entry per
 	 * ottenere una collezione non vuota da passare come parametro al metodo {@code retainAll(HCollection c)}.
 	 * 
@@ -938,20 +949,20 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
 	 */
 	@Test
-	public void testRetainAllPopulatedCollectionOnEmptyValuesCollection() {
+	public void testRetainAllPopulatedCollectionOnEmptyKeySet() {
 		MapAdapter newPopulatedMap = new MapAdapter();
 		newPopulatedMap.put("key1", "value1"); // aggiunge una entry generica
 		HCollection populatedCollection = newPopulatedMap.values();
-		assertFalse("retainAll dovrebbe restituire false se la collezione è non vuota", values.retainAll(populatedCollection));
-		assertTrue("La vista dovrebbe rimanere vuota", values.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, values.size());
+		assertFalse("retainAll dovrebbe restituire false se la collezione è non vuota", keySet.retainAll(populatedCollection));
+		assertTrue("La vista dovrebbe rimanere vuota", keySet.isEmpty());
+		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, keySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
 		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#retainAll(HCollection c)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -970,7 +981,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} attraverso il
 	 * metodo {@code entrySet()} per generare una collezione che non supporta i tipi degli elementi della vista.
 	 * 
@@ -984,16 +995,16 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testRetainAllWithClassCastExceptionOnEmptyValuesCollection() {
+	public void testRetainAllWithClassCastExceptionOnEmptyKeySet() {
 		MapAdapter newPopulatedMap = new MapAdapter();
 		newPopulatedMap.put("key1", "value1"); // aggiunge una entry generica
 		HCollection entrySet = newPopulatedMap.entrySet(); // ottiene l'entrySet della mappa
-		assertFalse("retainAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la collezione passata", values.retainAll(entrySet));
+		assertFalse("retainAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la collezione passata", keySet.retainAll(entrySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#clear()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#clear()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -1007,7 +1018,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -1020,17 +1031,17 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * volta essere vuota e con 0 elementi.
 	 */
 	@Test
-	public void testClearOnEmptyValuesCollection() {
-		values.clear();
-		assertTrue("Clear dovrebbe rendere la vista vuota", values.isEmpty());
-		assertEquals("Clear dovrebbe lasciare 0 elementi nella vista", 0, values.size());
+	public void testClearOnEmptyKeySet() {
+		keySet.clear();
+		assertTrue("Clear dovrebbe rendere la vista vuota", keySet.isEmpty());
+		assertEquals("Clear dovrebbe lasciare 0 elementi nella vista", 0, keySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe essere vuota", map.isEmpty());
 		assertEquals("La mappa associata alla vista dovrebbe avere 0 elementi", 0, map.size());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#hashCode()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#hashCode()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -1044,7 +1055,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code EntrySetAdapter} collegata a una mappa vuota
 	 * su cui invocare il metodo {@code hashCode(Object o)}.
 	 * 
@@ -1059,22 +1070,21 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 */
 	@Test
 	public void testHashOnEmptyMap() {
-		HCollection newEmptyValues = new MapAdapter().values();
-		assertEquals("L'hash code della mappa vuota dovrebbe essere 0", 0, values.hashCode());
-		assertTrue("L'hash code di due mappe vuote dovrebbe essere lo stesso", values.hashCode() == newEmptyValues.hashCode());
+		HSet newEmptyKeySet = new MapAdapter().keySet();
+		assertEquals("L'hash code della mappa vuota dovrebbe essere 0", 0, keySet.hashCode());
+		assertTrue("L'hash code di due mappe vuote dovrebbe essere lo stesso", keySet.hashCode() == newEmptyKeySet.hashCode());
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#equals(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista
-	 * {@code values} corrente. Due viste {@code values} sono considerate uguali se sono entrambe delle istanze della
-	 * classe {@code ValuesCollectionAdapter} e contengono gli stessi elementi (stessi oggetti valore). Restituisce
-	 * {@code false} se il parametro è {@code null}, se il parametro non è una {@code ValuesCollectionAdapter} o se
-	 * contengono elementi diversi.
+	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
+	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
+	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
+	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -1082,7 +1092,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -1094,75 +1104,35 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testEqualsNullOnEmptyValuesCollection() {
-		assertFalse("equals dovrebbe restituire false se gli viene passato null", values.equals(null));
+	public void testEqualsNullOnEmptyKeySet() {
+		assertFalse("equals dovrebbe restituire false se gli viene passato null", keySet.equals(null));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#equals(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista
-	 * {@code values} corrente. Due viste {@code values} sono considerate uguali se sono entrambe delle istanze della
-	 * classe {@code ValuesCollectionAdapter} e contengono gli stessi elementi (stessi oggetti valore). Restituisce
-	 * {@code false} se il parametro è {@code null}, se il parametro non è una {@code ValuesCollectionAdapter} o se
-	 * contengono elementi diversi.
+	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
+	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
+	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
+	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passato un oggetto
-	 * che non è una istanza di {@code ValuesCollectionAdapter}.
+	 * che non è una istanza di {@code KeySetAdapter}.
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota. Viene creato un nuovo oggetto di tipo {@code String} (non {@code ValuesCollectionAdapter})
-	 * da passare come parametro al metodo {@code equals(Object o)}.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota. Viene creato un nuovo oggetto di tipo {@code String} (non {@code KeySetAdapter}) da passare
+	 * come parametro al metodo {@code equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code ValuesCollectionAdapter}
-	 * e ha restituito {@code false}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
-	 */
-	@Test
-	public void testEqualsNotValuesCollectionOnEmptyValuesCollection() {
-		String notAValuesCollection = "This is not a ValuesCollection";
-		assertFalse("equals dovrebbe restituire false se gli viene passato un oggetto che non è una ValuesCollection", values.equals(notAValuesCollection));
-	}
-
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#equals(Object o)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista
-	 * {@code values} corrente. Due viste {@code values} sono considerate uguali se sono entrambe delle istanze della
-	 * classe {@code ValuesCollectionAdapter} e contengono gli stessi elementi (stessi oggetti valore). Restituisce
-	 * {@code false} se il parametro è {@code null}, se il parametro non è una {@code ValuesCollectionAdapter} o se
-	 * contengono elementi diversi.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passata un'altra
-	 * view (di tipo {@code KeySetAdapter} o {@code EntrySetAdapter}) sempre collegata a una mappa vuota.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota. Vengono creati due nuovi oggetti di tipo {@code KeySetAdapter} e
-	 * {@code EntrySetAdapter} da passare come parametro al metodo {@code equals(Object o)}, provenienti da una
-	 * nuova mappa vuota.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code ValuesCollectionAdapter} e ha restituito
+	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code KeySetAdapter} e ha restituito
 	 * {@code false}.
 	 * 
 	 * <p>
@@ -1170,77 +1140,113 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testEqualsOtherViewsOnEmptyValuesCollection() {
-		HSet keySetView = new MapAdapter().keySet();
-		HSet entrySetView = new MapAdapter().entrySet();
-		assertFalse("equals dovrebbe restituire false se gli viene passato un oggetto che non è una ValuesCollection", values.equals(keySetView));
-		assertFalse("equals dovrebbe restituire false se gli viene passato un oggetto che non è una ValuesCollection", values.equals(entrySetView));
+	public void testEqualsNotKeySetOnEmptyKeySet() {
+		String notAKeySet = "This is not a KeySet";
+		assertFalse("equals dovrebbe restituire false se gli viene passato un oggetto che non è una KeySet", keySet.equals(notAKeySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#equals(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista
-	 * {@code values} corrente. Due viste {@code values} sono considerate uguali se sono entrambe delle istanze della
-	 * classe {@code ValuesCollectionAdapter} e contengono gli stessi elementi (stessi oggetti valore). Restituisce
-	 * {@code false} se il parametro è {@code null}, se il parametro non è una {@code ValuesCollectionAdapter} o se
-	 * contengono elementi diversi.
+	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
+	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
+	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
+	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
+	 * 
+	 * <p>
+	 * <b>Test Description:</b>
+	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passata un'altra
+	 * view (di tipo {@code ValuesCollectionAdapter} o {@code EntrySetAdapter}) sempre collegata a una mappa vuota.
+	 * 
+	 * <p>
+	 * <b>Pre-Condition:</b>
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota. Vengono creati due nuovi oggetti di tipo {@code ValuesCollectionAdapter} e
+	 * {@code EntrySetAdapter} da passare come parametro al metodo {@code equals(Object o)}, provenienti da una
+	 * nuova mappa vuota.
+	 * 
+	 * <p>
+	 * <b>Post-Condition:</b>
+	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code KeySetAdapter} e ha restituito
+	 * {@code false}.
+	 * 
+	 * <p>
+	 * <b>Expected Results:</b>
+	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
+	 */
+	@Test
+	public void testEqualsOtherViewsOnEmptyKeySet() {
+		HCollection valuesView = new MapAdapter().values();
+		HSet entrySetView = new MapAdapter().entrySet();
+		assertFalse("equals dovrebbe restituire false se gli viene passato un oggetto che non è una KeySet", keySet.equals(valuesView));
+		assertFalse("equals dovrebbe restituire false se gli viene passato un oggetto che non è una KeySet", keySet.equals(entrySetView));
+	}
+
+	/**
+	 * <b>Summary:</b>
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
+	 * 
+	 * <p>
+	 * <b>Test Case Design:</b>
+	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
+	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
+	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
+	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata un'altra
-	 * istanza di {@code ValuesCollectionAdapter} proveniente da una nuova mappa vuota.
+	 * istanza di {@code KeySetAdapter} proveniente da una nuova mappa vuota.
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code ValuesCollectionAdapter} collegata a una
-	 * mappa vuota da passare come parametro al metodo {@code equals(Object o)}.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code KeySetAdapter} collegata a una mappa vuota da passare
+	 * come parametro al metodo {@code equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota.
+	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code KeySetAdapter} collegata a una
+	 * mappa vuota.
 	 * 
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code true}.
 	 */
 	@Test
-	public void testEqualsNewEmptyValuesCollectionOnEmptyValuesCollection() {
-		HCollection newEmptyValuesCollection = new MapAdapter().values();
-		assertTrue("equals dovrebbe restituire true se gli viene passato un'altro valuesCollection vuoto", values.equals(newEmptyValuesCollection));
+	public void testEqualsNewEmptyKeySetOnEmptyKeySet() {
+		HSet newEmptyKeySet = new MapAdapter().keySet();
+		assertTrue("equals dovrebbe restituire true se gli viene passato un'altro keySet vuoto", keySet.equals(newEmptyKeySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#equals(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista
-	 * {@code values} corrente. Due viste {@code values} sono considerate uguali se sono entrambe delle istanze della
-	 * classe {@code ValuesCollectionAdapter} e contengono gli stessi elementi (stessi oggetti valore). Restituisce
-	 * {@code false} se il parametro è {@code null}, se il parametro non è una {@code ValuesCollectionAdapter} o se
-	 * contengono elementi diversi.
+	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
+	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
+	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
+	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata un'altra
-	 * istanza di {@code ValuesCollectionAdapter} proveniente da una nuova mappa non vuota.
+	 * istanza di {@code KeySetAdapter} proveniente da una nuova mappa non vuota.
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code ValuesCollectionAdapter} collegata a una
-	 * mappa popolata con un valore generico da passare come parametro al metodo {@code equals(Object o)}.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code KeySetAdapter} collegata a una mappa popolata con una
+	 * chiave generica da passare come parametro al metodo {@code equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code ValuesCollectionAdapter} collegata
+	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code KeySetAdapter} collegata
 	 * ad una mappa non vuota.
 	 * 
 	 * <p>
@@ -1248,38 +1254,37 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testEqualsPopulatedValuesCollectionOnEmptyValuesCollection() {
+	public void testEqualsPopulatedKeySetOnEmptyKeySet() {
 		MapAdapter populatedMap = new MapAdapter();
 		populatedMap.put("key", "value");
-		HCollection populatedValues = populatedMap.values();
-		assertFalse("equals dovrebbe restituire false se gli viene passata una ValuesCollection con entry diverse", values.equals(populatedValues));
+		HSet populatedKeySet = populatedMap.keySet();
+		assertFalse("equals dovrebbe restituire false se gli viene passata una KeySet con entry diverse", keySet.equals(populatedKeySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#equals(Object o)}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista
-	 * {@code values} corrente. Due viste {@code values} sono considerate uguali se sono entrambe delle istanze della
-	 * classe {@code ValuesCollectionAdapter} e contengono gli stessi elementi (stessi oggetti valore). Restituisce
-	 * {@code false} se il parametro è {@code null}, se il parametro non è una {@code ValuesCollectionAdapter} o se
-	 * contengono elementi diversi.
+	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
+	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
+	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
+	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata la stessa
-	 * istanza di {@code ValuesCollectionAdapter} su cui è stato invocato il metodo.
+	 * istanza di {@code KeySetAdapter} su cui è stato invocato il metodo.
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con la stessa istanza di {@code ValuesCollectionAdapter} su cui è stato
+	 * Il metodo {@code equals(Object o)} è stato chiamato con la stessa istanza di {@code KeySetAdapter} su cui è stato
 	 * invocato il metodo.
 	 * 
 	 * <p>
@@ -1287,13 +1292,13 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code true}.
 	 */
 	@Test
-	public void testEqualsSelfOnEmptyValuesCollection() {
-		assertTrue("equals dovrebbe restituire true se gli viene passato se stesso", values.equals(values));
+	public void testEqualsSelfOnEmptyKeySet() {
+		assertTrue("equals dovrebbe restituire true se gli viene passato se stesso", keySet.equals(keySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionAdapter#toString()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toString()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -1306,7 +1311,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa vuota.
 	 * 
 	 * <p>
@@ -1319,17 +1324,17 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 */
 	@Test
 	public void testToStringOnEmptyMap() {
-		assertEquals("La rappresentazione in stringa di una mappa vuota dovrebbe essere []", "[]", values.toString());
+		assertEquals("La rappresentazione in stringa di una mappa vuota dovrebbe essere []", "[]", keySet.toString());
 	}
 
 
 /* ================================================================================================================= *\
-|* =============================== Test dei metodi dell'iteratore della vista values =============================== *|
+|* =============================== Test dei metodi dell'iteratore della vista keySet =============================== *|
 \* ================================================================================================================= */
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionIterator#hasNext()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#hasNext()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -1342,8 +1347,8 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota e dell'iteratore {@code ValuesCollectionIterator} associato alla vista.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota e dell'iteratore {@code KeySetIterator} associato alla vista.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
@@ -1355,20 +1360,20 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code hasNext()} dovrebbe restituire {@code false}.
 	 */
 	@Test
-	public void testHasNextOnEmptyValuesCollectionIterator() {
-		assertFalse("hasNext dovrebbe restituire false per un iteratore associato a una vista vuota", valuesIterator.hasNext());
+	public void testHasNextOnEmptyKeySetIterator() {
+		assertFalse("hasNext dovrebbe restituire false per un iteratore associato a una vista vuota", keySetIterator.hasNext());
 	}
 	
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionIterator#next()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#next()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code next()} restituisce l'elemento successivo nell'iteratore. Per un iteratore associato a una
 	 * vista vuota, dovrebbe lanciare un'eccezione {@code java.util.NoSuchElementException} in quanto non c'è nessun
 	 * elemento da estrarre e il corrispettivo {@code hasNext()} dovrebbe restituire {@code false} (come verificato
-	 * nel test {@link #testHasNextOnEmptyValuesCollectionIterator()}).
+	 * nel test {@link #testHasNextOnEmptyKeySetIterator()}).
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -1377,8 +1382,8 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota e dell'iteratore {@code ValuesCollectionIterator} associato alla vista.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota e dell'iteratore {@code KeySetIterator} associato alla vista.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
@@ -1390,20 +1395,20 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code next()} dovrebbe lanciare {@code java.util.NoSuchElementException}.
 	 */
 	@Test(expected = java.util.NoSuchElementException.class)
-	public void testNextOnEmptyValuesCollectionIterator() {
-		valuesIterator.next(); // lancia java.util.NoSuchElementException
+	public void testNextOnEmptyKeySetIterator() {
+		keySetIterator.next(); // lancia java.util.NoSuchElementException
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.ValuesCollectionIterator#remove()}.
+	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
 	 * 
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. Per
 	 * un iteratore associato a una vista vuota, dovrebbe lanciare un'eccezione {@code myAdapter.IllegalStateException}
 	 * in quanto non c'è nessun elemento da rimuovere e il corrispettivo {@code next()} non si può chiamare perché
-	 * lancia un'eccezione (come verificato nel test {@link #testNextOnEmptyValuesCollectionIterator()}).
+	 * lancia un'eccezione (come verificato nel test {@link #testNextOnEmptyKeySetIterator()}).
 	 * 
 	 * <p>
 	 * <b>Test Description:</b>
@@ -1412,8 +1417,8 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * 
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code ValuesCollectionAdapter}
-	 * collegata a una mappa vuota e dell'iteratore {@code ValuesCollectionIterator} associato alla vista.
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
+	 * collegata a una mappa vuota e dell'iteratore {@code KeySetIterator} associato alla vista.
 	 * 
 	 * <p>
 	 * <b>Post-Condition:</b>
@@ -1425,7 +1430,7 @@ public class TestValuesCollectionOnEmptyMapAdapter {
 	 * Il metodo {@code remove()} dovrebbe lanciare {@code myAdapter.IllegalStateException}.
 	 */
 	@Test(expected = myAdapter.IllegalStateException.class)
-	public void testRemoveOnEmptyValuesCollectionIterator() {
-		valuesIterator.remove(); // lancia myAdapter.IllegalStateException
+	public void testRemoveOnEmptyKeySetIterator() {
+		keySetIterator.remove(); // lancia myAdapter.IllegalStateException
 	}
 }
