@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 # openJavadoc.sh
 # This script opens the generated Javadoc documentation in the default web browser.

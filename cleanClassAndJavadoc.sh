@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 # cleanClassAndJavadoc.sh
 # This script cleans up all *.class files and Javadoc documentation in the project.
