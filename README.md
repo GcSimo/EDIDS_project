@@ -1,5 +1,5 @@
 # Secondo Appello 2025 di Elementi di Ingegneria del Software
-Adapter che implementa l'interfaccia Map di Java 2 Standard Edition 1.4.2  attraverso la classe Hashtable di Java 2 Micro Edition CLDC 1.1 scritto da Giacomo Simonetto - n° matricola 2109923.
+Adapter che implementa l'interfaccia `Map` di `Java 2 Standard Edition 1.4.2` attraverso la classe `Hashtable` di `Java 2 Micro Edition CLDC 1.1` scritto da Giacomo Simonetto - n° matricola 2109923.
 
 ## Organizzazione delle directory del progetto
 Il progetto è organizzato in due pacchetti principali: `myAdapter` e `myTest` che riflettono la struttura delle directory. Di seguito è riportata la struttura delle directory e tutti i file presenti in ciascun pacchetto.
@@ -53,5 +53,4 @@ java -cp .:build:JUnit/junit-4.13.jar:JUnit/hamcrest-core-1.3.jar myTest.TestRun
 Per generare la documentazione del progetto, è possibile utilizzare il comando:
 ```
 javadoc -d doc -cp .:JUnit/junit-4.13.jar:JUnit/hamcrest-core-1.3-javadoc.jar:JUnit/junit-4.13-javadoc.jar:JUnit/hamcrest-core-1.3-javadoc.jar myAdapter/*.java myTest/*.java
-
 ```
