@@ -100,7 +100,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#getKey()}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#getKey()} su una entry generica.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -135,7 +135,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#getValue()}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#getValue()} su una entry generica.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -170,7 +170,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#setValue(Object value)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#setValue(Object value)} su una entry nella mappa.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -214,7 +214,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#setValue(Object value)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#setValue(Object value)} su una entry non presente nella mappa.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -262,7 +262,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#setValue(Object value)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#setValue(Object value)} su una entry modificata della mappa.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -310,7 +310,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)} su una entry generica con oggetto {@code null}.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -347,7 +347,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)} su una entry generica con un oggetto non-entry.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -387,7 +387,7 @@ public class TestEntryAdapter {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)} su una entry generica con un'altra entry con valore diverso.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -422,14 +422,14 @@ public class TestEntryAdapter {
 		map.put("a_random_key", "a_random_value");
 		HEntry entry = getMapEntry(map, 0);
 		HMap newMap = new MapAdapter();
-		newMap.put("a_new_key", "a_random_value");
+		newMap.put("a_random_key", "a_new_value");
 		HEntry anotherEntry = getMapEntry(newMap, 0);
 		assertFalse("Due entry con stessa chiave, ma diverso valore dovrebbero essere diverse", entry.equals(anotherEntry));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)} su una entry generica con un'altra entry con chiave diversa.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -464,12 +464,12 @@ public class TestEntryAdapter {
 		map.put("a_new_key", "a_random_value");
 		HEntry entry1 = getMapEntry(map, 0);
 		HEntry entry2 = getMapEntry(map, 1);
-		assertFalse("Due entry con stesso valore, ma diverso chiave dovrebbero essere diverse", entry1.equals(entry2));
+		assertFalse("Due entry con stesso valore, ma diversa chiave dovrebbero essere diverse", entry1.equals(entry2));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)} su una entry generica con un'altra entry con stessa chiave e valore.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -505,12 +505,12 @@ public class TestEntryAdapter {
 		HMap newMap = new MapAdapter();
 		newMap.put("a_random_key", "a_random_value");
 		HEntry anotherEntry = getMapEntry(newMap, 0);
-		assertTrue("Due entry con stessa chiave, ma diverso valore dovrebbero essere diverse", entry.equals(anotherEntry));
+		assertTrue("Due entry con stessa chiave e stesso valore dovrebbero essere uguali", entry.equals(anotherEntry));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#equals(Object o)} su una entry generica con sé stessa.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
@@ -542,13 +542,13 @@ public class TestEntryAdapter {
 	public void testSelfEqualsOnEntryAdapter() {
 		map.put("a_random_key", "a_random_value");
 		HEntry entry = getMapEntry(map, 0);
-		assertTrue("Due entry con stessa chiave, ma diverso valore dovrebbero essere diverse", entry.equals(entry));
+		assertTrue("Una entry è uguale a sé stessa", entry.equals(entry));
 	}
 
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntryAdapter#hashCode()}.
+	 * Test di {@link myAdapter.MapAdapter.EntryAdapter#hashCode()} su una entry generica.
 	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
