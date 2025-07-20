@@ -10,12 +10,12 @@ import org.junit.runner.notification.Failure;
 /**
  * <b>Summary:</b>
  * Classe di utilità per eseguire i test JUnit definiti nella suite {@code AllTestsSuite}.
- * 
+ *
  * <p>
  * <b>Test Case Design:</b>
  * Questa classe è progettata per essere eseguita da linea di comando e stampa sempre su CLI un riepilogo dei risultati
  * dei test, inclusi i test passati, falliti e ignorati, insieme al tempo impiegato per l'esecuzione.
- * 
+ *
  * <p>
  * <b>Dependencies:</b>
  * <ul>
@@ -31,12 +31,12 @@ public class TestRunner {
 	public TestRunner() {
 		// intentionally left empty
 	}
-	
+
 	/**
 	 * Metodo principale per eseguire i test.
 	 * Stampa informazioni di esecuzione, esegue i test definiti nella suite {@code AllTestsSuite}
 	 * e stampa i risultati dei test, inclusi eventuali fallimenti.
-	 * 
+	 *
 	 * @param args Argomenti della riga di comando (non utilizzati in questo contesto).
 	 */
 	public static void main(String[] args) {
@@ -58,7 +58,7 @@ public class TestRunner {
 		System.out.println("  Test falliti:    " + result.getFailureCount() + "/" + result.getRunCount());
 		System.out.println("  Test ignorati:   " + result.getIgnoreCount() + "/" + result.getRunCount());
 		System.out.println("  Tempo impiegato: " + result.getRunTime() + " ms\n");
-		
+
 		// Stampa dettagli dei fallimenti
 		if (!result.wasSuccessful()) {
 			System.out.println("------------------------------ DETTAGLI FALLIMENTI -----------------------------");
@@ -68,10 +68,14 @@ public class TestRunner {
 				System.out.println(" - Test fallito: " + failure.toString());
 				System.out.println(" - Descrizione:  " + failure.getMessage());
 				System.out.print(" - Stack Trace:  ");
-                failure.getException().printStackTrace(System.out);
-                System.out.println("--------------------------------------------------------------------------------\n");
+				failure.getException().printStackTrace(System.out);
+				System.out
+						.println("--------------------------------------------------------------------------------\n");
 				failureCount++;
 			}
 		}
+
+		// Conclusione
+		System.out.println("-------------------- ESECUZIONE TEST CONCLUSA CORRETTAMENTE --------------------\n");
 	}
 }

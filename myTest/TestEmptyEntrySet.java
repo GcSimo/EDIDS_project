@@ -18,7 +18,6 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.Ignore;
 import static org.junit.Assert.*;
 
 /**
@@ -26,37 +25,42 @@ import static org.junit.Assert.*;
  * Classe contenente una suite di test per verificare il comportamento di {@link myAdapter.MapAdapter.EntrySetAdapter},
  * quando proviene da una mappa vuota e non contiene elementi. Sono testati tutti i metodi implementati dalla vista,
  * assicurando che non lancino eccezioni inattese e restituiscano risultati corretti. Sono inoltre testati i metodi
- * dell'iteratore associato alla vista, per garantire che funzionino correttamente anche su una vista vuota.
- * 
+ * dell'iteratore {@link myAdapter.MapAdapter.EntrySetIterator} associato alla vista, per garantire che funzionino
+ * correttamente anche su una vista vuota.
+ *
  * <p>
  * <b>Test Case Design:</b>
- * La motivazione di questa suite è garantire che la classe {@link myAdapter.MapAdapter.EntrySetAdapter} e il relativo
- * iteratore {@link myAdapter.MapAdapter.EntrySetIterator} gestiscano correttamente i casi limite e le operazioni collegate
- * ad una mappa vuota, prima di procedere con test su mappe non vuote.
- * 
+ * La motivazione di questa suite è garantire che la vista e il relativo iteratore gestiscano correttamente i casi
+ * limite e le operazioni collegate ad una mappa vuota, prima di procedere con test su mappe non vuote.
+ *
  * <p>
- * Non esiste un ordinamento specifico dei test. Nella loro implementazione all'interno del file sorgente si trovano
- * prima i test eseguiti sui metodi della vista e successivamente quelli eseguiti sui metodi dell'iteratore.
- * I test sono comunque ordinati secondo l'ordinamento dei corrispettivi metodi testati nella documentazione
- * delle classi {@link myAdapter.MapAdapter.AbstractViewAdapter}, {@link myAdapter.MapAdapter.EntrySetAdapter},
- * {@link myAdapter.MapAdapter.AbstractIterator} e {@link myAdapter.MapAdapter.EntrySetIterator}.
- * 
+ * I test sono divisi in due gruppi: prima i test eseguiti sui metodi della vista e successivamente quelli eseguiti
+ * sui metodi dell'iteratore. Sono inoltre ordinati secondo l'ordinamento dei corrispettivi metodi testati nella
+ * documentazione delle classi {@link myAdapter.MapAdapter.AbstractViewAdapter}, {@link myAdapter.MapAdapter.EntrySetAdapter},
+ * {@link myAdapter.MapAdapter.AbstractIterator} e {@link myAdapter.MapAdapter.EntrySetIterator} e delle relative interfacce.
+ *
  * <p>
- * Siccome le classi da testare non sono istanziabili direttamente, i test della vista sono eseguiti su un oggetto
+ * Siccome le classi da testare non sono istanziabili direttamente, i test della vista sono eseguiti su un riferimento
  * {@code HSet} ottenuto da una mappa vuota, tramite il metodo {@code entrySet()} della mappa, mentre quelli dell'iteratore
- * sono eseguiti su un oggetto {@code HIterator} ottenuto dalla stessa mappa vuota, tramite il metodo
- * {@code entrySet().iterator()} della vista.
- * 
+ * sono eseguiti su un riferimento {@code HIterator} ottenuto dalla vista, tramite il metodo {@code iterator()} della vista.
+ *
  * <p>
  * I costruttori delle viste e degli iteratori sono già stati testati negli opportuni test che ne restituiscono
  * le corrispettive istanze, come ad esempio {@link myAdapter.MapAdapter#entrySet()} per la vista e
- * {@link myAdapter.MapAdapter.EntrySetAdapter#iterator()} per l'iteratore. 
- * 
+ * {@link myAdapter.MapAdapter.EntrySetAdapter#iterator()} per l'iteratore.
+ *
+ * <p>
+ * Sono stati implementati 43 test in totale, di cui:
+ * <ul>
+ *   <li> 40 test per i metodi della vista {@code EntrySetAdapter} associata alla mappa vuota</li>
+ *   <li> 3 test per i metodi dell'iteratore {@code EntrySetIterator} associato alla vista</li>
+ * </ul>
+ *
  * <p>
  * <b>Dependencies:</b>
  * <ul>
- *   <li>File JUnit.jar: {@code ./JUnit/junit-4.13.jar} - versione {@code 4.13}
- *   <li>File Hamcrest.jar: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
+ *   <li>File {@code JUnit}:    {@code ./JUnit/junit-4.13.jar}        - versione {@code 4.13}
+ *   <li>File {@code Hamcrest}: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
  * </ul>
  */
 public class TestEmptyEntrySet {
@@ -102,26 +106,26 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#size()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#size()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code size()} restituisce il numero di elementi presenti nella vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code size()} restituisca 0, ovvero il numero di elementi presenti in una vista proveniente
 	 * da una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code size()} è stato chiamato su una vista vuota e ha restituito 0.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code size()} dovrebbe restituire 0.
@@ -133,25 +137,25 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#isEmpty()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#isEmpty()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code isEmpty()} restituisce {@code true} se la vista non contiene elementi, {@code false} altrimenti.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code isEmpty()} restituisca {@code true} per una vista senza elementi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code isEmpty()} è stato chiamato su una vista senza elementi e ha restituito {@code true}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code isEmpty()} dovrebbe restituire {@code true}.
@@ -163,31 +167,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)} su una vista vuota con entry non {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti. Lancia
 	 * {@code NullPointerException} se l'oggetto passato è {@code null} o se la entry ha chiave o valore {@code null}.
 	 * Lancia {@code ClassCastException} se l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code contains(Object o)} restituisca {@code false} quando gli viene passata una entry
 	 * che non appartiene alla mappa (in questo caso, una entry con chiavi e valori di tipo {@code String} istanziata
 	 * attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una nuova entry generica (sfruttando l'implementazione
 	 * {@code SimpleHMapWithNulls.SimpleHEntry}) da passare come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato su una vista vuota e ha restituito {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe restituire {@code false} per una vista vuota.
@@ -200,30 +204,30 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)} su una vista vuota con entry {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti. Lancia
 	 * {@code NullPointerException} se l'oggetto passato è {@code null} o se la entry ha chiave o valore {@code null}.
 	 * Lancia {@code ClassCastException} se l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code contains(Object o)} lanci {@code NullPointerException} se l'oggetto passato è
-	 * {@code null}.
-	 * 
+	 * Verifica che il metodo {@code contains(Object o)} lanci una {@code NullPointerException} quando gli viene passato
+	 * un oggetto {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato con un oggetto {@code null} e ha lanciato una
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -235,32 +239,32 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)} su una vista vuota con entry con chiave {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti. Lancia
 	 * {@code NullPointerException} se l'oggetto passato è {@code null} o se la entry ha chiave o valore {@code null}.
 	 * Lancia {@code ClassCastException} se l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code contains(Object o)} lanci {@code NullPointerException} quando gli viene passata
 	 * una generica entry con chiave {@code null} (in questo caso con valore di tipo {@code String}, istanziata
 	 * attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una nuova entry generica con chiave {@code null} (sfruttando
 	 * l'implementazione {@code SimpleHMapWithNulls.SimpleHEntry}) da passare come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato con una generica entry con chiave {@code null} e ha lanciato
 	 * una {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -273,32 +277,32 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)} su una vista vuota con entry con valore {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti. Lancia
 	 * {@code NullPointerException} se l'oggetto passato è {@code null} o se la entry ha chiave o valore {@code null}.
 	 * Lancia {@code ClassCastException} se l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code contains(Object o)} lanci {@code NullPointerException} quando gli viene passata
 	 * una generica entry con valore {@code null} (in questo caso con chiave di tipo {@code String}, istanziata
 	 * attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una nuova entry generica con valore {@code null} (sfruttando
 	 * l'implementazione {@code SimpleHMapWithNulls.SimpleHEntry}) da passare come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato con una generica entry con valore {@code null} e ha
 	 * lanciato una {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -311,30 +315,30 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)} su una vista vuota con oggetto non-entry.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti. Lancia
 	 * {@code NullPointerException} se l'oggetto passato è {@code null} o se la entry ha chiave o valore {@code null}.
 	 * Lancia {@code ClassCastException} se l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code contains(Object o)} lanci {@code ClassCastException} quando gli viene passato
 	 * un oggetto che non è una entry (non implementa {@code HMap.HEntry}) (in questo caso una stringa).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una stringa che banalmente non implementa {@code HMap.HEntry}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato con un oggetto che non è una entry e ha lanciato una
 	 * {@code ClassCastException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe lanciare una {@code ClassCastException}.
@@ -347,27 +351,27 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#iterator()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#iterator()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code iterator()} dovrebbe restituire un iteratore di tipo {@code EntrySetIterator} su una vista vuota.
 	 * I metodi degli iteratori sono testati in modo specifico in altri test, quindi qui ci si limita a verificare
 	 * che l'iteratore restituito sia valido.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che l'iteratore restituito sia valido.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * L'iteratore è stato restituito e può essere utilizzato per iterare sulla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * L'iteratore dovrebbe essere un'istanza di {@code HIterator} e dovrebbe essere diverso da null.
@@ -381,27 +385,27 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#toArray()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#toArray()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray()} restituisce un array contenente tutti gli elementi della vista. L'ordine degli
 	 * elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toArray()} restituisca un array di lunghezza 0 per una vista proveniente
 	 * da una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray()} è stato chiamato su una vista vuota e ha restituito un array di lunghezza 0.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray()} dovrebbe restituire un array di Object di lunghezza 0.
@@ -414,33 +418,33 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#toArray(Object[] a)} su una vista vuota con array sufficientemente grande.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
 	 * degli elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
-	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 * parametro e l'elemento successivo all'ultimo elemento della vista viene impostato a {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Siccome la vista non contiene elementi, nessun elemento dovrebbe essere presente nell'array, per cui ci si aspetta
 	 * che il metodo {@code toArray(Object[] a)} dovrebbe restituire lo stesso array passato come parametro, con il primo
 	 * elemento impostato a {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Viene creato un nuovo array passato come parametro e riempito con interi 1, per testare se
-	 * effettivamente il primo elemento è impostato a {@code null}.
-	 * 
+	 * collegata a una mappa vuota. Viene creato un nuovo array di dimensione 10, riempito con interi 1, da passare
+	 * come parametro al metodo.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray(Object[] a)} è stato chiamato su una vista vuota e ha restituito lo stesso array passato
 	 * come parametro, con il primo elemento impostato a {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe restituire un array con lo stesso riferimento di quello passato
@@ -456,31 +460,32 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#toArray(Object[] a)} su una vista vuota con array {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
 	 * degli elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
-	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 * parametro e l'elemento successivo all'ultimo elemento della vista viene impostato a {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code toArray(Object[] a)} lanci una {@code NullPointerException} quando si prova a
-	 * passare un array {@code null} come parametro.
-	 * 
+	 * Verifica che il metodo {@code toArray(Object[] a)} lanci una {@code NullPointerException} quando gli viene passato
+	 * un array {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Viene creato un nuovo array con riferimento {@code null} da passare come parametro al metodo.
-	 * 
+	 * collegata a una mappa vuota. Viene creato un nuovo array con riferimento {@code null} da passare come
+	 * parametro al metodo.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code toArray(Object[] a)} è stato chiamato con un array {@code null} come parametro e ha lanciato una
-	 * {@code NullPointerException}.
-	 * 
+	 * Il metodo {@code toArray(Object[] a)} è stato chiamato con un array {@code null} come parametro e ha lanciato
+	 * una {@code NullPointerException}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe lanciare una {@code NullPointerException}.
@@ -493,31 +498,32 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#toArray(Object[] a)} su una vista vuota con array di dimensione 0.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
 	 * degli elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
-	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 * parametro e l'elemento successivo all'ultimo elemento della vista viene impostato a {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toArray(Object[] a)} non crei un nuovo array quando si passa un array di dimensione
 	 * nulla come parametro, siccome la vista è vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Viene creato un nuovo array di dimensione nulla da passare come parametro al metodo.
-	 * 
+	 * collegata a una mappa vuota. Viene creato un nuovo array di dimensione nulla da passare come parametro
+	 * al metodo.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray(Object[] a)} è stato chiamato con un array di dimensione nulla come parametro e ha
 	 * restituito lo stesso array passato, senza alterarne il contenuto.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe restituire lo stesso array passato come parametro, senza
@@ -532,27 +538,27 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#add(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#add(Object o)} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code add(Object o)} è disabilitato per le viste di una mappa e lancia una
 	 * {@code UnsupportedOperationException} ogni volta che viene invocato.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code add(Object o)} lanci correttamente una {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code add(Object o)} è stato chiamato con un generico parametro {@code null} e ha lanciato una
 	 * {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code add(Object o)} dovrebbe lanciare una {@code UnsupportedOperationException}.
@@ -564,8 +570,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)} su una vista vuota con entry non presente.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
@@ -573,23 +579,23 @@ public class TestEmptyEntrySet {
 	 * l'oggetto non è presente, il metodo restituisce {@code false}. Lancia {@code NullPointerException} se l'oggetto
 	 * passato è {@code null} o se la entry ha chiave o valore {@code null}. Lancia {@code ClassCastException} se
 	 * l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove(Object o)} restituisca {@code false} quando gli viene passata una entry
-	 * che non appartiene alla vista siccome non contiene elementi (in questo caso, una entry con chiavi e valori di tipo {@code String} istanziata
-	 * attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry}).
-	 * 
+	 * che non appartiene alla vista siccome non contiene elementi (in questo caso, una entry con chiavi e valori di
+	 * tipo {@code String} istanziata attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry}).
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una nuova entry generica (sfruttando l'implementazione
 	 * {@code SimpleHMapWithNulls.SimpleHEntry}) da passare come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato su una vista vuota e ha restituito {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza la mappa)
@@ -607,8 +613,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)} su una vista vuota con entry {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
@@ -616,22 +622,22 @@ public class TestEmptyEntrySet {
 	 * l'oggetto non è presente, il metodo restituisce {@code false}. Lancia {@code NullPointerException} se l'oggetto
 	 * passato è {@code null} o se la entry ha chiave o valore {@code null}. Lancia {@code ClassCastException} se
 	 * l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove(Object o)} lanci una {@code NullPointerException} quando gli viene passato
 	 * un oggetto {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato con un parametro {@code null} e ha lanciato una
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -643,8 +649,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)} su una vista vuota con entry con chiave {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
@@ -652,24 +658,24 @@ public class TestEmptyEntrySet {
 	 * l'oggetto non è presente, il metodo restituisce {@code false}. Lancia {@code NullPointerException} se l'oggetto
 	 * passato è {@code null} o se la entry ha chiave o valore {@code null}. Lancia {@code ClassCastException} se
 	 * l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove(Object o)} lanci {@code NullPointerException} quando gli viene passata
 	 * una generica entry con chiave {@code null} (in questo caso con valore di tipo {@code String}, istanziata
 	 * attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry})
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una nuova entry generica con chiave {@code null} (sfruttando
 	 * l'implementazione {@code SimpleHMapWithNulls.SimpleHEntry}) da passare come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato con una generica entry con chiave {@code null} e ha lanciato
 	 * una {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -682,8 +688,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#remove(Object o)} su una vista vuota con entry con valore {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
@@ -691,24 +697,24 @@ public class TestEmptyEntrySet {
 	 * l'oggetto non è presente, il metodo restituisce {@code false}. Lancia {@code NullPointerException} se l'oggetto
 	 * passato è {@code null} o se la entry ha chiave o valore {@code null}. Lancia {@code ClassCastException} se
 	 * l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove(Object o)} lanci {@code NullPointerException} quando gli viene passata
 	 * una generica entry con valore {@code null} (in questo caso con chiave di tipo {@code String}, istanziata
 	 * attraverso la classe {@code SimpleHMapWithNulls.SimpleHEntry})
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una nuova entry generica con valore {@code null} (sfruttando
 	 * l'implementazione {@code SimpleHMapWithNulls.SimpleHEntry}) da passare come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato con una generica entry con valore {@code null} e ha lanciato
 	 * una {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -721,8 +727,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#contains(Object o)} su una vista vuota con oggetto non-entry.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
@@ -730,22 +736,22 @@ public class TestEmptyEntrySet {
 	 * l'oggetto non è presente, il metodo restituisce {@code false}. Lancia {@code NullPointerException} se l'oggetto
 	 * passato è {@code null} o se la entry ha chiave o valore {@code null}. Lancia {@code ClassCastException} se
 	 * l'oggetto non implementa {@code HMap.HEntry} e quindi non è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove(Object o)} lanci {@code ClassCastException} quando gli viene passato
 	 * un oggetto che non è una entry (non implementa {@code HMap.HEntry}) (in questo caso una stringa).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene inoltre creata una stringa che banalmente non implementa {@code HMap.HEntry}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato con un oggetto che non è una entry e ha lanciato una
 	 * {@code ClassCastException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe lanciare una {@code ClassCastException}.
@@ -758,8 +764,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)} su una vista vuota con collezione vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
@@ -767,24 +773,24 @@ public class TestEmptyEntrySet {
 	 * passata è {@code null} o se una entry della collezione ha chiave o valore {@code null}. Lancia, inoltre,
 	 * {@code ClassCastException} se un oggetto della collezione non implementa {@code HMap.HEntry} e quindi non
 	 * è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
 	 * senza elementi e gli viene passata una collezione vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
-	 * restituire {@code true} in quanto non ci sono elementi nella vista.
-	 * 
+	 * restituire {@code true} in quanto non ci sono elementi nella collezione passata.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione di entry vuota
 	 * da passare come parametro al metodo {@code containsAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
 	 * restituito {@code true}, siccome la collezione è vuota e la vista non contiene elementi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code true}.
@@ -798,8 +804,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)} su una vista vuota con collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
@@ -807,23 +813,24 @@ public class TestEmptyEntrySet {
 	 * passata è {@code null} o se una entry della collezione ha chiave o valore {@code null}. Lancia, inoltre,
 	 * {@code ClassCastException} se un oggetto della collezione non implementa {@code HMap.HEntry} e quindi non
 	 * è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code containsAll(HCollection c)} lanci {@code NullPointerException} se gli viene
-	 * passata una collezione {@code null}.
-	 * 
+	 * Verifica che il metodo {@code containsAll(HCollection c)} lanci una {@code NullPointerException} quando gli viene passata
+	 * una collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una
-	 * collezione {@code null} da passare come parametro al metodo {@code containsAll(HCollection c)}.
-	 * 
+	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} e impostato a
+	 * {@code null} per rappresentare una collezione {@code null} da passare come parametro al metodo
+	 * {@code containsAll(HCollection c)}.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha
 	 * lanciato {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
@@ -836,8 +843,8 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)} su una vista vuota con collezione popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
@@ -845,24 +852,23 @@ public class TestEmptyEntrySet {
 	 * passata è {@code null} o se una entry della collezione ha chiave o valore {@code null}. Lancia, inoltre,
 	 * {@code ClassCastException} se un oggetto della collezione non implementa {@code HMap.HEntry} e quindi non
 	 * è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione non vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
-	 * restituire {@code false} in quanto non ci sono elementi nella vista.
-	 * 
+	 * Verifica che il metodo {@code containsAll(HCollection c)} restituisca {@code false} se gli viene passata una
+	 * collezione contenente generici elementi e se è invocato su una vista senza elementi.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
 	 * a una mappa vuota. Viene creata una nuova mappa con una entry generica (con chiave e valore di tipo {@code String})
 	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code containsAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * restituito {@code false}, siccome la collezione non è vuota e la vista non contiene elementi.
-	 * 
+	 * restituito {@code false}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code false}.
@@ -874,11 +880,11 @@ public class TestEmptyEntrySet {
 		HCollection populatedCollection = newEmptyMap.entrySet(); // ottiene una collezione con la entry appena aggiunta
 		assertFalse("La vista non dovrebbe contenere tutti gli elementi della collezione non vuota", entrySet.containsAll(populatedCollection));
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)} su una vista vuota con collezione con entry con chiave {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
@@ -886,24 +892,24 @@ public class TestEmptyEntrySet {
 	 * passata è {@code null} o se una entry della collezione ha chiave o valore {@code null}. Lancia, inoltre,
 	 * {@code ClassCastException} se un oggetto della collezione non implementa {@code HMap.HEntry} e quindi non
 	 * è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
 	 * senza elementi e gli viene passata una collezione con una entry con chiave {@code null} e valore di tipo {@code String}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
 	 * a una mappa vuota. Viene creata una nuova mappa con una entry con chiave {@code null} e valore di tipo {@code String}
 	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code containsAll(HCollection c)}.
 	 * Per istanziare una mappa che supporta chiavi e valori nulli, si utilizza la classe {@code SimpleHMapWithNulls}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
 	 * lanciato {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
@@ -915,11 +921,11 @@ public class TestEmptyEntrySet {
 		HCollection populatedCollection = populatedMap.entrySet();
 		entrySet.containsAll(populatedCollection); // lancia NullPointerException
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)} su una vista vuota con collezione con entry con valore {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
@@ -927,24 +933,24 @@ public class TestEmptyEntrySet {
 	 * passata è {@code null} o se una entry della collezione ha chiave o valore {@code null}. Lancia, inoltre,
 	 * {@code ClassCastException} se un oggetto della collezione non implementa {@code HMap.HEntry} e quindi non
 	 * è una entry della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
 	 * senza elementi e gli viene passata una collezione con una entry con chiave di tipo {@code String} e valore {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
 	 * a una mappa vuota. Viene creata una nuova mappa con una entry con chiave di tipo {@code String} e valore {@code null}
 	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code containsAll(HCollection c)}.
 	 * Per istanziare una mappa che supporta chiavi e valori nulli, si utilizza la classe {@code SimpleHMapWithNulls}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
 	 * lanciato {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
@@ -956,28 +962,36 @@ public class TestEmptyEntrySet {
 		HCollection populatedCollection = populatedMap.entrySet();
 		entrySet.containsAll(populatedCollection); // lancia NullPointerException
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#containsAll(HCollection c)} su una vista vuota con collezione con oggetto non-entry.
+	 *
+	 * <p>
+	 * <b>Test Case Design:</b>
+	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
+	 * della collezione specificata, {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione
+	 * passata è {@code null} o se una entry della collezione ha chiave o valore {@code null}. Lancia, inoltre,
+	 * {@code ClassCastException} se un oggetto della collezione non implementa {@code HMap.HEntry} e quindi non
+	 * è una entry della mappa.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
 	 * senza elementi e gli viene passata una collezione con un oggetto che non è una entry (non implementa {@code HMap.HEntry}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
 	 * a una mappa vuota. Viene creata una nuova mappa con una entry generica (con chiave e valore di tipo {@code String})
 	 * per generare una collezione con un oggetto che non è una entry (non implementa {@code HMap.HEntry}) (attraverso
 	 * la vista {@code values()}) da passare come parametro al metodo {@code containsAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
 	 * lanciato {@code ClassCastException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
@@ -992,27 +1006,27 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#addAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#addAll(HCollection c)} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code addAll(HCollection c)} è disabilitato per le viste di una mappa e lancia una
 	 * {@code UnsupportedOperationException} ogni volta che viene invocato, indipendentemente dal parametro passato.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code addAll(HCollection c)} lanci correttamente una {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code addAll(HCollection c)} è stato chiamato con un generico parametro {@code null} e ha lanciato una
 	 * {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code addAll(HCollection c)} dovrebbe lanciare una {@code UnsupportedOperationException}.
@@ -1024,31 +1038,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)} su una vista vuota con collezione vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)}funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
-	 * restituire {@code false} in quanto non ci sono elementi nella vista.
-	 * 
+	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando gli viene passata
+	 * una collezione vuota su una vista vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
+	 * restituire {@code false} in quanto non ci sono entry rimovibili dalla vista.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione di entry vuota
 	 * da passare come parametro al metodo {@code removeAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * restituito {@code false}, siccome la collezione è vuota e la vista non contiene elementi rimovibili.
-	 * 
+	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione vuota e non ha lanciato
+	 * eccezioni.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
@@ -1066,30 +1080,30 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)} su una vista vuota con collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} lanci {@code NullPointerException} se gli viene
-	 * passata una collezione {@code null}.
-	 * 
+	 * Verifica che il metodo {@code removeAll(HCollection c)} lanci una {@code NullPointerException} quando gli viene passata
+	 * una collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una
 	 * collezione {@code null} da passare come parametro al metodo {@code removeAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha
-	 * lanciato una {@code NullPointerException}.
-	 * 
+	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha lanciato una
+	 * {@code NullPointerException}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare una {@code NullPointerException}.
@@ -1102,31 +1116,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)} su una vista vuota con collezione popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione non vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
-	 * restituire {@code false} in quanto non ci sono elementi nella vista.
-	 * 
+	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando gli viene passata
+	 * una collezione non vuota su una vista vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
+	 * restituire {@code false} in quanto non ci sono entry rimovibili dalla vista.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry generica per generare una collezione di entry non
-	 * vuota da passare come parametro al metodo {@code containsAll(HCollection c)}.
-	 * 
+	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
+	 * collegata a una mappa vuota. Viene creata una nuova mappa a cui viene inserita una generica entry per
+	 * ottenere una collezione non vuota da passare come parametro al metodo {@code removeAll(HCollection c)}.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * restituito {@code false}, siccome la collezione non è vuota e la vista non contiene elementi rimovibili.
-	 * 
+	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione non vuota e non ha lanciato
+	 * eccezioni.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
@@ -1137,8 +1151,7 @@ public class TestEmptyEntrySet {
 		MapAdapter newEmptyMap = new MapAdapter(); // crea una nuova mappa vuota
 		newEmptyMap.put("key1", "value1"); // aggiunge una entry alla mappa, in modo da popolare la collezione
 		HCollection populatedCollection = newEmptyMap.entrySet(); // ottiene una collezione con la entry appena aggiunta
-		assertFalse("removeAll dovrebbe restituire false se la collezione è non vuota",
-				entrySet.removeAll(populatedCollection));
+		assertFalse("removeAll dovrebbe restituire false se la collezione è non vuota", entrySet.removeAll(populatedCollection));
 		assertTrue("La vista dovrebbe rimanere vuota", entrySet.isEmpty());
 		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, entrySet.size());
 		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
@@ -1147,199 +1160,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} non lanci {@code ClassCastException} se la collezione
-	 * passata non supporta i tipi degli elementi della vista. In questo caso gli passo una {@code keySet()} e una
-	 * {@code values()}. Non lancia ClassCastException, siccome la vista è vuota e non ci sono elementi incompatibili
-	 * con la collezione passata.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Vengono creati due nuovi riferimenti di tipo {@code HCollection} attraverso i metodi
-	 * {@code keySet()} e {@code values()} per generare le due altre collezioni e verificare che non lancino
-	 * {@code ClassCastException}, siccome supportano i tipi degli elementi della vista.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con le altre due collezioni che supportano i tipi degli
-	 * elementi della vista e ha restituito {@code false}, senza lanciare eccezioni.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
-	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
-	 */
-	@Test
-	public void testRemoveAllWithClassCastExceptionOnEmptyKeySet() {
-		MapAdapter newPopulatedMap = new MapAdapter();
-		newPopulatedMap.put("key1", "value1"); // aggiunge una entry generica
-		HCollection keySet = newPopulatedMap.keySet(); // ottiene la keySet della mappa
-		HCollection values = newPopulatedMap.values(); // ottiene la values della mappa
-		assertFalse("removeAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la keySet", entrySet.removeAll(keySet));
-		assertFalse("removeAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la values", entrySet.removeAll(values));
-		assertTrue("La vista dovrebbe rimanere vuota", entrySet.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, entrySet.size());
-		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
-		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
-	}
-	
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione con una entry con chiave {@code null} e valore di tipo {@code String}.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry con chiave {@code null} e valore di tipo {@code String}
-	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code removeAll(HCollection c)}.
-	 * Per istanziare una mappa che supporta chiavi e valori nulli, si utilizza la classe {@code SimpleHMapWithNulls}.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code removeAll(HCollection c)}. è stato chiamato con una collezione di entry vuota e ha
-	 * lanciato {@code NullPointerException}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
-	 */
-	@Ignore("Invalid test: does not throw NullPointerException")
-	@Test(expected = NullPointerException.class)
-	public void testRemoveAllPopulatedCollectionWithNullKeyOnEmptyEntrySet() {
-		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
-		populatedMap.put(null, "value");
-		HCollection populatedCollection = populatedMap.entrySet();
-		entrySet.removeAll(populatedCollection); // lancia NullPointerException
-	}
-	
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione con una entry con chiave di tipo {@code String} e valore {@code null}.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry con chiave di tipo {@code String} e valore {@code null}
-	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code removeAll(HCollection c)}.
-	 * Per istanziare una mappa che supporta chiavi e valori nulli, si utilizza la classe {@code SimpleHMapWithNulls}.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code removeAll(HCollection c)}. è stato chiamato con una collezione di entry vuota e ha
-	 * lanciato {@code NullPointerException}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
-	 */
-	@Ignore("Invalid test: does not throw NullPointerException")
-	@Test(expected = NullPointerException.class)
-	public void testRemoveAllPopulatedCollectionWithNullValueOnEmptyEntrySet() {
-		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
-		populatedMap.put("key", null);
-		HCollection populatedCollection = populatedMap.entrySet();
-		entrySet.removeAll(populatedCollection); // lancia NullPointerException
-	}
-	
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#removeAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione con un oggetto che non è una entry (non implementa {@code HMap.HEntry}).
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry generica (con chiave e valore di tipo {@code String})
-	 * per generare una collezione con un oggetto che non è una entry (non implementa {@code HMap.HEntry}) (attraverso
-	 * la vista {@code values()}) da passare come parametro al metodo {@code removeAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * lanciato {@code ClassCastException}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
-	 */
-	@Ignore("Invalid test: does not throw ClassCastException")
-	@Test(expected = ClassCastException.class)
-	public void testRemoveAllPopulatedCollectionWithNotEmptyOnEmptyEntrySet() {
-		MapAdapter newEmptyMap = new MapAdapter();
-		newEmptyMap.put("key1", "value1");
-		HCollection populatedCollection = newEmptyMap.values();
-		entrySet.removeAll(populatedCollection); // lancia ClassCastException
-	}
-
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)} su una vista vuota con collezione vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
-	 * restituire {@code false} in quanto non ci sono elementi nella vista.
-	 * 
+	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando gli viene passata
+	 * una collezione vuota su una vista vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
+	 * restituire {@code false} in quanto non ci sono entry rimovibili dalla vista.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione di entry vuota
+	 * collegata a una mappa vuota. Viene creata una nuova mappa vuota per generare una collezione vuota
 	 * da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * restituito {@code false}, siccome la collezione è vuota e la vista non contiene elementi rimovibili.
-	 * 
+	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione vuota e non ha lanciato
+	 * eccezioni.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
@@ -1357,30 +1202,30 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)} su una vista vuota con collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} lanci {@code NullPointerException} se la collezione
-	 * è {@code null}.
-	 * 
+	 * Verifica che il metodo {@code retainAll(HCollection c)} lanci una {@code NullPointerException} quando gli viene passata
+	 * una collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una
 	 * collezione {@code null} da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha
-	 * lanciato una {@code NullPointerException}.
-	 * 
+	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha lanciato una
+	 * {@code NullPointerException}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare una {@code NullPointerException}.
@@ -1393,31 +1238,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)} su una vista vuota con collezione popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
 	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione non vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
-	 * restituire {@code false} in quanto non ci sono elementi nella vista.
-	 * 
+	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando gli viene passata
+	 * una collezione non vuota su una vista vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
+	 * restituire {@code false} in quanto non ci sono entry rimovibili dalla vista.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
-	 * collegata a una mappa vuota. Viene creata una nuova mappa con una entry generica per generare una collezione di entry non
-	 * vuota da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * 
+	 * collegata a una mappa vuota. Viene creata una nuova mappa a cui viene inserita una generica entry per
+	 * ottenere una collezione non vuota da passare come parametro al metodo {@code retainAll(HCollection c)}.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * restituito {@code false}, siccome la collezione non è vuota e la vista non contiene elementi rimovibili.
-	 * 
+	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione non vuota e non ha lanciato
+	 * eccezioni.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
@@ -1435,197 +1280,30 @@ public class TestEmptyEntrySet {
 		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
 	}
 
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} non lanci {@code ClassCastException} se la collezione
-	 * passata non supporta i tipi degli elementi della vista. In questo caso gli passo una {@code keySet()} e una
-	 * {@code values()}. Non lancia ClassCastException, siccome la vista è vuota e non ci sono elementi incompatibili
-	 * con la collezione passata.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Vengono creati due nuovi riferimenti di tipo {@code HCollection} attraverso i metodi
-	 * {@code keySet()} e {@code values()} per generare le due altre collezioni e verificare che non lancino
-	 * {@code ClassCastException}, siccome supportano i tipi degli elementi della vista.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con le altre due collezioni che supportano i tipi degli
-	 * elementi della vista e ha restituito {@code false}, senza lanciare eccezioni.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
-	 * la mappa) dovrebbe rimanere vuota e con 0 elementi.
-	 */
-	@Test
-	public void testRetainAllWithClassCastExceptionOnEmptyKeySet() {
-		MapAdapter newPopulatedMap = new MapAdapter();
-		newPopulatedMap.put("key1", "value1"); // aggiunge una entry generica
-		HCollection keySet = newPopulatedMap.keySet(); // ottiene la keySet della mappa
-		HCollection values = newPopulatedMap.values(); // ottiene la values della mappa
-		assertFalse("retainAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la keySet", entrySet.retainAll(keySet));
-		assertFalse("retainAll dovrebbe restituire false se la vista è vuota, anche se gli elementi della vista non sono compatibili con la values", entrySet.retainAll(values));
-		assertTrue("La vista dovrebbe rimanere vuota", entrySet.isEmpty());
-		assertEquals("La vista dovrebbe rimanere con 0 elementi", 0, entrySet.size());
-		assertTrue("La mappa associata alla vista dovrebbe rimanere vuota", map.isEmpty());
-		assertEquals("La mappa associata alla vista dovrebbe rimanere con 0 elementi", 0, map.size());
-	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione con una entry con chiave {@code null} e valore di tipo {@code String}.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry con chiave {@code null} e valore di tipo {@code String}
-	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * Per istanziare una mappa che supporta chiavi e valori nulli, si utilizza la classe {@code SimpleHMapWithNulls}.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * lanciato {@code NullPointerException}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
-	 */
-	@Ignore("Invalid test: does not throw NullPointerException")
-	@Test(expected = NullPointerException.class)
-	public void testRetainAllPopulatedCollectionWithNullKeyOnEmptyEntrySet() {
-		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
-		populatedMap.put(null, "value");
-		HCollection populatedCollection = populatedMap.entrySet();
-		entrySet.retainAll(populatedCollection); // lancia NullPointerException
-	}
-
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione con una entry con chiave di tipo {@code String} e valore {@code null}.
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry con chiave di tipo {@code String} e valore {@code null}
-	 * per generare una collezione di entry non vuota da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * Per istanziare una mappa che supporta chiavi e valori nulli, si utilizza la classe {@code SimpleHMapWithNulls}.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * lanciato {@code NullPointerException}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
-	 */
-	@Ignore("Invalid test: does not throw NullPointerException")
-	@Test(expected = NullPointerException.class)
-	public void testRetainAllPopulatedCollectionWithNullValueOnEmptyEntrySet() {
-		SimpleHMapWithNulls populatedMap = new SimpleHMapWithNulls();
-		populatedMap.put("key", null);
-		HCollection populatedCollection = populatedMap.entrySet();
-		entrySet.retainAll(populatedCollection); // lancia NullPointerException
-	}
-
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#retainAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Test Case Design:</b>
-	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
-	 * collezione specificata. Restituisce {@code true} se la vista (e di conseguenza la mappa) è stata modificata,
-	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
-	 * 
-	 * <p>
-	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando è invocato su una vista
-	 * senza elementi e gli viene passata una collezione con un oggetto che non è una entry (non implementa {@code HMap.HEntry}).
-	 * 
-	 * <p>
-	 * <b>Pre-Condition:</b>
-	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter} collegata
-	 * a una mappa vuota. Viene creata una nuova mappa con una entry generica (con chiave e valore di tipo {@code String})
-	 * per generare una collezione con un oggetto che non è una entry (non implementa {@code HMap.HEntry}) (attraverso
-	 * la vista {@code values()}) da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * 
-	 * <p>
-	 * <b>Post-Condition:</b>
-	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione di entry vuota e ha
-	 * lanciato {@code ClassCastException}.
-	 * 
-	 * <p>
-	 * <b>Expected Results:</b>
-	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
-	 */
-	@Ignore("Invalid test: does not throw ClassCastException")
-	@Test(expected = ClassCastException.class)
-	public void testRetainAllPopulatedCollectionWithNotEntryOnEmptyEntrySet() {
-		MapAdapter newEmptyMap = new MapAdapter();
-		newEmptyMap.put("key1", "value1");
-		HCollection populatedCollection = newEmptyMap.values();
-		entrySet.retainAll(populatedCollection); // lancia ClassCastException
-	}
-
-	/**
-	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#clear()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#clear()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code clear()} rimuove tutte le entry dalla vista (e di conseguenza dalla mappa), rendendola vuota. Dopo
 	 * la chiamata a questo metodo, la vista (e di conseguenza anche la mappa) dovrebbe essere vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code clear()} invocato su una vista senza elementi mantenga la vista vuota, senza
 	 * lanciare eccezioni.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code clear()} è stato chiamato su una vista vuota e non ha lanciato eccezioni.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code clear()} dovrebbe mantenere la vista vuota e con 0 elementi, la mappa associata dovrebbe a sua
@@ -1642,14 +1320,14 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#hashCode()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#hashCode()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code hashCode()} restituisce un valore intero che rappresenta l'hash code della vista. Una vista vuota
 	 * dovrebbe restituire un hash code di 0, mentre una vista con degli elementi dovrebbe restituire un hash code ottenuto
 	 * dalla somma degli hash code degli elementi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code hashCode()} restituisca 0 quando invocato su una vista vuota.
@@ -1659,11 +1337,11 @@ public class TestEmptyEntrySet {
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code EntrySetAdapter} collegata a una mappa vuota
 	 * su cui invocare il metodo {@code hashCode(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code hashCode()} è stato chiamato su una vista vuota e ha restituito 0.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code hashCode()} dovrebbe restituire 0 per una vista vuota e l'hash code di una nuova vista vuota
@@ -1678,28 +1356,28 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)} su una vista vuota con oggetto {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code entrySet}
 	 * corrente. Due viste {@code entrySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code EntrySetAdapter} e contengono gli stessi elementi (stessi oggetti entry). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code EntrySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passato {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro {@code null} e ha restituito {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1711,31 +1389,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)} su una vista vuota con oggetto di tipo diverso.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code entrySet}
 	 * corrente. Due viste {@code entrySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code EntrySetAdapter} e contengono gli stessi elementi (stessi oggetti entry). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code EntrySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passato un oggetto
 	 * che non è una istanza di {@code EntrySetAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creato un nuovo oggetto di tipo {@code String} (non {@code EntrySetAdapter}) da passare
 	 * come parametro al metodo {@code equals(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code EntrySetAdapter} e ha restituito
 	 * {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1748,32 +1426,32 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)} su una vista vuota con altre viste.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code entrySet}
 	 * corrente. Due viste {@code entrySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code EntrySetAdapter} e contengono gli stessi elementi (stessi oggetti entry). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code EntrySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passata un'altra
 	 * view (di tipo {@code ValuesCollectionAdapter} o {@code EntrySetAdapter}) sempre collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Vengono creati due nuovi oggetti di tipo {@code ValuesCollectionAdapter} e
-	 * {@code EntrySetAdapter} da passare come parametro al metodo {@code equals(Object o)}, provenienti da una
+	 * {@code KeySetAdapter} da passare come parametro al metodo {@code equals(Object o)}, provenienti da una
 	 * nuova mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code EntrySetAdapter} e ha restituito
-	 * {@code false}.
-	 * 
+	 * Il metodo {@code equals(Object o)} è stato chiamato con un'altra vista non {@code EntrySetAdapter} come parametro
+	 * e ha restituito {@code false}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1788,31 +1466,31 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)} su una vista vuota con vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code entrySet}
 	 * corrente. Due viste {@code entrySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code EntrySetAdapter} e contengono gli stessi elementi (stessi oggetti entry). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code EntrySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata un'altra
 	 * istanza di {@code EntrySetAdapter} proveniente da una nuova mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota. Viene creata una nuova istanza di {@code EntrySetAdapter} collegata a una mappa vuota da passare
 	 * come parametro al metodo {@code equals(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code EntrySetAdapter} collegata a una
 	 * mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code true}.
@@ -1825,20 +1503,20 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)} su una vista vuota con vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code entrySet}
 	 * corrente. Due viste {@code entrySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code EntrySetAdapter} e contengono gli stessi elementi (stessi oggetti entry). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code EntrySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata un'altra
 	 * istanza di {@code EntrySetAdapter} proveniente da una nuova mappa non vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
@@ -1851,15 +1529,15 @@ public class TestEmptyEntrySet {
 	 * <li>con una entry con chiave e valore {@code null}</li>
 	 * </ul>
 	 * Per accettare chiavi e valori {@code null} si utilizza l'implementazione {@code SimpleHMapWithNulls} della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con tutte le nuove istanze di {@code EntrySetAdapter} collegate
 	 * ad una mappa non vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
-	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false} in tutte e tre i casi.
+	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false} in tutti e quattro i casi.
 	 */
 	@Test
 	public void testEqualsPopulatedEntrySetOnEmptyEntrySet() {
@@ -1874,7 +1552,7 @@ public class TestEmptyEntrySet {
 		populatedMap2.put("key", null);
 		HSet populatedEntrySet2 = populatedMap2.entrySet();
 		assertFalse("equals dovrebbe restituire false se gli viene passata una EntrySet con entry con chiave di tipo string e valore null", entrySet.equals(populatedEntrySet2));
-		
+
 		// Mappa con una entry con chiave null e valore di tipo String
 		SimpleHMapWithNulls populatedMap3 = new SimpleHMapWithNulls();
 		populatedMap3.put(null, "value");
@@ -1890,61 +1568,61 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#equals(Object o)} su una vista vuota con sé stessa.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code entrySet}
 	 * corrente. Due viste {@code entrySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code EntrySetAdapter} e contengono gli stessi elementi (stessi oggetti entry). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code EntrySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata la stessa
 	 * istanza di {@code EntrySetAdapter} su cui è stato invocato il metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con la stessa istanza di {@code EntrySetAdapter} su cui è stato
 	 * invocato il metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code true}.
 	 */
 	@Test
 	public void testEqualsSelfOnEmptyEntrySet() {
-		assertTrue("equals dovrebbe restituire true se gli viene passato se stesso", entrySet.equals(entrySet));
+		assertTrue("equals dovrebbe restituire true se gli viene passato sé stesso", entrySet.equals(entrySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetAdapter#toString()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetAdapter#toString()} su una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toString()} restituisce una rappresentazione in stringa della vista. Per una vista vuota,
 	 * dovrebbe restituire la stringa "[]".
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toString()} restituisca la rappresentazione corretta per una vista vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toString()} è stato chiamato su una vista vuota e ha restituito la stringa "[]".
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toString()} dovrebbe restituire la stringa "[]".
@@ -1961,27 +1639,27 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetIterator#hasNext()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetIterator#hasNext()} su un iteratore di una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code hasNext()} verifica se ci sono elementi successivi nell'iteratore. Per un iteratore
 	 * associato a una vista vuota, dovrebbe restituire {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code hasNext()} restituisca {@code false} per un iteratore associato a una vista vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota e dell'iteratore {@code EntrySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code hasNext()} è stato chiamato su un iteratore associato a una vista vuota e ha restituito
 	 * {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code hasNext()} dovrebbe restituire {@code false}.
@@ -1990,33 +1668,33 @@ public class TestEmptyEntrySet {
 	public void testHasNextOnEmptyEntrySetIterator() {
 		assertFalse("hasNext dovrebbe restituire false per un iteratore associato a una vista vuota", entrySetIterator.hasNext());
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetIterator#next()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetIterator#next()} su un iteratore di una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code next()} restituisce l'elemento successivo nell'iteratore. Per un iteratore associato a una
 	 * vista vuota, dovrebbe lanciare un'eccezione {@code java.util.NoSuchElementException} in quanto non c'è nessun
 	 * elemento da estrarre e il corrispettivo {@code hasNext()} dovrebbe restituire {@code false} (come verificato
 	 * nel test {@link #testHasNextOnEmptyEntrySetIterator()}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code next()} generi un'eccezione {@code java.util.NoSuchElementException} per un
 	 * iteratore associato a una vista vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota e dell'iteratore {@code EntrySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code next()} è stato chiamato su un iteratore associato a una vista vuota e ha lanciato
 	 * un'eccezione {@code java.util.NoSuchElementException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code next()} dovrebbe lanciare {@code java.util.NoSuchElementException}.
@@ -2028,30 +1706,30 @@ public class TestEmptyEntrySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.EntrySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.EntrySetIterator#remove()} su un iteratore di una vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. Per
 	 * un iteratore associato a una vista vuota, dovrebbe lanciare un'eccezione {@code myAdapter.IllegalStateException}
 	 * in quanto non c'è nessun elemento da rimuovere e il corrispettivo {@code next()} non si può chiamare perché
 	 * lancia un'eccezione (come verificato nel test {@link #testNextOnEmptyEntrySetIterator()}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} generi un'eccezione {@code myAdapter.IllegalStateException} per un
 	 * iteratore associato a una vista vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code EntrySetAdapter}
 	 * collegata a una mappa vuota e dell'iteratore {@code EntrySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove()} è stato chiamato su un iteratore associato a una vista vuota e ha lanciato
 	 * un'eccezione {@code myAdapter.IllegalStateException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove()} dovrebbe lanciare {@code myAdapter.IllegalStateException}.

@@ -1,6 +1,8 @@
+// Giacomo Simonetto - 2109923 - Secondo appello 2025 di Elementi di Ingegneria del Software
+
 /**
  * Pacchetto contenente le interfacce e le implementazioni necessarie per poter utilizzare le mappe di J2SE 1.4.2 in J2ME CLDC 1.1.
- * 
+ *
  * <p>
  * Sono contenute le seguenti interfacce:
  * <ul>
@@ -10,7 +12,7 @@
  *   <li> l'interfaccia {@link myAdapter.HMap.HEntry} per rappresentare le entry di una mappa, compliant con J2SE 1.4.2;</li>
  *   <li> l'interfaccia {@link myAdapter.HIterator} per fornire un iteratore su collezioni, compliant con J2SE 1.4.2.</li>
  * </ul>
- * 
+ *
  * <p>
  * Sono contenute le seguenti classi che implementano le interfacce sopra elencate:
  * <ul>
@@ -25,11 +27,11 @@
  *   <li> la classe {@link myAdapter.MapAdapter.ValuesCollectionIterator} che implementa l'interfaccia {@link myAdapter.HIterator} ed estende {@link myAdapter.MapAdapter.AbstractIterator}, gestisce l'iteratore per la vista per valori della mappa;</li>
  *   <li> la classe {@link myAdapter.MapAdapter.EntrySetIterator} che implementa l'interfaccia {@link myAdapter.HIterator} ed estende {@link myAdapter.MapAdapter.AbstractIterator}, gestisce l'iteratore per la vista per entry della mappa.</li>
  * </ul>
- * 
+ *
  * Per il corretto funzionamento di queste classi in CLDC 1.1 sono state implementate le seguenti classi di eccezione:
  * <ul>
  *   <li> la classe {@link myAdapter.UnsupportedOperationException} che estende {@link java.lang.RuntimeException} e rappresenta un'eccezione per operazioni non supportate ({@code add(Object o)} e {@code addAll(HCollection c)} delle viste);</li>
- *   <li> la classe {@link myAdapter.IllegalStateException} che estende {@link java.lang.RuntimeException} e rappresenta un'eccezione per operazioni non eseguibili su oggetti per stato illegale ({@code next()} degli iteratori).</li>
+ *   <li> la classe {@link myAdapter.IllegalStateException} che estende {@link java.lang.RuntimeException} e rappresenta un'eccezione per operazioni non eseguibili su oggetti per stato illegale ({@code remove()} degli iteratori).</li>
  * </ul>
  */
 package myAdapter;

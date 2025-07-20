@@ -268,7 +268,7 @@ public interface HMap {
 	 * dall'iteratore di questa vista-collezione. Questi oggetti {@code HMap.Entry} sono validi solo per la durata
 	 * dell'iterazione; il comportamento di una entry di mappa non è definito se la mappa sottostante è stata modificata
 	 * durante l'iterazione in qualsiasi modo diverso dall'operazione {@code setValue} sulla entry di mappa.
-	 * 
+	 *
 	 * @see HMap
 	 * @see HMap#entrySet()
 	 */
@@ -308,12 +308,12 @@ public interface HMap {
 		 * Confronta l'oggetto specificato con questa entry per l'uguaglianza. Restituisce {@code true} se l'oggetto
 		 * dato è anch'esso una entry di mappa e le due entry rappresentano la stessa mappatura. Più formalmente, due
 		 * entry {@code e1} ed {@code e2} rappresentano la stessa mappatura se
-		 * 
+		 *
 		 * <pre>
 		 *  (e1.getKey() == null ? e2.getKey() == null : e1.getKey().equals(e2.getKey())) &amp;&amp;
 		 * (e1.getValue() == null ? e2.getValue() == null : e1.getValue().equals(e2.getValue()))
 		 * </pre>
-		 * 
+		 *
 		 * Questo assicura che il metodo {@code equals} funzioni correttamente tra diverse implementazioni
 		 * dell'interfaccia {@code HMap.HEntry}.
 		 *
@@ -326,12 +326,12 @@ public interface HMap {
 		/**
 		 * Restituisce il valore hash code per questa entry di mappa. L'hash code di una entry di mappa {@code e}
 		 * è definito come:
-		 * 
+		 *
 		 * <pre>
 		 *  (e.getKey() == null ? 0 : e.getKey().hashCode()) ^
 		 * (e.getValue() == null ? 0 : e.getValue().hashCode())
 		 * </pre>
-		 * 
+		 *
 		 * Questo assicura che {@code e1.equals(e2)} implichi che {@code e1.hashCode()==e2.hashCode()} per qualsiasi
 		 * due entry {@code e1} ed {@code e2}.
 		 *

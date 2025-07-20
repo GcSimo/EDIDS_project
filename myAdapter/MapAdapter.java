@@ -13,12 +13,12 @@ import java.util.Hashtable; // classe hashtable con metodi compliant con J2ME CL
 /**
  * Adapter che utilizza una Hashtable di J2ME CLDC 1.1 come sottostruttura per implementare i metodi dell'interfaccia
  * Map di J2SE 1.4.2 definita in {@link HMap}.
- * 
+ *
  * <p>
  * Siccome la hashtable di CLDC 1.1 non supporta chiavi o valori {@code null}, è stato scelto che nemmeno l'adapter
  * supporta chiavi o valori {@code null}. Nel caso in cui si utilizzano chiavi o valori {@code null}, viene lanciata
  * una {@code NullPointerException}.
- * 
+ *
  * <p>
  * La mappa possiede due costruttori:
  * <ul>
@@ -28,7 +28,7 @@ import java.util.Hashtable; // classe hashtable con metodi compliant con J2ME CL
  * Le mappe, seppur utilizzando istanze diverse della sottostruttura hashtable, contengono i riferimenti agli stessi
  * oggetti chiave e valore. Se si modifica la chiave (non raccomandato) o valore di una mappatura chiave-valore da
  * una mappa, l'altra mappa ne vedrà il cambiamento. Questo è dovuto alla gestione di Java degli oggetti come riferimenti.
- * 
+ *
  * <p>
  * La mappa fornisce tre viste backend per accedere alle chiavi, ai valori e alle mappature contenute nella mappa:
  * <ul>
@@ -56,7 +56,7 @@ import java.util.Hashtable; // classe hashtable con metodi compliant con J2ME CL
  * <p>
  * Siccome in CLDC 1.1 non sono supportati i generics, la maggior parte dei metodi della mappa non possono controllare
  * il tipo degli oggetti chiave e valore e di conseguenza non potranno lanciare una {@code ClassCastException}.
- * 
+ *
  * @see HMap
  * @see HMap.HEntry
  * @see HCollection
@@ -71,7 +71,7 @@ public class MapAdapter implements HMap {
 
 	// ****************************************************************************************************************
 	// -------------------------------------- Costruttori della classe MapAdapter -------------------------------------
-	
+
 	/**
 	 * Costruttore vuoto, crea una nuova mappa vuota.
 	 */
@@ -88,8 +88,8 @@ public class MapAdapter implements HMap {
 	 * della chiave o del valore), l'altra mappa ne vedrà il cambiamento.
 	 *
 	 * @param m mappa da cui copiare le mappature chiave-valore.
-	 * @throws NullPointerException se la mappa passata come parametro è {@code null}, o se una delle entry nella
-	 * mappa {@code m} ha chiave o valore {@code null}
+	 * @throws NullPointerException se la mappa passata come parametro è {@code null} o se una delle entry in tale
+	 * mappa ha chiave o valore {@code null}
 	 * @throws IllegalArgumentException se la mappa passata come parametro, contiene una mappatura che ha come chiave
 	 * la mappa su cui si sta creando l'adapter.
 	 */
@@ -153,7 +153,7 @@ public class MapAdapter implements HMap {
 	 * Restituisce {@code true} se la mappa contiene una o più chiavi che vengono mappate al valore passato come
 	 * parametro. La ricerca impiega tempo lineare nella dimensione della mappa. Se il valore passato è {@code null},
 	 * il metodo lancia l'eccezione {@code NullPointerException}.
-	 * 
+	 *
 	 * @param value valore la cui presenza in questa mappa deve essere testata.
 	 * @return {@code true} se la mappa ha almeno una mappatura che coinvolge il valore specificato, {@code false} altrimenti.
 	 * @throws NullPointerException se il valore passato è {@code null}.
@@ -188,7 +188,7 @@ public class MapAdapter implements HMap {
 	 * la chiave non è presente il metodo restituisce {@code null}. Per scelta implementativa la mappa non supporta
 	 * chiavi o valori {@code null}, per cui se la chiave o il valore sono {@code null}, il metodo lancia
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * @param key chiave da associare al nuovo valore da inserire nella mappa.
 	 * @param value nuovo valore da associare alla chiave specificata.
 	 * @return valore precedentemente associato alla chiave specificata (se la chiave è già presente), altrimenti
@@ -231,10 +231,10 @@ public class MapAdapter implements HMap {
 	 * della mappa su cui il metodo è invocato. L'effetto di questa chiamata è equivalente a quello di chiamare
 	 * {@link #put(Object, Object) put(k, v)} su questa mappa una volta per ogni mappatura dalla chiave {@code k} al
 	 * valore {@code v} nella mappa specificata.
-	 * 
+	 *
 	 * @param m mappa da cui importare le mappature chiave-valore.
-	 * @throws NullPointerException se la mappa {@code m} è {@code null}, oppure se una delle entry da inserire possiede
-	 * chiave o valore {@code null}.
+	 * @throws NullPointerException se la mappa passata come parametro è {@code null} o se una delle entry in tale
+	 * mappa ha chiave o valore {@code null}
 	 * @throws IllegalArgumentException se una delle entry da inserire ha come chiave la mappa su cui il metodo è invocato.
 	 */
 	public void putAll(HMap m) {
@@ -271,7 +271,7 @@ public class MapAdapter implements HMap {
 	 * il comportamento dell'iteratore non è definito. Il set restituito supporta la rimozione delle chiavi tramite
 	 * {@code Iterator.remove()}, {@code HSet.remove()}, {@code HSet.removeAll()}, {@code HSet.retainAll()}, ma non
 	 * l'aggiunta di nuove chiavi, per cui i metodi {@code HSet.add()} e {@code Hset.addAll()} sono disabilitati.
-	 * 
+	 *
 	 * @return un oggetto {@code Hset} view con le chiavi delle mappature chiave-valore contenute nella mappa
 	 */
 	public HSet keySet() {
@@ -287,7 +287,7 @@ public class MapAdapter implements HMap {
 	 * La collection restituita supporta la rimozione dei valori tramite {@code Iterator.remove()},
 	 * {@code HCollection.remove()}, {@code HCollection.removeAll()}, {@code HCollection.retainAll()}, ma non l'aggiunta
 	 * di nuove chiavi, per cui i metodi {@code HCollection.add()} e {@code HCollection.addAll()} sono disabilitati.
-	 * 
+	 *
 	 * @return un oggetto {@code HCollection} view con i valori (eventualmente duplicati) delle mappature chiave-valore
 	 * contenute nella mappa
 	 */
@@ -303,7 +303,7 @@ public class MapAdapter implements HMap {
 	 * comportamento dell'iteratore non è definito. Il set restituito supporta la rimozione delle entry tramite
 	 * {@code Iterator.remove()}, {@code HSet.remove()}, {@code HSet.removeAll()}, {@code HSet.retainAll()}, ma non
 	 * l'aggiunta di nuove entry, per cui i metodi {@code HSet.add()} e {@code Hset.addAll()} sono disabilitati.
-	 * 
+	 *
 	 * @return un oggetto {@code Hset} view con le mappature chiave-valore contenute nella mappa.
 	 */
 	public HSet entrySet() {
@@ -320,7 +320,7 @@ public class MapAdapter implements HMap {
 	 *   (e1.entrySet().equals(e2.entrySet()))
 	 * </pre>
 	 * In questo modo il metodo è indipendente dal tipo di implementazione delle due mappe da confrontare.
-	 * 
+	 *
 	 * @param o oggetto da confrontare con la mappa da cui è invocato il metodo.
 	 * @return {@code true} se {@code o} è una mappa e contiene le stesse mappature chiave-valore della mappa da cui
 	 * è invocato il metodo, {@code false} altrimenti.
@@ -384,23 +384,23 @@ public class MapAdapter implements HMap {
 	/**
 	 * Classe annidata per la gestione delle mappature chiave-valore (chiamate anche entry) all'interno della
 	 * classe {@link MapAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * L'unico modo per ottenere un'istanza di questa classe è attraverso l'iteratore della vista {@code entrySet}
 	 * ottenuta dal metodo {@link MapAdapter#entrySet()}. Gli oggetti {@code EntryAdapter} sono validi solo per la
 	 * durata dell'iterazione e non riflettono eventuali modifiche alla mappa.
-	 * 
+	 *
 	 * <p>
 	 * Il comportamento dei metodi invocati su una istanza EntryAdapter non è definito se la mappa a cui appartiene
 	 * viene modificata durante l'iterazione in qualsiasi modo diverso dall'operazione {@code setValue} sulla entry
 	 * della mappa. Bisogna fare particolare attenzione al duplice comportamento del metodo {@code setValue} in base
 	 * alla situazione in cui la entry è stata rimossa o meno dalla mappa.
-	 * 
+	 *
 	 * <p>
 	 * Siccome la {@code MapAdapter} non supporta chiavi o valori {@code null}, per coerenza implementativa, nemmeno
 	 * la classe {@code EntryAdapter} permette chiavi o valori {@code null}. Se si prova a creare una entry con chiave
 	 * o valore {@code null}, viene lanciata un'eccezione {@link NullPointerException}.
-	 * 
+	 *
 	 * @see MapAdapter
 	 * @see MapAdapter#entrySet()
 	 * @see EntryAdapter#setValue(Object)
@@ -421,7 +421,7 @@ public class MapAdapter implements HMap {
 		 * Costruisce un oggetto {@code EntryAdapter} inizializzando chiave e valore secondo i parametri passati al
 		 * metodo. Se vengono passati chiavi o valori {@code null}, viene lanciata l'eccezione
 		 * {@link NullPointerException}, in conformità con le restrizioni della classe {@code MapAdapter}.
-		 * 
+		 *
 		 * @param key chiave da inserire nella entry.
 		 * @param value valore da inserire nella entry.
 		 * @throws NullPointerException se la chiave o il valore passati sono {@code null}.
@@ -430,7 +430,7 @@ public class MapAdapter implements HMap {
 			// controllo che chiave e valore non siano null
 			if (key == null || value == null)
 				throw new NullPointerException();
-			
+
 			// inizializzo le variabili d'istanza
 			this.key = key;
 			this.value = value;
@@ -476,7 +476,7 @@ public class MapAdapter implements HMap {
 		 *   <li>se la entry è stata rimossa dalla mappa, il metodo modifica il valore solo nell'istanza della entry, ma
 		 *   non nella mappa, e restituisce il valore precedentemente memorizzato nella entry.</li>
 		 * </ul>
-		 * 
+		 *
 		 * @param value nuovo valore da memorizzare nella entry al posto di quello vecchio.
 		 * @return valore precedentemente memorizzato nella entry.
 		 * @throws NullPointerException se il valore passato è {@code null}.
@@ -485,7 +485,7 @@ public class MapAdapter implements HMap {
 			// verifico che il nuovo valore da inserire non sia null
 			if (value == null)
 				throw new NullPointerException();
-			
+
 			// se la entry è ancora all'interno della mappa
 			if (hashtable.containsKey(key) && hashtable.get(key).equals(this.value)) {
 				this.value = value;
@@ -508,11 +508,11 @@ public class MapAdapter implements HMap {
 		 * <pre>
 		 * e2 != null &amp;&amp; e1.getKey().equals(e2.getKey()) &amp;&amp; e1.getValue().equals(e2.getValue())
 		 * </pre>
-		 * 
+		 *
 		 * <p>
 		 * Si osserva che la condizione di uguaglianza è stata semplificata rispetto a quella prevista dall'interfaccia
 		 * in quanto la entry su cui si invoca il metodo non può avere chiave o valore {@code null}.
-		 * 
+		 *
 		 * <p>
 		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
 		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
@@ -529,7 +529,7 @@ public class MapAdapter implements HMap {
 			// verifico che l'oggetto passato sia una entry
 			if (!(o instanceof HEntry))
 				return false;
-				
+
 			// si effettua un casting lecito (Object -> HEntry) perché il controllo è stato effettuato appena sopra
 			HEntry e = (HEntry) o;
 
@@ -543,11 +543,11 @@ public class MapAdapter implements HMap {
 		 * <pre>
 		 * e.getKey().hashCode()) ^ e.getValue().hashCode())
 		 * </pre>
-		 * 
+		 *
 		 * <p>
 		 * Si osserva che l'operazione di calcolo è stata semplificata rispetto a quella prevista dall'interfaccia
 		 * in quanto la entry su cui si invoca il metodo non può avere chiave o valore {@code null}.
-		 * 
+		 *
 		 * @return il valore hash code della entry.
 		 */
 		public int hashCode() {
@@ -568,19 +568,19 @@ public class MapAdapter implements HMap {
 	/**
 	 * Classe astratta annidata contenente i metodi comuni delle tre viste della classe {@link MapAdapter} restituite
 	 * dai metodi {@link MapAdapter#keySet()}, {@link MapAdapter#values()} e {@link MapAdapter#entrySet()}.
-	 * 
+	 *
 	 * <p>
 	 * Per una migliore organizzazione e manutenibilità del codice, i metodi comuni delle tre viste sono stati
 	 * spostati in questa classe astratta. Gli unici metodi che devono essere implementati dalle classi concrete
 	 * sono {@code contains(Object o)}, {@code iterator()} e {@code remove(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * Le tre viste della mappa (keySet, values, entrySet) sono backed views della mappa, ovvero sono viste che
 	 * riflettono direttamente il contenuto della mappa sottostante. Pertanto, le modifiche apportate alla vista
 	 * si riflettono nella mappa e viceversa. Da notare che si avrà un comportamento indefinito se la mappa viene
 	 * modificata strutturalmente (ad esempio, se vengono aggiunti o rimossi elementi) mentre si sta iterando su
 	 * una delle viste.
-	 * 
+	 *
 	 * <p>
 	 * Per come sono state definite le viste, i metodi {@code add(Object o)} e {@code addAll(HCollection c)} non
 	 * sono supportati e lanciano un'eccezione {@code UnsupportedOperationException} se invocati.
@@ -625,7 +625,7 @@ public class MapAdapter implements HMap {
 		/**
 		 * Restituisce un array contenente tutti gli elementi della vista. L'ordine degli elementi nell'array corrisponde
 		 * all'ordine in cui gli elementi vengono restituiti dall'iteratore della vista.
-		 * 
+		 *
 		 * <p>
 		 * L'array restituito è "sicuro" in quanto nessun riferimento di esso è mantenuto dalla vista (e di conseguenza
 		 * dalla mappa). Il chiamante è quindi libero di modificare l'array restituito, ma non gli elementi contentuti.
@@ -657,7 +657,7 @@ public class MapAdapter implements HMap {
 		 * specificato come parametro. Siccome le reflection di Java non sono disponibili in J2ME CLDC 1.1, non è
 		 * possibile creare dinamicamente un array del tipo runtime dell'array passato come parametro. Per qesto motivo,
 		 * se l'array passato come parametro non è abbastanza grande, viene allocato un nuovo array di {@code Object}.
-		 * 
+		 *
 		 * <p>
 		 * Come per il metodo {@code toArray}, l'ordine degli elementi nell'array corrisponde all'ordine in cui gli
 		 * elementi vengono restituiti dall'iteratore della vista. Inoltre , l'array restituito è "sicuro" in quanto
@@ -830,11 +830,11 @@ public class MapAdapter implements HMap {
 			HIterator i = this.iterator();
 			while (i.hasNext())
 				hash += i.next().hashCode();
-			
+
 			// restituisco il codice hash
 			return hash;
 		}
-		
+
 		/**
 		 * Restituisce una stringa che rappresenta la vista. La stringa è formattata come una lista di elementi
 		 * separati da virgole, racchiusi tra parentesi graffe. Ad esempio, se la vista contiene gli elementi
@@ -866,21 +866,21 @@ public class MapAdapter implements HMap {
 /* ================================================================================================================= *\
 |* ========================================= CLASSE ANNIDATA KeySetAdapter ========================================= *|
 \* ================================================================================================================= */
-	
+
 	/**
 	 * Classe astratta annidata contenente i metodi specifici della vista keySet della classe {@link MapAdapter}
 	 * restituita dal metodo {@link MapAdapter#keySet()}.
-	 * 
+	 *
 	 * <p>
 	 * Gli unici metodi che devono essere implementati sono {@code contains(Object o)}, {@code iterator()} e
 	 * {@code remove(Object o)}, gli altri metodi sono già implementati nella classe {@code AbstractViewAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * La vista {@code keySet} è una backed view della mappa, ovvero riflette direttamente il contenuto della mappa
 	 * sottostante. Pertanto, le modifiche apportate alla vista si riflettono nella mappa e viceversa. Da notare che
 	 * si avrà un comportamento indefinito se la mappa viene modificata strutturalmente (ad esempio, se vengono
 	 * aggiunti o rimossi elementi) mentre si sta iterando su una delle viste.
-	 * 
+	 *
 	 * <p>
 	 * Per come sono state definite le viste, i metodi {@code add(Object o)} e {@code addAll(HCollection c)} non
 	 * sono supportati e lanciano un'eccezione {@code UnsupportedOperationException} se invocati.
@@ -913,7 +913,7 @@ public class MapAdapter implements HMap {
 			// verifico che l'oggetto passato non sia null
 			if (o == null)
 				throw new NullPointerException();
-			
+
 			// richiamo il corrispettivo metodo della hashtable e ne restituisco il risultato
 			return hashtable.containsKey(o);
 		}
@@ -950,14 +950,14 @@ public class MapAdapter implements HMap {
 		/**
 		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
 		 * {@code o} è una keySet (implementa {@code KeySetAdapter}) ed entrambe le viste contengono gli stessi elementi,
-		 * allora il metodo restituisce {@code true}, altrimenti {@code false}. 
-		 * 
+		 * allora il metodo restituisce {@code true}, altrimenti {@code false}.
+		 *
 		 * <p>
 		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
 		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
 		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
 		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
-		 * 
+		 *
 		 * <p>
 		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
 		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
@@ -990,7 +990,7 @@ public class MapAdapter implements HMap {
 			try {
 				areEqual = this.size() == v.size() && this.containsAll(v);
 			} catch (NullPointerException | ClassCastException e) {
-				return false; 
+				return false;
 			}
 			return areEqual;
 		}
@@ -999,22 +999,22 @@ public class MapAdapter implements HMap {
 /* ================================================================================================================= *\
 |* ==================================== CLASSE ANNIDATA ValuesCollectionAdapter ==================================== *|
 \* ================================================================================================================= */
-	
+
 	/**
 	 * Classe astratta annidata contenente i metodi specifici della vista values della classe {@link MapAdapter}
 	 * restituita dal metodo {@link MapAdapter#values()}.
 	 *
-	 * 
+	 *
 	 * <p>
 	 * Gli unici metodi che devono essere implementati sono {@code contains(Object o)}, {@code iterator()} e
 	 * {@code remove(Object o)}, gli altri metodi sono già implementati nella classe {@code AbstractViewAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * La vista {@code values} è una backed view della mappa, ovvero riflette direttamente il contenuto della mappa
 	 * sottostante. Pertanto, le modifiche apportate alla vista si riflettono nella mappa e viceversa. Da notare che
 	 * si avrà un comportamento indefinito se la mappa viene modificata strutturalmente (ad esempio, se vengono
 	 * aggiunti o rimossi elementi) mentre si sta iterando su una delle viste.
-	 * 
+	 *
 	 * <p>
 	 * Per come sono state definite le viste, i metodi {@code add(Object o)} e {@code addAll(HCollection c)} non
 	 * sono supportati e lanciano un'eccezione {@code UnsupportedOperationException} se invocati.
@@ -1093,14 +1093,14 @@ public class MapAdapter implements HMap {
 		/**
 		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
 		 * {@code o} è una values (implementa {@code ValuesCollectionAdapter}) ed entrambe le viste contengono gli stessi elementi,
-		 * allora il metodo restituisce {@code true}, altrimenti {@code false}. 
-		 * 
+		 * allora il metodo restituisce {@code true}, altrimenti {@code false}.
+		 *
 		 * <p>
 		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
 		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
 		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
 		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
-		 * 
+		 *
 		 * <p>
 		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
 		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
@@ -1163,17 +1163,17 @@ public class MapAdapter implements HMap {
 	/**
 	 * Classe astratta annidata contenente i metodi specifici della vista entrySet della classe {@link MapAdapter}
 	 * restituita dal metodo {@link MapAdapter#entrySet()}.
-	 * 
+	 *
 	 * <p>
 	 * Gli unici metodi che devono essere implementati sono {@code contains(Object o)}, {@code iterator()} e
 	 * {@code remove(Object o)}, gli altri metodi sono già implementati nella classe {@code AbstractViewAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * La vista {@code entrySet} è una backed view della mappa, ovvero riflette direttamente il contenuto della mappa
 	 * sottostante. Pertanto, le modifiche apportate alla vista si riflettono nella mappa e viceversa. Da notare che
 	 * si avrà un comportamento indefinito se la mappa viene modificata strutturalmente (ad esempio, se vengono
 	 * aggiunti o rimossi elementi) mentre si sta iterando su una delle viste.
-	 * 
+	 *
 	 * <p>
 	 * Per come sono state definite le viste, i metodi {@code add(Object o)} e {@code addAll(HCollection c)} non
 	 * sono supportati e lanciano un'eccezione {@code UnsupportedOperationException} se invocati.
@@ -1212,10 +1212,10 @@ public class MapAdapter implements HMap {
 			// verifico che l'oggetto passato sia una entry
 			if (!(o instanceof HEntry))
 				throw new ClassCastException();
-			
+
 			// si effettua un casting lecito (Object -> HEntry) perché il controllo è stato effettuato appena sopra
 			HEntry e = (HEntry) o;
-			
+
 			// verifico che la entry passata non abbia chiave o valore null, in conformità con le specifiche della mappa
 			if (e.getKey() == null || e.getValue() == null)
 				throw new NullPointerException();
@@ -1262,14 +1262,14 @@ public class MapAdapter implements HMap {
 		/**
 		 * Confronta la vista da cui è invocato il metodo con l'oggetto {@code o} passato come parametro. Se l'oggetto
 		 * {@code o} è una entrySet (implementa {@code EntrySetAdapter}) ed entrambe le viste contengono gli stessi elementi,
-		 * allora il metodo restituisce {@code true}, altrimenti {@code false}. 
-		 * 
+		 * allora il metodo restituisce {@code true}, altrimenti {@code false}.
+		 *
 		 * <p>
 		 * Si osserva che la condizione di uguaglianza è basata sul numero di elementi e sulla presenza di tutti gli
 		 * elementi della vista {@code o} nella vista da cui è invocato il metodo. Il metodo non è stato implementato
 		 * nella classe {@code AbstractViewAdapter} in modo da evitare che restituisca {@code true} se le due viste
 		 * contengono gli stessi elementi, ma provengano da contesti diversi (es, {@code keySet()} e {@code values()}).
-		 * 
+		 *
 		 * <p>
 		 * Si osserva che il metodo non lancia {@code NullPointerException} se l'oggetto passato come parametro è
 		 * {@code null}, ma restituisce semplicemente {@code false}, in conformità con le specifiche dell'interfaccia.
@@ -1302,7 +1302,7 @@ public class MapAdapter implements HMap {
 			try {
 				areEqual = this.size() == v.size() && this.containsAll(v);
 			} catch (NullPointerException | ClassCastException e) {
-				return false; 
+				return false;
 			}
 			return areEqual;
 		}
@@ -1312,11 +1312,11 @@ public class MapAdapter implements HMap {
 /* ================================================================================================================= *\
 |* =================================== CLASSE ASTRATTA ANNIDATA AbstractIterator =================================== *|
 \* ================================================================================================================= */
-	
+
 	/**
 	 * Classe astratta annidata contenente i metodi comuni dei tre iteratori delle tre viste {@code keySet},
 	 * {@code values} e {@code entrySet} della classe {@link MapAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * Per una migliore organizzazione e manutenibilità del codice, i metodi comuni dei tre iteratori sono stati
 	 * spostati in questa classe astratta. L'unico metodo che deve essere implementato dalle classi concrete
@@ -1365,7 +1365,7 @@ public class MapAdapter implements HMap {
 		 * chiamato solo una volta per ogni chiamata a {@code next}. Il comportamento di un iteratore non è specificato se
 		 * la collezione sottostante viene modificata durante l'iterazione in qualsiasi modo diverso dalla chiamata di
 		 * questo metodo.
-		 * 
+		 *
 		 * @throws IllegalStateException se il metodo {@code next} non è ancora stato chiamato, o il metodo {@code remove}
 		 * è già stato chiamato dopo l'ultima chiamata al metodo {@code next}.
 		 */
@@ -1374,7 +1374,7 @@ public class MapAdapter implements HMap {
 			// lancio IllegalStateException
 			if (lastExtracted == null)
 				throw new IllegalStateException();
-			
+
 			// rimuovo l'ultimo elemento estratto dalla mappa, se non è null
 			hashtable.remove(lastExtracted);
 
@@ -1387,11 +1387,11 @@ public class MapAdapter implements HMap {
 /* ================================================================================================================= *\
 |* ======================================== CLASSE ANNIDATA KeySetIterator ========================================= *|
 \* ================================================================================================================= */
-	
+
 	/**
 	 * Classe annidata contenente i metodi specifici dell'iteratore per la vista {@code keySet} della classe
 	 * {@link MapAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * L'unico metodo che deve essere implementato dalla classe concreta è {@code next()}, gli altri sono già
 	 * stati implementati nella classe {@code AbstractIterator}.
@@ -1431,7 +1431,7 @@ public class MapAdapter implements HMap {
 /* ================================================================================================================= *\
 |* =================================== CLASSE ANNIDATA ValuesCollectionIterator ==================================== *|
 \* ================================================================================================================= */
-	
+
 	/**
 	 * Classe annidata contenente i metodi specifici dell'iteratore per la vista {@code values} della classe
 	 * {@link MapAdapter}.
@@ -1475,7 +1475,7 @@ public class MapAdapter implements HMap {
 /* ================================================================================================================= *\
 |* ======================================= CLASSE ANNIDATA EntrySetIterator ======================================== *|
 \* ================================================================================================================= */
-	
+
 	/**
 	 * Classe annidata contenente i metodi specifici dell'iteratore per la vista {@code entrySet} della classe
 	 * {@link MapAdapter}.

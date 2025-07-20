@@ -23,38 +23,43 @@ import static org.junit.Assert.*;
  * <b>Summary:</b>
  * Classe contenente una suite di test per verificare il comportamento di {@link myAdapter.MapAdapter.KeySetAdapter},
  * quando proviene da una mappa popolata. Sono testati tutti i metodi implementati dalla vista, assicurando che non
- * lancino eccezioni inattese e restituiscano risultati corretti. Sono inoltre testati i metodi dell'iteratore associato
- * alla vista, per garantire che funzionino correttamente anche su una vista popolata.
- * 
+ * lancino eccezioni inattese e restituiscano risultati corretti. Sono inoltre testati i metodi dell'iteratore
+ * {@link myAdapter.MapAdapter.KeySetIterator} associato alla vista, per garantire che funzionino correttamente
+ * anche su una vista popolata.
+ *
  * <p>
  * <b>Test Case Design:</b>
- * La motivazione di questa suite è garantire che la classe {@link myAdapter.MapAdapter.KeySetAdapter} e il relativo
- * iteratore {@link myAdapter.MapAdapter.KeySetIterator} gestiscano correttamente i casi limite e le operazioni collegate
- * ad una mappa popolata, ovvero nell'utilizzo concreto di tale struttura.
- * 
+ * La motivazione di questa suite è garantire che la vista e il relativo iteratore gestiscano correttamente i casi
+ * limite e le operazioni collegate ad una mappa popolata, ovvero nell'utilizzo concreto di tale struttura
+ *
  * <p>
- * Non esiste un ordinamento specifico dei test. Nella loro implementazione all'interno del file sorgente si trovano
- * prima i test eseguiti sui metodi della vista e successivamente quelli eseguiti sui metodi dell'iteratore.
- * I test sono comunque ordinati secondo l'ordinamento dei corrispettivi metodi testati nella documentazione
- * delle classi {@link myAdapter.MapAdapter.AbstractViewAdapter}, {@link myAdapter.MapAdapter.KeySetAdapter},
- * {@link myAdapter.MapAdapter.AbstractIterator} e {@link myAdapter.MapAdapter.KeySetIterator}.
- * 
+ * I test sono divisi in due gruppi: prima i test eseguiti sui metodi della vista e successivamente quelli eseguiti
+ * sui metodi dell'iteratore. Sono inoltre ordinati secondo l'ordinamento dei corrispettivi metodi testati nella
+ * documentazione delle classi {@link myAdapter.MapAdapter.AbstractViewAdapter}, {@link myAdapter.MapAdapter.KeySetAdapter},
+ * {@link myAdapter.MapAdapter.AbstractIterator} e {@link myAdapter.MapAdapter.KeySetIterator} e delle relative interfacce.
+ *
  * <p>
- * Siccome le classi da testare non sono istanziabili direttamente, i test della vista sono eseguiti su un oggetto
+ * Siccome le classi da testare non sono istanziabili direttamente, i test della vista sono eseguiti su un riferimento
  * {@code HSet} ottenuto da una mappa popolata, tramite il metodo {@code keySet()} della mappa, mentre quelli dell'iteratore
- * sono eseguiti su un oggetto {@code HIterator} ottenuto dalla stessa mappa popolata, tramite il metodo
- * {@code keySet().iterator()} della vista.
- * 
+ * sono eseguiti su un riferimento {@code HIterator} ottenuto dalla vista, tramite il metodo {@code iterator()} della vista.
+ *
  * <p>
  * I costruttori delle viste e degli iteratori sono già stati testati negli opportuni test che ne restituiscono
  * le corrispettive istanze, come ad esempio {@link myAdapter.MapAdapter#keySet()} per la vista e
- * {@link myAdapter.MapAdapter.KeySetAdapter#iterator()} per l'iteratore. 
- * 
+ * {@link myAdapter.MapAdapter.KeySetAdapter#iterator()} per l'iteratore.
+ *
+ * <p>
+ * Sono stati implementati 45 test in totale, di cui:
+ * <ul>
+ *   <li> 36 test per i metodi della vista {@code KeySetAdapter} associata alla mappa popolata</li>
+ *   <li> 9 test per i metodi dell'iteratore {@code KeySetIterator} associato alla vista</li>
+ * </ul>
+ *
  * <p>
  * <b>Dependencies:</b>
  * <ul>
- *   <li>File JUnit.jar: {@code ./JUnit/junit-4.13.jar} - versione {@code 4.13}
- *   <li>File Hamcrest.jar: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
+ *   <li>File {@code JUnit}:    {@code ./JUnit/junit-4.13.jar}        - versione {@code 4.13}
+ *   <li>File {@code Hamcrest}: {@code ./JUnit/hamcrest-core-1.3.jar} - versione {@code 1.3}
  * </ul>
  */
 public class TestPopulatedKeySet {
@@ -77,7 +82,7 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * Metodo di setup che viene eseguito prima di ogni test.
-	 * Inizializza un'istanza di {@code MapAdapter} che rappresenta una mappa popolata con le seguenti 4 entry 
+	 * Inizializza un'istanza di {@code MapAdapter} che rappresenta una mappa popolata con le seguenti 4 entry
 	 * {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. da cui ottiene un'istanza di {@code KeySetAdapter}
 	 * che rappresenta la vista per chiavi e un'istanza di {@code KeySetIterator} per l'iteratore della vista.
 	 */
@@ -105,28 +110,28 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#size()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#size()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code size()} restituisce il numero di elementi presenti nella vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code size()} restituisca 4, ovvero il numero di elementi presenti in una vista proveniente
 	 * da una mappa popolata. Verifico che modificando la mappa, il numero di elementi nella vista si aggiorni correttamente.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code size()} è stato chiamato su una vista popolata e ha restituito 4. Successivamente, la mappa è
 	 * stata modificata con una put e due remove e il metodo {@code size()} è stato chiamato nuovamente, restituendo
 	 * prima 5 e poi 3.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code size()} dovrebbe restituire 4, poi 5 e infine 3 dopo le modifiche alla mappa.
@@ -143,27 +148,27 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#isEmpty()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#isEmpty()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code isEmpty()} restituisce {@code true} se la vista non contiene elementi, {@code false} altrimenti.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code isEmpty()} restituisca {@code false} per una vista popolata. Inoltre verifica che
 	 * svuotando la mappa, il metodo {@code isEmpty()} restituisca {@code true} quando la vista diventa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code isEmpty()} è stato chiamato su una vista popolata e ha restituito {@code false}, dopo aver svuotato
 	 * la mappa il metodo ha restituito {@code true}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code isEmpty()} dovrebbe restituire {@code false} e infine {@code true}.
@@ -177,33 +182,33 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#contains(Object o)} su una vista popolata con valore non {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come chiave di una entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti.
 	 * Lancia {@code NullPointerException} se l'oggetto passato è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code contains(Object o)} restituisca {@code false} quando si prova a cercare un generico
-	 * oggetto diverso da {@code null} e non presente nella vista, verifica che il metodo restituisca {@code false}
-	 * anche quando si cerca un oggetto di un tipo diverso da quelli presenti nella vista, come ad esempio {@code Double}.
-	 * Verifica infine che il metodo restituisca {@code true} quando si cerca un oggetto presente nella vista.
-	 * 
+	 * Verifica che il metodo {@code contains(Object o)} restituisca {@code false} quando gli viene passato un generico
+	 * oggetto che non è una chiave della mappa (in questo caso, una stringa). Verifica inoltre che il metodo restituisca
+	 * {@code false} anche quando si cerca un oggetto di un tipo diverso da quelli presenti nella vista, come ad esempio
+	 * {@code Double}. Verifica infine che il metodo restituisca {@code true} quando si cerca un oggetto presente nella vista.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato su una vista popolata e ha restituito {@code false}
 	 * quando si è cercato un oggetto non presente, ha restituito {@code false} quando si è cercato un oggetto di tipo
 	 * diverso da {@code String} o {@code Integer} e ha restituito {@code true} quando si è cercato un oggetto
 	 * presente nella vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe restituire {@code false}, poi {@code false} e infine {@code true}.
@@ -217,29 +222,29 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#contains(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#contains(Object o)} su una vista popolata con valore {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code contains(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come chiave di una entry della mappa). Restituisce {@code true} se l'oggetto è presente, {@code false} altrimenti.
 	 * Lancia {@code NullPointerException} se l'oggetto passato è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code contains(Object o)} lanci {@code NullPointerException} se l'oggetto passato è
-	 * {@code null}.
-	 * 
+	 * Verifica che il metodo {@code contains(Object o)} lanci una {@code NullPointerException} quando gli viene passato
+	 * un oggetto {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code contains(Object o)} è stato chiamato con un oggetto {@code null} e ha lanciato una
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code contains(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -251,27 +256,27 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#iterator()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#iterator()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code iterator()} dovrebbe restituire un iteratore di tipo {@code KeySetIterator} su una vista popolata.
 	 * I metodi degli iteratori sono testati in modo specifico in altri test, quindi qui ci si limita a verificare
 	 * che l'iteratore restituito sia valido.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che l'iteratore restituito sia valido.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * L'iteratore è stato restituito e può essere utilizzato per iterare sulla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * L'iteratore dovrebbe essere un'istanza di {@code HIterator} e dovrebbe essere diverso da null.
@@ -285,28 +290,28 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toArray()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray()} restituisce un array contenente tutti gli elementi della vista. L'ordine degli
 	 * elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toArray()} restituisca un array di lunghezza 4 per una vista proveniente
 	 * da una mappa popolata con 4 entry.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray()} è stato chiamato su una vista popolata e ha restituito un array di lunghezza 4,
 	 * contenente gli oggetti presenti nella vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray()} dovrebbe restituire un array di Object di lunghezza 4 e contenente gli oggetti
@@ -325,30 +330,30 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toArray()} su una vista popolata per verificare l'indipendenza tra vista e array.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray()} restituisce un array contenente tutti gli elementi della vista. L'ordine degli
 	 * elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toArray()} restituisca un array indipendente dalla vista e dalla mappa, per
 	 * cui se la mappa viene modificata dopo aver chiamato {@code toArray()}, l'array restituito non deve riflettere
 	 * tali modifiche e viceversa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray()} è stato chiamato su una vista popolata. Viene poi aggiunta una nuova entry alla mappa
 	 * (e di conseguenza un nuovo elemento alla vista), mentre l'array restituito da {@code toArray()} non viene
 	 * influenzato da tali modifiche.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray()} dovrebbe restituire un array che non contiene il nuovo elemento aggiunto alla vista.
@@ -364,33 +369,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)} su una vista popolata con array sufficientemente grande.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
 	 * degli elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
-	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 * parametro e l'elemento successivo all'ultimo elemento della vista viene impostato a {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Nell'array finale dovrebbero esserci 4 elementi e dovrebbe essere lo stesso array passato come parametro,
 	 * con il quinto elemento impostato a {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. Viene
-	 * creato un nuovo array di 10 elementi passato come parametro e riempito con interi 1, per testare se effettivamente
-	 * il quinto elemento è impostato a {@code null}.
-	 * 
+	 * creato un nuovo array di dimensione 10, riempito con interi 1, da passare come parametro al metodo.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray(Object[] a)} è stato chiamato su una vista popolata e ha restituito lo stesso array passato
 	 * come parametro, con il quinto elemento impostato a {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe restituire un array con lo stesso riferimento di quello passato
@@ -411,32 +415,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)} su una vista popolata con array {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
 	 * degli elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
-	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 * parametro e l'elemento successivo all'ultimo elemento della vista viene impostato a {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code toArray(Object[] a)} lanci una {@code NullPointerException} quando si prova a
-	 * passare un array {@code null} come parametro.
-	 * 
+	 * Verifica che il metodo {@code toArray(Object[] a)} lanci una {@code NullPointerException} quando gli viene passato
+	 * un array {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. Viene
 	 * creato un nuovo array con riferimento {@code null} da passare come parametro al metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code toArray(Object[] a)} è stato chiamato con un array {@code null} come parametro e ha lanciato una
-	 * {@code NullPointerException}.
-	 * 
+	 * Il metodo {@code toArray(Object[] a)} è stato chiamato con un array {@code null} come parametro e ha lanciato
+	 * una {@code NullPointerException}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe lanciare una {@code NullPointerException}.
@@ -449,32 +453,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)} su una vista popolata con array di dimensione 0.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
 	 * degli elementi nell'array corrisponde all'ordine in cui gli elementi vengono restituiti dall'iteratore della
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
-	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 * parametro e l'elemento successivo all'ultimo elemento della vista viene impostato a {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toArray(Object[] a)} crei un nuovo array quando si passa un array di dimensione
 	 * nulla come parametro, siccome la vista contiene elementi da inserire dentro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. Viene
 	 * creato un nuovo array di dimensione nulla da passare come parametro al metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray(Object[] a)} è stato chiamato con un array di dimensione nulla come parametro e ha
 	 * restituito un nuovo array contenente gli elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe restituire un nuovo array contenente gli elementi della vista.
@@ -494,8 +498,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toArray(Object[] a)} su una vista popolata per testare l'indipendenza tra vista e array.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toArray(Object[] a)} restituisce un array contenente tutti gli elementi della vista. L'ordine
@@ -503,24 +507,24 @@ public class TestPopulatedKeySet {
 	 * vista. Se l'array passato come parametro è di dimensione inferiore alla dimensione della vista, viene creato un
 	 * nuovo array di dimensione adeguata, altrimenti gli elementi della vista vengono copiati nell'array passato come
 	 * parametro e l'elemento successivo alla fine della vista viene impostato a {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toArray(Object[] a)} restituisca un array indipendente dalla vista e dalla mappa, per
 	 * cui se la mappa viene modificata dopo aver chiamato {@code toArray(Object[] a)}, l'array restituito non deve riflettere
 	 * tali modifiche e viceversa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toArray(Object[] a)} è stato chiamato su una vista popolata. Viene poi aggiunta una nuova entry
 	 * alla mappa (e di conseguenza un nuovo elemento alla vista), mentre l'array restituito da {@code toArray(Object[] a)}
 	 * non viene influenzato da tali modifiche.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toArray(Object[] a)} dovrebbe restituire un array che non contiene il nuovo elemento aggiunto alla vista.
@@ -536,27 +540,27 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#add(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#add(Object o)} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code add(Object o)} è disabilitato per le viste di una mappa e lancia una
 	 * {@code UnsupportedOperationException} ogni volta che viene invocato.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code add(Object o)} lanci correttamente una {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code add(Object o)} è stato chiamato con un generico parametro {@code null} e ha lanciato una
 	 * {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code add(Object o)} dovrebbe lanciare una {@code UnsupportedOperationException}.
@@ -568,34 +572,34 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#remove(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#remove(Object o)} su una vista popolata con valore non presente.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come chiave di una entry della mappa). Se l'oggetto è presente, viene rimosso e il metodo restituisce {@code true}.
 	 * Se l'oggetto non è presente, il metodo restituisce {@code false}. Se l'oggetto passato è {@code null}, viene
 	 * lanciata una {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code remove(Object o)} restituisca {@code false} quando si prova a rimuovere un generico
-	 * elemento diverso da {@code false} non presente nella vista. Verifica che il metodo restituisca {@code false} anche
+	 * Verifica che il metodo {@code remove(Object o)} restituisca {@code false} quando gli viene passato un generico
+	 * {@code Object} che non è presente nella vista. Verifica inoltre che il metodo restituisca {@code false} anche
 	 * quando si prova a rimuovere un elemento di un tipo da quelli presenti nella vista, come ad esempio {@code Double}.
 	 * Verifica infine che il metodo restituisca {@code true} quando si prova a rimuovere un elemento presente nella vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato su una vista popolata e ha restituito {@code false} quando
 	 * si è provato a rimuovere un oggetto non presente, ha restituito {@code false} quando si è provato a rimuovere
 	 * un oggetto di tipo diverso da {@code String} o {@code Integer} e ha restituito {@code true} quando si è rimosso
 	 * un oggetto presente nella vista. Verifica inoltre che anche nella mappa l'oggetto rimosso non sia presente.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe restituire inizialmente per due volte {@code false}, poi {@code true},
@@ -613,30 +617,30 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#remove(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#remove(Object o)} su una vista popolata con valore {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code remove(Object o)} verifica se l'oggetto specificato è contenuto nella vista (e di conseguenza
 	 * come chiave di una entry della mappa). Se l'oggetto è presente, viene rimosso e il metodo restituisce {@code true}.
 	 * Se l'oggetto non è presente, il metodo restituisce {@code false}. Se l'oggetto passato è {@code null}, viene
 	 * lanciata una {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove(Object o)} lanci una {@code NullPointerException} quando gli viene passato
 	 * un oggetto {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove(Object o)} è stato chiamato con un parametro {@code null} e ha lanciato una
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove(Object o)} dovrebbe lanciare una {@code NullPointerException}.
@@ -648,32 +652,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)} su una vista popolata con collezione vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
 	 * della collezione specificata, {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione
 	 * passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code containsAll(HCollection c)} funzioni correttamente quando è invocato su una vista
 	 * popolata e gli viene passata una collezione vuota. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
 	 * restituire {@code false} in quanto la vista contiene tutti gli elementi della collezione vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova mappa vuota per generare una collezione di elementi vuota da passare come parametro al
 	 * metodo {@code containsAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di elementi vuota e ha
 	 * restituito {@code true}, siccome la vista contiene tutti gli elementi della collezione vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code true}.
@@ -687,31 +691,31 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)} su una vista popolata con collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
 	 * della collezione specificata, {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione
 	 * passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code containsAll(HCollection c)} lanci {@code NullPointerException} se gli viene
-	 * passata una collezione {@code null}.
-	 * 
+	 * Verifica che il metodo {@code containsAll(HCollection c)} lanci una {@code NullPointerException} quando gli viene passata
+	 * una collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
-	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. Viene creato un nuovo riferimento di tipo {@code HCollection} e impostato a
-	 * {@code null} per rappresentare una collezione {@code null} da passare come parametro al metodo
-	 * {@code containsAll(HCollection c)}.
-	 * 
+	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
+	 * Viene creato un nuovo riferimento di tipo {@code HCollection} e impostato a {@code null} per rappresentare
+	 * una collezione {@code null} da passare come parametro al metodo {@code containsAll(HCollection c)}.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha
 	 * lanciato {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code containsAll(HCollection c)} dovrebbe lanciare {@code NullPointerException}.
@@ -724,20 +728,20 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#containsAll(HCollection c)} su una vista popolata con collezione popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code containsAll(HCollection c)} restituisce {@code true} se la vista contiene tutti gli elementi
 	 * della collezione specificata, {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione
 	 * passata è {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code containsAll(HCollection c)} restituisca {@code false} se gli viene passata una
 	 * collezione contenente generici elementi non tutti appartenenti alla vista. Inoltre si verifica che il metodo
 	 * restituisca {@code true} se gli viene passata un'altra collezione contiene solo elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
@@ -745,16 +749,16 @@ public class TestPopulatedKeySet {
 	 * Viene creata una nuova mappa con alcuni elementi appartenenti e non alla vista per generare una collezione da
 	 * passare come parametro al metodo {@code containsAll(HCollection c)}. Inoltre viene creata una nuova collezione
 	 * contenente solo elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code containsAll(HCollection c)} è stato chiamato con una collezione di elementi non tutti appartenenti
 	 * alla vista e ha restituito {@code false}. Inoltre, è stato chiamato con una collezione di elementi tutti appartenenti
 	 * alla vista e ha restituito {@code true}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
-	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code false}.
+	 * Il metodo {@code containsAll(HCollection c)} dovrebbe restituire {@code false}, poi {@code true}.
 	 */
 	@Test
 	public void testContainsAllPopulatedCollectionOnPopulatedKeySet() {
@@ -771,27 +775,27 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#addAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#addAll(HCollection c)} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code addAll(HCollection c)} è disabilitato per le viste di una mappa e lancia una
 	 * {@code UnsupportedOperationException} ogni volta che viene invocato, indipendentemente dal parametro passato.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code addAll(HCollection c)} lanci correttamente una {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code addAll(HCollection c)} è stato chiamato con un generico parametro {@code null} e ha lanciato una
 	 * {@code UnsupportedOperationException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code addAll(HCollection c)} dovrebbe lanciare una {@code UnsupportedOperationException}.
@@ -803,8 +807,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)} su una vista popolata con collezione vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
@@ -812,25 +816,25 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando gli viene passata
 	 * una collezione vuota su una vista popolata. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
 	 * restituire {@code false} in quanto non ci sono entry rimovibili dalla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova mappa vuota per generare una collezione vuota da passare come parametro al metodo
 	 * {@code removeAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione vuota e non ha lanciato
 	 * eccezioni.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
@@ -846,8 +850,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)} su una vista popolata con collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
@@ -855,23 +859,24 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code removeAll(HCollection c)} lanci {@code NullPointerException} se la collezione
-	 * è {@code null}.
-	 * 
+	 * Verifica che il metodo {@code removeAll(HCollection c)} lanci una {@code NullPointerException} quando gli viene passata
+	 * una collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
-	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una
-	 * collezione {@code null} da passare come parametro al metodo {@code removeAll(HCollection c)}.
-	 * 
+	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
+	 * Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una collezione {@code null} da
+	 * passare come parametro al metodo {@code removeAll(HCollection c)}.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha lanciato una
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare una {@code NullPointerException}.
@@ -884,8 +889,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)} su una vista popolata con collezione popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
@@ -893,25 +898,25 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code removeAll(HCollection c)} funzioni correttamente quando gli viene passata
 	 * una collezione popolata su una vista popolata. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
 	 * restituire {@code true} per aver rimosso gli elementi in comune tra la collezione e la vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * Viene creata una nuova mappa con alcuni elementi appartenenti e non alla vista per generare una collezione da
-	 * passare come parametro al metodo {@code containsAll(HCollection c)}.
-	 * 
+	 * Viene creata una nuova mappa con alcuni elementi appartenenti e non alla vista per generare una collezione
+	 * da passare come parametro al metodo {@code removeAll(HCollection c)}.
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione popolata e ha rimosso gli
 	 * elementi presenti sia nella collezione che nella vista, restituendo {@code true}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code true}, inoltre la vista (e di conseguenza
@@ -932,8 +937,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#removeAll(HCollection c)} su una vista popolata con collezione di tipo non compatibile.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code removeAll(HCollection c)} rimuove dalla vista tutti gli elementi che sono presenti nella
@@ -941,24 +946,24 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code removeAll(HCollection c)} lanci {@code ClassCastException} se la collezione
 	 * passata non supporta i tipi degli elementi della vista. In questo caso gli passo una {@code entrySet()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creato un nuovo riferimento di tipo {@code HCollection} attraverso il metodo {@code entrySet()} per
 	 * generare una collezione che non supporta i tipi degli elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code removeAll(HCollection c)} è stato chiamato con una collezione che non supporta i tipi degli
 	 * elementi della vista e ha lanciato {@code ClassCastException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code removeAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
@@ -973,8 +978,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)} su una vista popolata con collezione vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
@@ -982,28 +987,28 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando gli viene passata
 	 * una collezione vuota su una vista popolata. Il metodo non dovrebbe lanciare eccezioni e dovrebbe restituire
 	 * {@code true} dopo aver rimosso tutti gli elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova mappa vuota per generare una collezione vuota da passare come parametro al metodo
 	 * {@code retainAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione vuota e non ha lanciato
 	 * eccezioni, restituendo {@code true} dopo aver rimosso tutti gli elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
-	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code true}, inoltre la vista (e di conseguenza
+	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code true}, inoltre la vista (e di conseguenza
 	 * la mappa) dovrebbe diventare vuota con 0 elementi.
 	 */
 	@Test
@@ -1018,8 +1023,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)} su una vista popolata con collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
@@ -1027,24 +1032,24 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
-	 * Verifica che il metodo {@code retainAll(HCollection c)} lanci {@code NullPointerException} se la collezione
-	 * è {@code null}.
-	 * 
+	 * Verifica che il metodo {@code retainAll(HCollection c)} lanci una {@code NullPointerException} quando gli viene passata
+	 * una collezione {@code null}.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creato un nuovo riferimento di tipo {@code HCollection} per generare una collezione {@code null} da
 	 * passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione {@code null} e ha lanciato una
 	 * {@code NullPointerException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare una {@code NullPointerException}.
@@ -1057,8 +1062,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)} su una vista popolata con collezione popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
@@ -1066,29 +1071,29 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code retainAll(HCollection c)} funzioni correttamente quando gli viene passata
 	 * una collezione popolata su una vista popolata. Il metodo non dovrebbe lanciare eccezioni e dovrebbe
 	 * restituire {@code false} in quanto non ci sono entry rimovibili dalla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova mappa a cui vengono inserite due entry una appartenente alla vista e una no, per
 	 * generare una collezione popolata da passare come parametro al metodo {@code retainAll(HCollection c)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione popolata e non ha lanciato
 	 * eccezioni. Ha restituito {@code true} dopo aver rimosso tutte le entry presenti sulla vista, ma non presenti
 	 * nella collezione.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
-	 * Il metodo {@code removeAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
+	 * Il metodo {@code retainAll(HCollection c)} dovrebbe restituire {@code false}, inoltre la vista (e di conseguenza
 	 * la mappa) dovrebbe rimanere con 1 elemento in comune tra la vista e la collezione.
 	 */
 	@Test
@@ -1106,8 +1111,8 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#retainAll(HCollection c)} su una vista popolata con collezione di tipo non compatibile.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code retainAll(HCollection c)} rimuove dalla vista tutti gli elementi che non sono presenti nella
@@ -1115,24 +1120,24 @@ public class TestPopulatedKeySet {
 	 * {@code false} altrimenti. Lancia {@code NullPointerException} se la collezione passata è {@code null}.
 	 * Lancia {@code ClassCastException} se la vista contiene elementi che non sono compatibili con la collezione
 	 * passata come parametro.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code retainAll(HCollection c)} lanci {@code ClassCastException} se la collezione
 	 * passata non supporta i tipi degli elementi della vista. In questo caso gli passo una {@code entrySet()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creato un nuovo riferimento di tipo {@code HCollection} attraverso il metodo {@code entrySet()} per
 	 * generare una collezione che non supporta i tipi degli elementi della vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code retainAll(HCollection c)} è stato chiamato con una collezione che non supporta i tipi degli
 	 * elementi della vista e ha lanciato {@code ClassCastException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code retainAll(HCollection c)} dovrebbe lanciare {@code ClassCastException}.
@@ -1147,27 +1152,27 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#clear()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#clear()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code clear()} rimuove tutte le entry dalla vista (e di conseguenza dalla mappa), rendendola vuota. Dopo
 	 * la chiamata a questo metodo, la vista (e di conseguenza anche la mappa) dovrebbe essere vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code clear()} invocato su una vista vuota mantenga la vista vuota, senza
 	 * lanciare eccezioni.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code clear()} è stato chiamato su una vista vuota e non ha lanciato eccezioni.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code clear()} dovrebbe lasciare la vista vuota e con 0 elementi, la mappa associata dovrebbe a sua
@@ -1184,14 +1189,14 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#hashCode()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#hashCode()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code hashCode()} restituisce un valore intero che rappresenta l'hash code della vista. Una vista vuota
 	 * dovrebbe restituire un hash code di 0, mentre una vista con degli elementi dovrebbe restituire un hash code ottenuto
 	 * dalla somma degli hash code degli elementi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code hashCode()} restituisca un numero quando invocato su una vista popolata, uguale a
@@ -1203,12 +1208,12 @@ public class TestPopulatedKeySet {
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova vista con gli stessi elementi di quella instanziata dal {@code setUp()} per verificare che
 	 * l'hash code di due mappe con le stesse entry sia lo stesso.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code hashCode()} è stato chiamato su una vista popolata e ha restituito un valore uguale a
 	 * quello della nuova vista con le stesse entry di quella instanziata dal {@code setUp()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code hashCode()} dovrebbe restituire un numero uguale a l'hash code della nuova vista con le stesse entry.
@@ -1230,28 +1235,28 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con oggetto {@code null}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passato {@code null}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro {@code null} e ha restituito {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1263,32 +1268,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con oggetto di tipo diverso.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passato un oggetto
 	 * che non è una istanza di {@code KeySetAdapter}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creato un nuovo oggetto di tipo {@code String} (non {@code KeySetAdapter}) da passare come parametro
 	 * al metodo {@code equals(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code KeySetAdapter} e ha restituito
 	 * {@code false}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1301,32 +1306,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con altre viste.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passata un'altra
-	 * view (di tipo {@code ValuesCollectionAdapter} o {@code EntrySetAdapter}) collegata a una mappa vuota.
-	 * 
+	 * view (di tipo {@code ValuesCollectionAdapter} o {@code EntrySetAdapter}) sempre collegata a una mappa vuota.
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Vengono creati due nuovi oggetti di tipo {@code ValuesCollectionAdapter} e {@code EntrySetAdapter} da passare
 	 * come parametro al metodo {@code equals(Object o)}, provenienti da una nuova mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
-	 * Il metodo {@code equals(Object o)} è stato chiamato con un parametro non {@code KeySetAdapter} e ha restituito
-	 * {@code false}.
-	 * 
+	 * Il metodo {@code equals(Object o)} è stato chiamato con un'altra vista non {@code KeySetAdapter} come parametro
+	 * e ha restituito {@code false}.
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1341,32 +1346,32 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con vista vuota.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passata un'altra
 	 * istanza di {@code KeySetAdapter} proveniente da una nuova mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova istanza di {@code KeySetAdapter} collegata a una mappa vuota da passare come parametro
 	 * al metodo {@code equals(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code KeySetAdapter} collegata a una
 	 * mappa vuota.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false}.
@@ -1379,33 +1384,33 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con vista popolata da stessi elementi.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata un'altra
 	 * istanza di {@code KeySetAdapter} proveniente da una nuova mappa con le stesse entry della mappa da cui proviene
 	 * la vista su cui è invocato il metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova istanza di {@code KeySetAdapter} collegata a una mappa popolata allo stesso modo di quella sopra
 	 * da passare come parametro al metodo {@code equals(Object o)}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con una nuova istanza di {@code KeySetAdapter} collegata
 	 * ad una mappa popolata con le stesse entry e ha restituito {@code true}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code true}.
@@ -1420,36 +1425,36 @@ public class TestPopulatedKeySet {
 		HSet populatedKeySet = populatedMap.keySet();
 		assertTrue("equals dovrebbe restituire true se gli viene passata una KeySet con gli stessi elementi", keySet.equals(populatedKeySet));
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con vista popolata da elementi diversi.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code false} quando gli viene passata una nuova vista
 	 * contenente un numero di elementi diverso o con lo stesso numero di elementi ma con elementi diversi rispetto alla vista
 	 * su cui è stato invocato il metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
 	 * Viene creata una nuova vista collegata a una mappa popolata prima con un elemento in meno, poi con lo stesso numero
 	 * di elementi, ma con elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con viste diverse da quella su cui è stato invocato il metodo,
 	 * e ha restituito {@code false} in tutti i casi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code false} in tutti i casi descritti.
@@ -1462,7 +1467,7 @@ public class TestPopulatedKeySet {
 		populatedMap.put("key2", 2);
 		populatedMap.put(3, "value3");
 		assertFalse("equals dovrebbe restituire false se gli viene passata è una vista con un numero di elementi diverso", keySet.equals(populatedMap.keySet()));
-		
+
 		// stesso numero di elementi ma con elementi diversi
 		populatedMap.remove(4);
 		populatedMap.put("5", "sqrt{25}");
@@ -1471,63 +1476,63 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#equals(Object o)} su una vista popolata con sé stessa.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code equals(Object o)} verifica se l'oggetto passato come parametro è uguale alla vista {@code keySet}
 	 * corrente. Due viste {@code keySet} sono considerate uguali se sono entrambe delle istanze della classe
 	 * {@code KeySetAdapter} e contengono gli stessi elementi (stessi oggetti chiave). Restituisce {@code false} se
 	 * il parametro è {@code null}, se il parametro non è una {@code KeySetAdapter} o se contengono elementi diversi.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code equals(Object o)} restituisca {@code true} quando gli viene passata la stessa
 	 * istanza di {@code KeySetAdapter} su cui è stato invocato il metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code equals(Object o)} è stato chiamato con la stessa istanza di {@code KeySetAdapter} su cui è stato
 	 * invocato il metodo.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code equals(Object o)} dovrebbe restituire {@code true}.
 	 */
 	@Test
 	public void testEqualsSelfOnPopulatedKeySet() {
-		assertTrue("equals dovrebbe restituire true se gli viene passato se stesso", keySet.equals(keySet));
+		assertTrue("equals dovrebbe restituire true se gli viene passato sé stesso", keySet.equals(keySet));
 	}
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetAdapter#toString()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetAdapter#toString()} su una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code toString()} restituisce una rappresentazione in stringa della vista. Per una vista popolata,
 	 * dovrebbe restituire la stringa {@code [elem1, elem2, ...]}. L'ordine degli elementi non è garantito in quanto
 	 * dipende dalla mappa a cui si appoggia la vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code toString()} restituisca la rappresentazione corretta per una vista popolata.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata con le seguenti 4 entry {@code {"key1"="value1", "key2"=2, 3="value3", 4=4}}. Si
 	 * istanzia una stringa per memorizzare la rappresentazione attesa della mappa.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code toString()} è stato chiamato su una vista vuota e ha restituito la stringa corretta.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code toString()} dovrebbe restituire la stringa attesa.
@@ -1556,30 +1561,30 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#hasNext()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#hasNext()} su un iteratore di una vista popolata.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code hasNext()} verifica se ci sono elementi successivi nell'iteratore. Per un iteratore
 	 * associato a una vista con 4 elementi, dovrebbe restituire {@code true} per le prime 4 invocazioni e
 	 * {@code false} per la quinta.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code hasNext()} restituisca {@code true} per le prime 4 invocazioni su un iteratore
 	 * associato a una vista con 4 elementi e {@code false} per la quinta. (le invocazioni successive sono alternate
 	 * tra {@code hasNext()} e {@code next()}).
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code hasNext()} è stato chiamato su un iteratore associato a una vista popolata e ha restituito
 	 * {@code true} le prime 4 volte, {@code false} per la quinta.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code hasNext()} dovrebbe restituire {@code true} le prime 4 volte, {@code false} per la quinta.
@@ -1592,31 +1597,32 @@ public class TestPopulatedKeySet {
 		}
 		assertFalse("hasNext dovrebbe restituire false quando non ci sono più elementi da visitare", keySetIterator.hasNext());
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#next()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#next()} su un iteratore di una vista popolata per verificare
+	 * la correttezza degli elementi restituiti.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code next()} restituisce l'elemento successivo nell'iteratore. Se non ci sono più elementi da estrarre,
 	 * dovrebbe lanciare un'eccezione {@code java.util.NoSuchElementException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code next()} restituisca tutti gli elementi della vista associata all'iteratore,
 	 * chiamando il metodo 4 volte consecutivamente.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code next()} è stato chiamato su un iteratore 4 volte consecutive e ha restituito tutti gli elementi
 	 * della vista associata all'iteratore.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code next()} dovrebbe restituire tutti gli elementi della vista associata all'iteratore.
@@ -1631,28 +1637,29 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#next()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#next()} su un iteratore di una vista popolata per verificare
+	 * il lancio di {@code java.util.NoSuchElementException}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
 	 * Il metodo {@code next()} restituisce l'elemento successivo nell'iteratore. Se non ci sono più elementi da estrarre,
 	 * dovrebbe lanciare un'eccezione {@code java.util.NoSuchElementException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code next()} generi un'eccezione {@code java.util.NoSuchElementException} quando si
 	 * chiama il metodo su un iteratore senza più elementi da estrarre.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code next()} è stato chiamato su un iteratore associato a una vista popolata e ha lanciato
 	 * un'eccezione {@code java.util.NoSuchElementException} alla sua 5 invocazione.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code next()} dovrebbe lanciare {@code java.util.NoSuchElementException}.
@@ -1668,29 +1675,29 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#remove()} su un iteratore di una vista popolata invocato prima di {@code next()}.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. 
+	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore.
 	 * Lancia {@code myAdapter.IllegalStateException} se il metodo {@code next()} non è stato chiamato con successo
 	 * o se il metodo {@code remove()} è stato già chiamato dopo l'ultima chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} generi un'eccezione {@code myAdapter.IllegalStateException} se il
 	 * metodo {@code next()} non è ancora stato chiamato.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove()} è stato chiamato su un iteratore senza prima aver chiamato {@code next()} e ha
 	 * lanciato {@code myAdapter.IllegalStateException}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove()} dovrebbe lanciare {@code myAdapter.IllegalStateException}.
@@ -1702,28 +1709,28 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#remove()} su un iteratore di una vista popolata con invocazioni ripetute.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. 
+	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore.
 	 * Lancia {@code myAdapter.IllegalStateException} se il metodo {@code next()} non è stato chiamato con successo
 	 * o se il metodo {@code remove()} è stato già chiamato dopo l'ultima chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} generi un'eccezione {@code myAdapter.IllegalStateException} se il
 	 * metodo {@code remove()} è chiamato due volte consecutivamente senza una chiamata a {@code next()} tra le due.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * Il metodo {@code remove()} è stato chiamato su un iteratore due volte consecutive dopo una chiamata a {@code next()}
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * Il metodo {@code remove()} dovrebbe lanciare {@code myAdapter.IllegalStateException}.
@@ -1737,29 +1744,29 @@ public class TestPopulatedKeySet {
 
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#remove()} su un iteratore di una vista popolata per rimuovere il primo elemento di 4.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. 
+	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore.
 	 * Lancia {@code myAdapter.IllegalStateException} se il metodo {@code next()} non è stato chiamato con successo
 	 * o se il metodo {@code remove()} è stato già chiamato dopo l'ultima chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} rimuova correttamente il primo elemento della vista associata senza
 	 * alterare l'avanzamento dell'iteratore. Per fare ciò, si chiama il metodo {@code next()} 4 volte, rimuovendo
 	 * il primo elemento tra la seconda e la terza chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * La vista e la mappa associata sono state modificate rimuovendo il primo elemento della vista associata.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * La vista e la relativa mappa associata dovrebbero essere modificate rimuovendo il primo elemento della vista associata,
@@ -1783,32 +1790,32 @@ public class TestPopulatedKeySet {
 		assertEquals("La vista associata all'iteratore dovrebbe avere 3 elementi dopo la rimozione del primo elemento", 3, keySet.size());
 		assertEquals("La mappa associata all'iteratore dovrebbe avere 3 elementi dopo la rimozione del primo elemento", 3, map.size());
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#remove()} su un iteratore di una vista popolata per rimuovere il secondo elemento di 4.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. 
+	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore.
 	 * Lancia {@code myAdapter.IllegalStateException} se il metodo {@code next()} non è stato chiamato con successo
 	 * o se il metodo {@code remove()} è stato già chiamato dopo l'ultima chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} rimuova correttamente il secondo elemento della vista associata senza
 	 * alterare l'avanzamento dell'iteratore. Per fare ciò, si chiama il metodo {@code next()} 4 volte, rimuovendo
 	 * il secondo elemento tra la seconda e la terza chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * La vista e la mappa associata sono state modificate rimuovendo il secondo elemento della vista associata.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * La vista e la relativa mappa associata dovrebbero essere modificate rimuovendo il secondo elemento della vista associata,
@@ -1832,32 +1839,32 @@ public class TestPopulatedKeySet {
 		assertEquals("La vista associata all'iteratore dovrebbe avere 3 elementi dopo la rimozione del secondo elemento", 3, keySet.size());
 		assertEquals("La mappa associata all'iteratore dovrebbe avere 3 elementi dopo la rimozione del secondo elemento", 3, map.size());
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#remove()} su un iteratore di una vista popolata per rimuovere il terzo elemento di 4.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. 
+	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore.
 	 * Lancia {@code myAdapter.IllegalStateException} se il metodo {@code next()} non è stato chiamato con successo
 	 * o se il metodo {@code remove()} è stato già chiamato dopo l'ultima chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} rimuova correttamente il terzo elemento della vista associata senza
 	 * alterare l'avanzamento dell'iteratore. Per fare ciò, si chiama il metodo {@code next()} 4 volte, rimuovendo
 	 * il terzo elemento tra la seconda e la terza chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * La vista e la mappa associata sono state modificate rimuovendo il terzo elemento della vista associata.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * La vista e la relativa mappa associata dovrebbero essere modificate rimuovendo il terzo elemento della vista associata,
@@ -1881,32 +1888,32 @@ public class TestPopulatedKeySet {
 		assertEquals("La vista associata all'iteratore dovrebbe avere 3 elementi dopo la rimozione del terzo elemento", 3, keySet.size());
 		assertEquals("La mappa associata all'iteratore dovrebbe avere 3 elementi dopo la rimozione del terzo elemento", 3, map.size());
 	}
-	
+
 	/**
 	 * <b>Summary:</b>
-	 * Test del metodo {@link myAdapter.MapAdapter.KeySetIterator#remove()}.
-	 * 
+	 * Test di {@link myAdapter.MapAdapter.KeySetIterator#remove()} su un iteratore di una vista popolata per rimuovere il quarto elemento di 4.
+	 *
 	 * <p>
 	 * <b>Test Case Design:</b>
-	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore. 
+	 * Il metodo {@code remove()} rimuove l'elemento appena restituito dal metodo {@code next()} dell'iteratore.
 	 * Lancia {@code myAdapter.IllegalStateException} se il metodo {@code next()} non è stato chiamato con successo
 	 * o se il metodo {@code remove()} è stato già chiamato dopo l'ultima chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Test Description:</b>
 	 * Verifica che il metodo {@code remove()} rimuova correttamente il quarto elemento della vista associata senza
 	 * alterare l'avanzamento dell'iteratore. Per fare ciò, si chiama il metodo {@code next()} 4 volte, rimuovendo
 	 * il quarto elemento tra la seconda e la terza chiamata a {@code next()}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Pre-Condition:</b>
 	 * Il metodo {@code setUp()} è stato eseguito, creando una nuova istanza della vista {@code KeySetAdapter}
 	 * collegata a una mappa popolata e dell'iteratore {@code KeySetIterator} associato alla vista.
-	 * 
+	 *
 	 * <p>
 	 * <b>Post-Condition:</b>
 	 * La vista e la mappa associata sono state modificate rimuovendo il quarto elemento della vista associata.
-	 * 
+	 *
 	 * <p>
 	 * <b>Expected Results:</b>
 	 * La vista e la relativa mappa associata dovrebbero essere modificate rimuovendo il quarto elemento della vista associata,

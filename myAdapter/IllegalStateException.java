@@ -10,7 +10,7 @@ package myAdapter;
  * Segnala che un metodo è stato invocato in un momento illegale o inappropriato. In altre parole, l'ambiente Java o
  * l'applicazione Java non si trova in uno stato appropriato per l'operazione richiesta. Estende
  * {@code java.lang.RuntimeException} rendendola un'eccezione unchecked.
- * 
+ *
  * <p>
  * Questa estensione è stata aggiunta manualmente in quanto è utilizzata nell'implementazione degli iteratori delle
  * viste della classe {@code MapAdapter}, ma non è presente nativamente in J2ME CLDC 1.1.

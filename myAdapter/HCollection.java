@@ -26,7 +26,6 @@ package myAdapter;
  * equivalente del tipo di implementazione desiderato. Non c'è modo di imporre questa convenzione (poiché le interfacce
  * non possono contenere costruttori) ma tutte le implementazioni {@code HCollection} di uso generale nelle librerie
  * della piattaforma Java si conformano.
- * 
  *
  * <p>
  * I metodi "distruttivi" contenuti in questa interfaccia, cioè i metodi che modificano la collezione su cui operano,

@@ -7,12 +7,12 @@ import org.junit.runners.Suite;
 
 /**
  * <b>Summary:</b>
- * Classe che raggruppa tutti i test della suite di test per la mappa, sia vuota che popolata, e per le relative viste.
- * 
+ * Classe che raggruppa tutti i test della classe {@link myAdapter.MapAdapter} con le relative viste e iteratori.
+ *
  * <p>
  * <b>Test Case Design:</b>
- * Questa classe serve a raggruppare i test relativi alle viste di una mappa vuota e popolata, in modo da poterli eseguire
- * insieme tutti in un colpo.
+ * Questa classe serve a raggruppare i test relativi alla classe {@link myAdapter.MapAdapter} e alle viste e iteratori
+ * sia riguardanti la mappa vuota che quella popolata, per facilitare l'esecuzione dei test in un'unica suite.
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

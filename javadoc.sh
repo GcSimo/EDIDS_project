@@ -18,5 +18,5 @@ mkdir -p doc
 
 # Generate Javadoc documentation
 echo "3/3 - Generating Javadoc documentation"
-javadoc -d doc -cp .:./junit/junit-4.13.jar:./junit/hamcrest-core-1.3-javadoc.jar:./junit/junit-4.13-javadoc.jar:./junit/hamcrest-core-1.3-javadoc.jar myAdapter/*.java myTest/*.java
+javadoc -d doc -cp .:JUnit/junit-4.13.jar:JUnit/hamcrest-core-1.3-javadoc.jar:JUnit/junit-4.13-javadoc.jar:JUnit/hamcrest-core-1.3-javadoc.jar myAdapter/*.java myTest/*.java
 echo "Javadoc documentation generated in the 'doc' directory."

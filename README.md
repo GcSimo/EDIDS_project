@@ -1,25 +1,57 @@
-# Adapter da HashTable J2ME CLDC 1.1 a Map J2SE 1.4.2
+# Secondo Appello 2025 di Elementi di Ingegneria del Software
+Adapter che implementa l'interfaccia Map di Java 2 Standard Edition 1.4.2  attraverso la classe Hashtable di Java 2 Micro Edition CLDC 1.1 scritto da Giacomo Simonetto - n° matricola 2109923.
 
-## To-Do List
-- [x] implementare l'equals separatamente per le viste
-- [x] usare un try catch nell'equals delle viste perché se la vista passata come parametro contiene null, containsAll lancerà una NullPointerException
-- [x] implementare una mappa HMap che supporta chiave e valori nulli per il test della putAll
-- [x] aggiungere javadoc dei package
-- [x] aggiungere test ai containsAll/removeAll/retainAll nel caso di elementi nulli o non entry nelle collezioni
-- [x] correggere removeAll e retainAll secondo le specifiche
-- [x] aggiungere eventuali modifiche al test del costruttore di copia di MapAdapter
-- [x] verificare il toString della Hashtable
-- [x] verificare che la Iterator.remove non alteri gli enumerations
----
-- [x] ignored - verificare l'implementazione della entry della mappa -> non si salva il valore ma se lo va a ripescare ogni volta dalla mappa
-- [x] ignored - gemini suggerisce di rimuovere il controllo null nel costruttore di EntryAdapter siccome le entry vengono costruite solo all'interno della EntryView e saranno semrpe diverse da null.
-- [x] ignored - gemini suggerisce di aggiungere la null-safe in equals e hashcode delle EntryAdapter per essere compliant con la documentazione
-- [x] ignored - implementazioni costruttori di copia nei set e nelle collection
-- [x] ignored - aggiungere metodo alla classe view astratta che restituisce la mappa o la hashtable in modo da poter escludere le keySet della mappa (ed eventualmente anche tutte le altre) quando si prova ad inserirle come chiave
-- [x] ignored - aggiungere messaggi alle eccezioni
----
-- [x] aggiungere test per valori doppi, correggere equals per valori doppi
-  - [x] removeAll -> [1,2,2,3,4].removeAll([2,4]) = [1,3]
-  - [x] retainAll -> [1,2,2,3,4].retainAll([2,4]) = [2,2,4]
-  - [x] equals -> test con collection con valori null + test con collection con valori multipli [1,2,2] e [1,1,2]
-- [ ] controllare le eccezioni silenti per utilizzo di contains e remove all'interno delle altre funzioni
+## Organizzazione delle directory del progetto
+Il progetto è organizzato in due pacchetti principali: `myAdapter` e `myTest` che riflettono la struttura delle directory. Di seguito è riportata la struttura delle directory e tutti i file presenti in ciascun pacchetto.
+
+```
+- package myAdapter
+  - HCollection.java -------------------- Interfaccia Collection di J2SE 1.4.2
+  - HIterator.java ---------------------- Interfaccia Iterator di J2SE 1.4.2
+  - HMap.java --------------------------- Interfaccia Map di J2SE 1.4.2
+  - HSet.java --------------------------- Interfaccia Set di J2SE 1.4.2
+  - IllegalStateException.java ---------- Eccezione non presente in J2ME CLDC 1.1
+  - MapAdapter.java --------------------- Implementazione dell'adapter richiesto
+  - package-info.java ------------------- Javadoc per il package myAdapter
+  - UnsupportedOperationException.java -- Eccezione non presente in J2ME CLDC 1.1
+```
+
+```
+- package myTest
+  - AllTestsSuite.java ------------------ Classe che raggruppa tutti i test
+  - package-info.java ------------------- Javadoc per il package myTest
+  - SimpleHMapWithNulls.java ------------ Classe ausiliaria per i test
+  - TestEmptyEntrySet.java -------------- Test per la vista EntrySet vuota
+  - TestEmptyMapAdapter.java ------------ Test per la classe MapAdapter vuota
+  - TestEmptyKeySet.java ---------------- Test per la vista KeySet vuota
+  - TestEmptyValuesCollection.java ------ Test per la vista ValuesCollection vuota
+  - TestEntryAdapter.java --------------- Test per l'adapter delle Entry
+  - TestPopulatedEntrySet.java ---------- Test per la vista EntrySet popolata
+  - TestPopulatedKeySet.java ------------ Test per la vista KeySet popolata
+  - TestPopulatedMapAdapter.java -------- Test per la classe MapAdapter popolata
+  - TestPopulatedValuesCollection.java -- Test per la vista ValuesCollection popolata
+  - TestRunner.java --------------------- Classe per l'esecuzione dei test
+```
+
+È presente anche la cartella `JUnit` che contiene i file `.jar` necessari per l'esecuzione dei test con `JUnit 4.13` e `Hamcrest 1.3`.
+
+Infine è presente la cartella `doc` che contiene la documentazione del progetto generata da `Javadoc` e la cartella `build` per contenere gli eventuali file `.class` generati dalla compilazione del progetto.
+
+## Compilazione del progetto ed esecuzione dei test
+Per una migliore organizzazione dei file di output, è stato scelto di indicare al comando `javac` di salvare i file `.class` nella cartella `build` per evitare di mescolare i file sorgente con i file compilati. I seguenti comandi terranno conto di questa organizzazione.
+
+Per compilare i pacchetti `myAdapter` e `myTest` in un'unica volta, è possibile utilizzare il comando:
+```
+javac -d build -cp .:JUnit/junit-4.13.jar:JUnit/hamcrest-core-1.3.jar myAdapter/*.java myTest/*.java
+```
+
+Per eseguire i test definiti nel pacchetto `myTest`, è possibile utilizzare il comando:
+```
+java -cp .:build:JUnit/junit-4.13.jar:JUnit/hamcrest-core-1.3.jar myTest.TestRunner
+```
+
+Per generare la documentazione del progetto, è possibile utilizzare il comando:
+```
+javadoc -d doc -cp .:JUnit/junit-4.13.jar:JUnit/hamcrest-core-1.3-javadoc.jar:JUnit/junit-4.13-javadoc.jar:JUnit/hamcrest-core-1.3-javadoc.jar myAdapter/*.java myTest/*.java
+
+```
